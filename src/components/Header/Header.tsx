@@ -30,7 +30,7 @@ const Header = () => {
                         <Box textAlign="right">
                             <Box display="flex" justifyContent="space-between" alignItems="center" gap="8px">
                                 <Phone color="#18A36C" size="20px" />
-                                <Typography fontSize="18px" fontWeight="300">+375 29 161-01-01</Typography>
+                                <Typography color="#2E2E2E" fontSize="18px" fontWeight="300">+375 29 161-01-01</Typography>
                             </Box>
                             <SMCallLink />
                         </Box>
