@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Inter } from "next/font/google";
 import Header from "@/components/Header/Header";
+
+export const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+  variable: '--font-inter',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], 
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={inter.variable}>
+      <body style={{ fontFamily: 'var(--font-inter)' }}>
         <Header />
         {children}
       </body>
