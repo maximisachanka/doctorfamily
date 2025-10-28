@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from "next/font/google";
-import Header from "@/components/Header/Header";
+import { Header } from "@/components/Header/Header";
+import { MenuProvider } from "@/components/SMMenuContext/SMMenuContext";
+import { Router } from "@/components/SMRouter/SMRouter";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,8 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ fontFamily: 'var(--font-inter)' }}>
-        <Header />
-        {children}
+        <MenuProvider>
+          <Router>
+            <Header />
+            {children}
+          </Router>
+        </MenuProvider>
       </body>
     </html>
   );

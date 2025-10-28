@@ -1,8 +1,8 @@
-const SMLogo = () => {
-     return (
+const SMMobileLogo = () => {
+    return (
         <svg
-        width="170"
-        height="56"
+        width="80"
+        height="26"
         viewBox="0 0 1357 445"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -76,6 +76,6 @@ const SMLogo = () => {
           fill="#18A36C"
         />
       </svg>
-     )
- }
-export default SMLogo;
+    )
+}
+export default SMMobileLogo;
