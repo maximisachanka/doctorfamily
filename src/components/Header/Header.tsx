@@ -1,12 +1,12 @@
 import { Mail, MapPin, Phone, User} from 'lucide-react'
 import { Box, Button, Divider, Link, Typography} from '@mui/material';
 import SMLogo from '@/icons/SMLogo';
-import SMSearch from '../common/SMSearch/SMSearch';
+import SMSearchInput from '../common/SMSearch/SMSearchInput';
 import SMOnlineRegButton from '../common/SMOnlineRegButton/SMOnlineRegButton';
 import SMCallLink from '../common/SMCallLink/SMCallLink';
 
 const Header = () => {
-    return (
+    return (    
         <Box bgcolor="#FFFFFF" boxShadow="0 5px 15px 3px rgba(0, 0, 0, 0.1)">
             <Box display="block" bgcolor = "#18A36C" py="12px">
                 <Box display="flex" justifyContent="space-between" alignItems="center" maxWidth="1280px" mx="auto" padding="0px 16px">
@@ -23,8 +23,8 @@ const Header = () => {
             <Box py="24px">
                 <Box display="flex" justifyContent="space-between" alignItems="center" maxWidth="1280px" mx="auto" padding="0px 16px">
                     <Link href="/"><SMLogo /></Link>
-                    <Box>
-                        <SMSearch />
+                    <Box display="flex" flex={1} justifyContent="center">
+                        <SMSearchInput />
                     </Box>
                     <Box display="flex" alignItems="center" gap="24px">
                         <Box textAlign="right">
