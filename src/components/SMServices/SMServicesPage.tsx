@@ -6,7 +6,7 @@ import { Card } from '../common/SMCard/SMCard';
 import { Avatar, AvatarFallback, AvatarImage } from '../common/SMAvatar/SMAvatar';
 import { Badge } from '../common/SMBadge/SMBadge';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
-import { ServicesMenu } from './SMServicesMenu';
+import { NavigableServicesMenu } from './SMNavigableServicesMenu';
 import { ServicesContent } from './SMServicesContent';
 
 import { Star, Play, Award, Calendar, FileText, HelpCircle, MessageSquare } from 'lucide-react';
@@ -267,14 +267,14 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
 export function SMServicesPage() {
   return (
     <div className="min-h-screen bg-white">
-      <div className="flex flex-col lg:flex-row gap-6">
-        <ServicesMenu />
-        <div className="flex-1 bg-white">
-          <div className="max-w-6xl mx-auto px-4 py-6 lg:py-8">
-            <ServicesContent />
+        <div className="flex flex-col lg:flex-row gap-6">
+          <NavigableServicesMenu />
+          <div className="flex-1 bg-white">
+            <div className="max-w-6xl mx-auto px-4 py-6 lg:py-8">
+              <ServicesContent />
+            </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
