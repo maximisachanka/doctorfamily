@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components/Header/Header";
 import { MenuProvider } from "@/components/SMMenuContext/SMMenuContext";
-import { Router } from "@/components/SMRouter/SMRouter";
+import { Router, Route } from "@/components/SMRouter/SMRouter";
 import { Footer } from "@/components/Footer/Footer";
 import { SMHomePage } from "@/components/SMHomePage/SMHomePage";
+import { ServicesPage } from "@/components/SMServices/SMServicesPage";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,12 @@ export default function RootLayout({
         <MenuProvider>
           <Router>
             <Header />
-            <SMHomePage></SMHomePage>
+            <Route path="/">
+              <SMHomePage />
+            </Route>
+            <Route path="/services">
+              <ServicesPage />
+            </Route>
             {children}
             <Footer></Footer>
           </Router>

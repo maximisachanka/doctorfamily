@@ -16,12 +16,9 @@ export function Footer() {
   return (
     <footer className="bg-[#F8F8F8] text-[#2E2E2E]">
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-16">
-        {/* Main footer content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-8 lg:mb-12">
-          {/* Logo and description */}
           <div className="lg:col-span-1">
             <div className="mb-4 lg:mb-6">
-              {/* Logo from Header */}
               <button onClick={() => navigate("/")} className="mb-3">
                 <SMLogo></SMLogo>
               </button>
@@ -32,7 +29,6 @@ export function Footer() {
               </p>
             </div>
 
-            {/* Newsletter */}
             <div className="mb-4 lg:mb-6">
               <h4 className="text-lg text-[#2E2E2E] mb-2 lg:mb-3">
                 Новости клиники
@@ -50,7 +46,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="text-lg text-[#2E2E2E] mb-3 lg:mb-4">
               Услуги
@@ -99,7 +94,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Information */}
           <div>
             <h4 className="text-lg text-[#2E2E2E] mb-3 lg:mb-4">
               Информация
@@ -141,7 +135,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h4 className="text-lg text-[#2E2E2E] mb-3 lg:mb-4">
               Контакты
@@ -198,7 +191,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Social links */}
         <div className="flex flex-col lg:flex-row justify-between items-center pt-6 lg:pt-8 border-t border-gray-300">
           <div className="mb-4 lg:mb-0">
             <div className="flex gap-2 lg:gap-3">

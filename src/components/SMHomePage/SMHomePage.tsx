@@ -1,7 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
 import {
-  Calendar,
   Phone,
   ArrowRight,
   Stethoscope,
@@ -10,14 +9,7 @@ import {
   Timer,
   MapPin,
   Mail,
-  Eye,
-  Building,
-  FileText,
-  Users,
-  Star,
-  Clock,
-  Award,
-  Heart
+  Eye
 } from "lucide-react";
 import { Button } from "../common/SMButton/SMButton";
 import { useRouter } from "../SMRouter/SMRouter";
@@ -54,25 +46,19 @@ export function SMHomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center">
         <div className="container mx-auto px-4 py-12 lg:py-20">
           <div className="max-w-4xl mx-auto text-center">
-
-            {/* Main Headline */}
             <h1 className="text-4xl lg:text-6xl xl:text-7xl text-[#2E2E2E] mb-8 leading-tight">
               Профессиональная медицина
               <br />
               <span className="text-[#18A36C]">нового уровня</span>
             </h1>
-
-            {/* Subtitle */}
             <p className="text-xl lg:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
               Объединяем опыт лучших врачей Беларуси, передовые медицинские технологии
               и персональный подход для вашего благополучия
             </p>
 
-            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
               <Button
                 className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
@@ -92,7 +78,6 @@ export function SMHomePage() {
               </Button>
             </div>
 
-            {/* Key Features */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="bg-white border border-[#E8E6E3] rounded-lg p-8 hover:border-[#18A36C] transition-all duration-300 text-center">
                 <div className="flex justify-center mb-4">
@@ -122,7 +107,6 @@ export function SMHomePage() {
         </div>
       </section>
 
-      {/* Services Section */}
       <section className="py-12 lg:py-20 bg-white border-t border-[#E8E6E3]">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-16">
@@ -170,7 +154,6 @@ export function SMHomePage() {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section className="py-12 lg:py-20 bg-white">
         <div className="container mx-auto px-4 max-w-7xl">
           <div className="text-center mb-12 lg:mb-16">
@@ -183,9 +166,7 @@ export function SMHomePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Contact Info */}
             <div className="space-y-6">
-              {/* Contact Details */}
               <div className="space-y-6">
                 <div className="bg-white border border-[#E8E6E3] rounded-lg p-6">
                   <h3 className="text-xl text-[#2E2E2E] mb-4 flex items-center gap-3">
@@ -214,8 +195,6 @@ export function SMHomePage() {
                   <p className="text-sm text-gray-600">Ответим в течение 24 часов</p>
                 </div>
               </div>
-
-              {/* CTA Button */}
               <div className="text-center lg:text-left">
                 <Button
                   className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
@@ -227,9 +206,7 @@ export function SMHomePage() {
               </div>
             </div>
 
-            {/* Location & Image */}
             <div className="space-y-6">
-              {/* Office Image */}
               <div className="border border-[#E8E6E3] rounded-lg overflow-hidden">
                 <ImageWithFallback
                   src="https://images.unsplash.com/photo-1744190070208-4b348963252b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBtZWRpY2FsJTIwb2ZmaWNlJTIwYnVpbGRpbmclMjBleHRlcmlvcnxlbnwxfHx8fDE3NTkyMjYwODJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
@@ -238,7 +215,6 @@ export function SMHomePage() {
                 />
               </div>
 
-              {/* Map placeholder */}
               <div className="bg-white border border-[#E8E6E3] rounded-lg p-8 text-center">
                 <div className="flex justify-center mb-4">
                   <MapPin className="w-12 h-12 text-[#18A36C]" />
