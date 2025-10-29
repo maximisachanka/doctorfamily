@@ -5,7 +5,7 @@ import { MenuProvider } from "@/components/SMMenuContext/SMMenuContext";
 import { Router, Route } from "@/components/SMRouter/SMRouter";
 import { Footer } from "@/components/Footer/Footer";
 import { SMHomePage } from "@/components/SMHomePage/SMHomePage";
-import { ServicesPage } from "@/components/SMServices/SMServicesPage";
+import { SMServicesPage } from "@/components/SMServices/SMServicesPage";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,7 +27,7 @@ export default function RootLayout({
               <SMHomePage />
             </Route>
             <Route path="/services">
-              <ServicesPage />
+              <SMServicesPage />
             </Route>
             {children}
             <Footer></Footer>

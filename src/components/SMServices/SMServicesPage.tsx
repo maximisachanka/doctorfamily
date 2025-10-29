@@ -264,7 +264,7 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
   );
 }
 
-export function ServicesPage() {
+export function SMServicesPage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="flex flex-col lg:flex-row gap-6">
