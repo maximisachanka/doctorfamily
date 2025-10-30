@@ -5,8 +5,7 @@ import { MenuProvider } from "@/components/SMMenuContext/SMMenuContext";
 import { Router, Route } from "@/components/SMRouter/SMRouter";
 import { Footer } from "@/components/Footer/Footer";
 import { SMHomePage } from "@/components/SMHomePage/SMHomePage";
-import { SMServicesPage } from "@/components/SMServices/SMServicesPage";
-import { HorizontalServicesMenu } from "@/components/SMServices/SMHorizontalServicesMenu";
+import SMServicesPage from "@/app/services/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",

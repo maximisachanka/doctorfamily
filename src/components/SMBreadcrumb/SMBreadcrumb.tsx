@@ -17,7 +17,7 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
     <div className="bg-white border-b border-[#CACACA]">
       <div className="px-4 lg:px-8">
         <div className="max-w-4xl lg:max-w-6xl mx-auto">
-          <nav className="h-14 flex items-center space-x-1 text-sm overflow-hidden">
+          <nav className="h-14 flex items-center gap-1 text-sm overflow-hidden w-full">
             <button
               onClick={() => navigate('/')}
               className="flex items-center gap-1 text-[#212121] hover:text-[#18A36C] transition-colors flex-shrink-0"

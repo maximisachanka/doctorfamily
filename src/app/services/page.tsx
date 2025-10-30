@@ -1,13 +1,16 @@
-import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/SMTabs/SMTabs';
-import { Button } from '../common/SMButton/SMButton';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../common/SMAccordion/SMAccordion';
-import { Card } from '../common/SMCard/SMCard';
-import { Avatar, AvatarFallback, AvatarImage } from '../common/SMAvatar/SMAvatar';
-import { Badge } from '../common/SMBadge/SMBadge';
-import { ImageWithFallback } from '../SMImage/ImageWithFallback';
-import { NavigableServicesMenu } from './SMNavigableServicesMenu';
-import { ServicesContent } from './SMServicesContent';
+'use client'
+
+import { Breadcrumb } from '../../components/SMBreadcrumb/SMBreadcrumb';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/common/SMTabs/SMTabs';
+import { Button } from '../../components/common/SMButton/SMButton';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/common/SMAccordion/SMAccordion';
+import { Card } from '../../components/common/SMCard/SMCard';
+import { Avatar, AvatarFallback, AvatarImage } from '../../components/common/SMAvatar/SMAvatar';
+import { Badge } from '../../components/common/SMBadge/SMBadge';
+import { ImageWithFallback } from '../../components/SMImage/ImageWithFallback';
+import { NavigableServicesMenu } from '../../components/SMServices/SMNavigableServicesMenu';
+import { ServicesContent } from '../../components/SMServices/SMServicesContent';
+import { useRouter } from "@/components/SMRouter/SMRouter";
 
 import { Star, Play, Award, Calendar, FileText, HelpCircle, MessageSquare } from 'lucide-react';
 import { getServiceData } from '@/data/SMServicesData/SMServicesData';
@@ -264,17 +267,27 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
   );
 }
 
-export function SMServicesPage() {
+export default function SMServicesPage() {
+  const { currentRoute } = useRouter();
+  const pathParts = currentRoute.replace(/^\/+|\/+$/g, '').split('/');
+
+  let categoryId = '';
+  let serviceId = '';
+  if (pathParts[0] === 'services') {
+    categoryId = pathParts[1] || '';
+    serviceId = pathParts[2] || '';
+  }
+
   return (
-    <div className="min-h-screen bg-white">
-        <div className="flex flex-col lg:flex-row gap-6">
-          <NavigableServicesMenu />
-          <div className="flex-1 bg-white">
-            <div className="max-w-6xl mx-auto px-4 py-6 lg:py-8">
-              <ServicesContent />
-            </div>
-          </div>
-        </div>
+    <div className="flex min-h-screen bg-gray-50">
+        <NavigableServicesMenu />
+      <div className="flex-1">
+        {categoryId && serviceId ? (
+          <ServicePage categoryId={categoryId} serviceId={serviceId} />
+        ) : (
+          <ServicesContent />
+        )}
+      </div>
     </div>
   );
 }
