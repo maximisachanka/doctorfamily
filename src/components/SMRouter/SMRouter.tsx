@@ -12,14 +12,15 @@ const RouterContext = createContext<RouterContextType | null>(null);
 
 export function Router({ children }: { children: ReactNode }) {
   const [currentRoute, setCurrentRoute] = useState('/');
-  
+
   const navigate = (route: string) => {
     setCurrentRoute(route);
   };
 
+  // Parse route parameters
   const params: Record<string, string> = {};
   const routeParts = currentRoute.split('/').filter(Boolean);
-  
+
   return (
     <RouterContext.Provider value={{ currentRoute, navigate, params }}>
       {children}
@@ -42,14 +43,14 @@ interface RouteProps {
 
 export function Route({ path, children }: RouteProps) {
   const { currentRoute } = useRouter();
-  
+
   if (path === '/' && currentRoute === '/') {
     return <>{children}</>;
   }
-  
+
   if (path !== '/' && currentRoute.startsWith(path)) {
     return <>{children}</>;
   }
-  
+
   return null;
 }

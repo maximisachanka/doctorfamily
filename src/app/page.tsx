@@ -1,8 +1,7 @@
-import { Box } from '@mui/material';
+import { SMHomePage } from '@/components/SMHomePage/SMHomePage';
 
 export default function Home() {
   return (
-    <Box>
-    </Box>
+    <SMHomePage />
   );
 }
