@@ -4,7 +4,6 @@ import { Header } from "@/components/Header/Header";
 import { MenuProvider } from "@/components/SMMenuContext/SMMenuContext";
 import { Router } from "@/components/SMRouter/SMRouter";
 import { Footer } from "@/components/Footer/Footer";
-import { SMHomePage } from "@/components/SMHomePage/SMHomePage";
 
 export const metadata: Metadata = {
   title: "Create Next App",
