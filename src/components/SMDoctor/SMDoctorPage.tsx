@@ -1,0 +1,204 @@
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Star, Calendar, Award, GraduationCap, Users, Image as ImageIcon } from 'lucide-react';
+import { Button } from '../common/SMButton/SMButton';
+import { Card } from '../common/SMCard/SMCard';
+import { getDoctorById, getCategoryById } from '@/data/SMDoctorData/SMDoctorData';
+import { useRouter } from '../SMRouter/SMRouter';
+import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
+import { ImageWithFallback } from '../SMImage/ImageWithFallback';
+
+interface DoctorPageProps {
+  doctorId: string;
+  categoryId: string;
+}
+
+export function DoctorPage({ doctorId, categoryId }: DoctorPageProps) {
+  const { navigate } = useRouter();
+  
+  const doctor = getDoctorById(doctorId);
+  const category = getCategoryById(categoryId);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [doctorId]);
+
+  if (!doctor || !category) {
+    return (
+      <div className="p-6 lg:p-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-2xl text-[#2E2E2E] mb-4">Врач не найден</h1>
+          <p className="text-gray-600 mb-6">
+            Запрашиваемый специалист не существует или был удален.
+          </p>
+          <Button onClick={() => navigate('/doctors')}>
+            Вернуться к списку врачей
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const handleBookAppointment = () => {
+    console.log(`Booking appointment with ${doctor.name} ${doctor.surname}`);
+  };
+
+  const breadcrumbItems = [
+    { label: 'Главная', href: '/' },
+    { label: 'Специалисты', href: '/doctors' },
+    { label: category.name, href: `/doctors/${categoryId}` },
+    { label: `${doctor.name} ${doctor.surname}` }
+  ];
+
+  return (
+    <>
+      <Breadcrumb items={breadcrumbItems} />
+      
+      <div className="p-4 lg:p-8">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <div className="bg-white rounded-lg border border-[#E8E6E3] p-6 lg:p-8">
+              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            <div className="flex-shrink-0 mx-auto lg:mx-0">
+              <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-lg overflow-hidden">
+                <ImageWithFallback
+                  src={doctor.photo}
+                  alt={`${doctor.name} ${doctor.surname}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="flex-1 text-center lg:text-left">
+              <div className="mb-4">
+                <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-2">
+                  {doctor.name} {doctor.surname}
+                </h1>
+                <p className="text-lg text-gray-600 mb-3">{doctor.position}</p>
+                
+                <div className="text-gray-600 mb-4 flex flex-col gap-1 items-center lg:items-start">
+                  <span>{doctor.qualification}</span>
+                  <span>Стаж: {doctor.experience}</span>
+                </div>
+
+                <div className="flex items-center gap-1 justify-center lg:justify-start mb-6">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-[#18A36C] text-[#18A36C]" />
+                  ))}
+                  <span className="text-gray-600 ml-2">
+                    5.0 ({doctor.reviews.length} отзывов)
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-gray-100 rounded-lg p-6">
+                <h3 className="text-lg text-[#2E2E2E] mb-3">
+                  Запишитесь на приём к доктору в удобное для вас время
+                </h3>
+                <Button
+                  onClick={handleBookAppointment}
+                  className="w-full lg:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+                >
+                  Запись онлайн
+                  <Calendar className="w-5 h-5 ml-[2.5px]" />
+                </Button>
+              </div>
+            </div>
+          </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="space-y-6">
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
+                    <Award className="w-5 h-5 text-[#18A36C]" />
+                  </div>
+                  <h2 className="text-xl text-[#2E2E2E]">Направления деятельности</h2>
+                </div>
+                <ul className="space-y-2">
+                  {doctor.about.specializations.map((spec, index) => (
+                    <li key={index} className="flex items-center gap-2 text-gray-700">
+                      <div className="w-2 h-2 bg-[#18A36C] rounded-full" />
+                      {spec}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5 text-[#18A36C]" />
+                  </div>
+                  <h2 className="text-xl text-[#2E2E2E]">Образование</h2>
+                </div>
+                <ul className="space-y-3">
+                  {doctor.about.education.map((edu, index) => (
+                    <li key={index} className="text-gray-700 border-l-2 border-[#18A36C]/20 pl-4">
+                      {edu}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
+                    <Users className="w-5 h-5 text-[#18A36C]" />
+                  </div>
+                  <h2 className="text-xl text-[#2E2E2E]">Участие в конференциях</h2>
+                </div>
+                <ul className="space-y-3">
+                  {doctor.about.conferences.map((conf, index) => (
+                    <li key={index} className="text-gray-700 border-l-2 border-[#18A36C]/20 pl-4">
+                      {conf}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              {doctor.about.workExamples && doctor.about.workExamples.length > 0 && (
+                <Card className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
+                      <ImageIcon className="w-5 h-5 text-[#18A36C]" />
+                    </div>
+                    <h2 className="text-xl text-[#2E2E2E]">Примеры работ</h2>
+                  </div>
+                  <div className="space-y-6">
+                    {doctor.about.workExamples.map((example, index) => (
+                      <div key={index}>
+                        <h3 className="text-lg text-[#2E2E2E] mb-3">{example.title}</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {example.images.map((image, imgIndex) => (
+                            <div key={imgIndex} className="rounded-lg overflow-hidden shadow-md">
+                              <ImageWithFallback
+                                src={image}
+                                alt={`${example.title} - ${imgIndex + 1}`}
+                                className="w-full h-48 object-cover"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
+          </div>
+        </motion.div>
+        </div>
+      </div>
+    </>
+  );
+}
