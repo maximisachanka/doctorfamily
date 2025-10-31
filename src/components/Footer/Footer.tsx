@@ -11,7 +11,7 @@ import SMLogo from "@/icons/SMLogo";
 import { useRouter } from "next/navigation";
 
 export function Footer() {
-  const  navigate  = useRouter();
+  const navigate = useRouter();
 
   return (
     <footer className="bg-[#F8F8F8] text-[#2E2E2E]">
