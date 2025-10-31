@@ -4,7 +4,7 @@ import { Search, Phone, User, Menu, MapPin, Mail, X } from "lucide-react";
   import { Button } from "../common/SMButton/SMButton";
   import { Input } from "../common/SMInput/SMInput"; 
   import { useState, useEffect } from "react";
-  import { useRouter } from "../SMRouter/SMRouter";
+  import { useRouter, usePathname } from "next/navigation";
   import { AuthModals } from "../SMAuthModals/SMAuthModals";
   import { useMenu } from "../SMMenuContext/SMMenuContext";
 import SMLogo from "@/icons/SMLogo";
@@ -17,7 +17,9 @@ import SMBurgerMenu from "../common/SMBurgerMenu/SMBurgerMenu";
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const { navigate } = useRouter();
+    const  router  = useRouter();
+    const pathname = usePathname();
+
   
     useEffect(() => {
       if (isBurgerMenuOpen) {
@@ -61,7 +63,7 @@ import SMBurgerMenu from "../common/SMBurgerMenu/SMBurgerMenu";
           <div className="max-w-7xl mx-auto px-4">
             <div className="hidden lg:flex items-center justify-between">
               <button
-                onClick={() => navigate("/")}
+                onClick={() => router.push("/")}
                 className="flex items-center"
               >
                 <SMLogo />
@@ -92,7 +94,7 @@ import SMBurgerMenu from "../common/SMBurgerMenu/SMBurgerMenu";
             <div className="lg:hidden">
               <div className="flex items-center justify-between">
                 <button
-                  onClick={() => navigate("/")}
+                  onClick={() => router.push("/")}
                   className="flex items-center"
                 >
                   <SMMobileLogo />
@@ -155,17 +157,12 @@ import SMBurgerMenu from "../common/SMBurgerMenu/SMBurgerMenu";
                   <button
                     key={item}
                     onClick={() => {
-                      if (item === "Услуги") {
-                        navigate("/services");
-                      } else if (item === "Специалисты") {
-                        navigate("/doctors");
-                      } else if (item === "Клиника") {
-                        navigate("/clinic");
-                      } else if (item === "Контакты") {
-                        navigate("/contacts");
-                      } else if (item === "Пациенту") {
-                        navigate("/patient");
-                      }
+                      if (item === "Услуги") router.push("/services");
+                      else if (item === "Специалисты") router.push("/doctors");
+                      else if (item === "Клиника") router.push("/clinic");
+                      else if (item === "Контакты") router.push("/contacts");
+                      else if (item === "Пациенту") router.push("/patient");
+                      
                     }}
                     className="px-3 py-3 lg:px-4 lg:py-4 te] hover:text-[#18A36C] hover:bg-gray-50 transition-colors text-sm lg:text-base hidden xl:block"
                   >
@@ -184,15 +181,15 @@ import SMBurgerMenu from "../common/SMBurgerMenu/SMBurgerMenu";
                     key={item}
                     onClick={() => {
                       if (item === "Услуги") {
-                        navigate("/services");
+                        router.push("/services");
                       } else if (item === "Специалисты") {
-                        navigate("/doctors");
+                        router.push("/doctors");
                       } else if (item === "Клиника") {
-                        navigate("/clinic");
+                        router.push("/clinic");
                       } else if (item === "Контакты") {
-                        navigate("/contacts");
+                        router.push("/contacts");
                       } else if (item === "Пациенту") {
-                        navigate("/patient");
+                        router.push("/patient");
                       }
 
                     }}
@@ -207,7 +204,7 @@ import SMBurgerMenu from "../common/SMBurgerMenu/SMBurgerMenu";
                 <div className="hidden lg:block">
                   {isAuthenticated ? (
                     <Button
-                      onClick={() => navigate("/account")}
+                      onClick={() => router.push("/account")}
                       variant="ghost"
                       size="sm"
                       className="text-[#18A36C] hover:bg-[#F4F4F4] flex items-center gap-2 px-2 lg:px-3 py-2 text-sm"
