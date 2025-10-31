@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface RouterContextType {
   currentRoute: string;
@@ -13,8 +13,28 @@ const RouterContext = createContext<RouterContextType | null>(null);
 export function Router({ children }: { children: ReactNode }) {
   const [currentRoute, setCurrentRoute] = useState('/');
   
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentRoute(window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handlePopState = () => {
+        setCurrentRoute(window.location.pathname);
+      };
+      
+      window.addEventListener('popstate', handlePopState);
+      return () => window.removeEventListener('popstate', handlePopState);
+    }
+  }, []);
+  
   const navigate = (route: string) => {
     setCurrentRoute(route);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', route);
+    }
   };
 
   const params: Record<string, string> = {};
