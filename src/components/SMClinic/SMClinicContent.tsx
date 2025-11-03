@@ -5,6 +5,7 @@ import { Card } from '../common/SMCard/SMCard';
 import { Badge } from '../common/SMBadge/SMBadge';
 import { clinicMenuData } from '../../data/SMClinicData/SMClinicData';
 import { useRouter } from '@/components/SMRouter/SMRouter';
+import clinicContentConfig from '@/config/clinicContent.json';
 
 export function ClinicContent() {
   const { navigate } = useRouter();
@@ -33,10 +34,9 @@ export function ClinicContent() {
             <div className="w-16 h-16 bg-[#18A36C] rounded-lg flex items-center justify-center mx-auto mb-4">
               <Building2 className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-3 lg:mb-4">О клинике Doctor Family</h1>
+            <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-3 lg:mb-4">{clinicContentConfig.header.title}</h1>
             <p className="text-gray-600 leading-relaxed text-sm lg:text-base">
-              Узнайте больше о нашей клинике, наших партнерах, лицензиях и возможностях для сотрудничества. 
-              Мы стремимся к прозрачности и открытости во всех аспектах нашей деятельности.
+              {clinicContentConfig.header.subtitle}
             </p>
           </div>
         </motion.div>
@@ -86,13 +86,13 @@ export function ClinicContent() {
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center text-[#18A36C] group-hover:text-[#18A36C]/80 transition-colors">
-                    <span className="text-sm mr-2">Подробнее</span>
+                    <span className="text-sm mr-2">{clinicContentConfig.sectionLabels.moreDetails}</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </div>
-                  
+
                   {section.children && (
                     <span className="text-xs text-gray-600">
-                      {section.children.length} разделов
+                      {section.children.length} {clinicContentConfig.sectionLabels.sections}
                     </span>
                   )}
                 </div>
@@ -109,17 +109,16 @@ export function ClinicContent() {
         >
           <div className="max-w-2xl mx-auto">
             <h2 className="text-xl lg:text-2xl text-white mb-4">
-              Присоединяйтесь к нашей команде
+              {clinicContentConfig.cta.title}
             </h2>
             <p className="text-white/90 mb-6 text-sm lg:text-base">
-              Мы постоянно ищем талантливых специалистов для расширения нашей команды. 
-              Ознакомьтесь с открытыми вакансиями и станьте частью Doctor Family.
+              {clinicContentConfig.cta.subtitle}
             </p>
             <Button
               onClick={() => navigate('/clinic/vacancies')}
               className="bg-white text-[#18A36C] hover:bg-white/90 hover:text-[#18A36C]/80 px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
             >
-              Посмотреть вакансии
+              {clinicContentConfig.cta.buttonText}
               <ArrowRight className="w-5 h-5 ml-[2.5px]" />
             </Button>
           </div>
@@ -131,22 +130,12 @@ export function ClinicContent() {
           transition={{ delay: 0.3 }}
           className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-8"
         >
-          <div className="text-center p-4 bg-white border border-[#E8E6E3] rounded-lg">
-            <div className="text-2xl lg:text-3xl text-[#18A36C] mb-2">10+</div>
-            <div className="text-sm text-gray-600">Партнеров</div>
-          </div>
-          <div className="text-center p-4 bg-white border border-[#E8E6E3] rounded-lg">
-            <div className="text-2xl lg:text-3xl text-[#18A36C] mb-2">50+</div>
-            <div className="text-sm text-gray-600">Вопросов в FAQ</div>
-          </div>
-          <div className="text-center p-4 bg-white border border-[#E8E6E3] rounded-lg">
-            <div className="text-2xl lg:text-3xl text-[#18A36C] mb-2">500+</div>
-            <div className="text-sm text-gray-600">Отзывов</div>
-          </div>
-          <div className="text-center p-4 bg-white border border-[#E8E6E3] rounded-lg">
-            <div className="text-2xl lg:text-3xl text-[#18A36C] mb-2">3</div>
-            <div className="text-sm text-gray-600">Открытые вакансии</div>
-          </div>
+          {clinicContentConfig.stats.map((stat, index) => (
+            <div key={index} className="text-center p-4 bg-white border border-[#E8E6E3] rounded-lg">
+              <div className="text-2xl lg:text-3xl text-[#18A36C] mb-2">{stat.value}</div>
+              <div className="text-sm text-gray-600">{stat.label}</div>
+            </div>
+          ))}
         </motion.div>
       </div>
     </div>

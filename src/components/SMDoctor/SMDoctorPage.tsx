@@ -7,6 +7,7 @@ import { getDoctorById, getCategoryById } from '@/data/SMDoctorData/SMDoctorData
 import { useRouter } from '../SMRouter/SMRouter';
 import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
+import commonConfig from '@/config/common.json';
 
 interface DoctorPageProps {
   doctorId: string;
@@ -27,12 +28,14 @@ export function DoctorPage({ doctorId, categoryId }: DoctorPageProps) {
     return (
       <div className="p-6 lg:p-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-2xl text-[#2E2E2E] mb-4">Врач не найден</h1>
+          <h1 className="text-2xl text-[#2E2E2E] mb-4">
+            {commonConfig.messages.notFound.doctor.title}
+          </h1>
           <p className="text-gray-600 mb-6">
-            Запрашиваемый специалист не существует или был удален.
+            {commonConfig.messages.notFound.doctor.description}
           </p>
           <Button onClick={() => navigate('/doctors')}>
-            Вернуться к списку врачей
+            {commonConfig.messages.notFound.doctor.buttonText}
           </Button>
         </div>
       </div>
@@ -97,13 +100,13 @@ export function DoctorPage({ doctorId, categoryId }: DoctorPageProps) {
 
               <div className="bg-gray-100 rounded-lg p-6">
                 <h3 className="text-lg text-[#2E2E2E] mb-3">
-                  Запишитесь на приём к доктору в удобное для вас время
+                  {commonConfig.messages.booking.title}
                 </h3>
                 <Button
                   onClick={handleBookAppointment}
                   className="w-full lg:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
                 >
-                  Запись онлайн
+                  {commonConfig.messages.booking.buttonText}
                   <Calendar className="w-5 h-5 ml-[2.5px]" />
                 </Button>
               </div>
