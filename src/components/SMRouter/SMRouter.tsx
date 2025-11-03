@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface RouterContextType {
   currentRoute: string;
@@ -13,13 +13,34 @@ const RouterContext = createContext<RouterContextType | null>(null);
 export function Router({ children }: { children: ReactNode }) {
   const [currentRoute, setCurrentRoute] = useState('/');
   
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentRoute(window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handlePopState = () => {
+        setCurrentRoute(window.location.pathname);
+      };
+      
+      window.addEventListener('popstate', handlePopState);
+      return () => window.removeEventListener('popstate', handlePopState);
+    }
+  }, []);
+  
   const navigate = (route: string) => {
     setCurrentRoute(route);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', route);
+    }
   };
 
+  // Parse route parameters
   const params: Record<string, string> = {};
   const routeParts = currentRoute.split('/').filter(Boolean);
-  
+
   return (
     <RouterContext.Provider value={{ currentRoute, navigate, params }}>
       {children}
@@ -42,14 +63,14 @@ interface RouteProps {
 
 export function Route({ path, children }: RouteProps) {
   const { currentRoute } = useRouter();
-  
+
   if (path === '/' && currentRoute === '/') {
     return <>{children}</>;
   }
-  
+
   if (path !== '/' && currentRoute.startsWith(path)) {
     return <>{children}</>;
   }
-  
+
   return null;
 }

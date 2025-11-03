@@ -22,33 +22,7 @@ import {
   LogIn,
 } from "lucide-react";
 import { motion } from "framer-motion";
-
-interface AuthModalsProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onLogin?: (credentials: LoginData) => void;
-  onRegister?: (userData: RegisterData) => void;
-  onForgotPassword?: (email: string) => void;
-}
-
-interface LoginData {
-  login: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-interface RegisterData {
-  lastName: string;
-  firstName: string;
-  middleName: string;
-  email: string;
-  phone: string;
-  password: string;
-  confirmPassword: string;
-  login: string;
-  captcha: string;
-  agreeToTerms: boolean;
-}
+import { LoginData, RegisterData, AuthModalsProps } from "../SMAuthModals/SMAuthModals.styles";
 
 type ModalType = "login" | "register" | "forgot-password";
 
