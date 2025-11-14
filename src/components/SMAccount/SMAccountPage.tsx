@@ -17,15 +17,81 @@ import {
 import { Button } from "../common/SMButton/SMButton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../common/SMTabs/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../common/SMCard/card";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../common/SMDialog/SMDialog";
+import { useState, useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+interface UserData {
+  id: number;
+  login: string;
+  email: string;
+  name: string;
+  phone: string;
+  registration_date: string;
+}
 
 export function SMAccountPage() {
-  const [user] = useState({
-    name: "Иванов Иван Иванович",
-    email: "ivanov@example.com",
-    phone: "+375 29 123-45-67",
-    birthDate: "15.03.1985",
-  });
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [user, setUser] = useState<UserData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+      return;
+    }
+
+    if (status === "authenticated" && session) {
+      fetchUserData();
+    }
+  }, [status, session, router]);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("/api/auth/me");
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        console.error("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const handleLogoutConfirm = async () => {
+    setShowLogoutDialog(false);
+    await signOut({ 
+      callbackUrl: "/",
+      redirect: true 
+    });
+  };
 
   const appointments = [
     {
@@ -60,6 +126,19 @@ export function SMAccountPage() {
       type: "Заключение",
     },
   ];
+
+  if (isLoading || !user) {
+    return (
+      <div className="container mx-auto px-4 py-8 lg:py-12 max-w-7xl">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#18A36C] mx-auto mb-4"></div>
+            <p className="text-gray-600">Загрузка данных...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 lg:py-12 max-w-7xl">
@@ -133,28 +212,37 @@ export function SMAccountPage() {
                       <User className="w-4 h-4 text-[#18A36C]" />
                       <span className="text-sm">ФИО</span>
                     </div>
-                    <p className="text-[#2E2E2E] text-lg">{user.name}</p>
+                    <p className="text-[#2E2E2E] text-lg">{user.name || "Не указано"}</p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-600">
                       <Calendar className="w-4 h-4 text-[#18A36C]" />
-                      <span className="text-sm">Дата рождения</span>
+                      <span className="text-sm">Дата регистрации</span>
                     </div>
-                    <p className="text-[#2E2E2E] text-lg">{user.birthDate}</p>
+                    <p className="text-[#2E2E2E] text-lg">
+                      {user.registration_date ? formatDate(user.registration_date) : "Не указано"}
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-600">
                       <Phone className="w-4 h-4 text-[#18A36C]" />
                       <span className="text-sm">Телефон</span>
                     </div>
-                    <p className="text-[#2E2E2E] text-lg">{user.phone}</p>
+                    <p className="text-[#2E2E2E] text-lg">{user.phone || "Не указано"}</p>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-gray-600">
                       <Mail className="w-4 h-4 text-[#18A36C]" />
                       <span className="text-sm">Email</span>
                     </div>
-                    <p className="text-[#2E2E2E] text-lg">{user.email}</p>
+                    <p className="text-[#2E2E2E] text-lg">{user.email || "Не указано"}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <User className="w-4 h-4 text-[#18A36C]" />
+                      <span className="text-sm">Логин</span>
+                    </div>
+                    <p className="text-[#2E2E2E] text-lg">{user.login || "Не указано"}</p>
                   </div>
                 </div>
                 <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
@@ -289,6 +377,7 @@ export function SMAccountPage() {
                     Настройки уведомлений
                   </Button>
                   <Button
+                    onClick={handleLogoutClick}
                     variant="outline"
                     className="w-full justify-start border-red-300 text-red-600 hover:bg-red-50 hover:border-red-500"
                   >
@@ -301,6 +390,37 @@ export function SMAccountPage() {
           </motion.div>
         </TabsContent>
       </Tabs>
+
+      <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <DialogContent className="sm:max-w-md border-0">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-[#2E2E2E]">
+              Подтверждение выхода
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 pt-2">
+              Вы уверены, что хотите выйти из аккаунта?
+              <br />
+              Вам потребуется войти снова для доступа к личному кабинету.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-3 sm:gap-2 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowLogoutDialog(false)}
+              className="w-full sm:w-auto border-gray-300 text-[#2E2E2E] hover:bg-gray-50"
+            >
+              Отмена
+            </Button>
+            <Button
+              onClick={handleLogoutConfirm}
+              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Выйти
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

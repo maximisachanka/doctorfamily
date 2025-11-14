@@ -44,7 +44,7 @@ model Service {
 model Category {
   id          Int          @id @default(autoincrement()) @map("category_id")
   name        String
-  slug       String       @unique
+  slug        String       @unique
   services    Service[]
   specialists Specialist[]
   partners    Partner[]

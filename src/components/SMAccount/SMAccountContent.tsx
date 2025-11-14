@@ -19,6 +19,14 @@ import {
 import { Textarea } from "../common/SMTextarea/SMTextarea";
 import { Badge } from "../common/SMBadge/SMBadge";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../common/SMDialog/SMDialog";
+import {
   CalendarDays,
   Mail,
   Settings2,
@@ -32,13 +40,26 @@ import {
 import {
   accountData,
   subscriptionCategories,
-  mockUser,
 } from "@/data/SMAccountData/SMAccountData";
 import { ImageWithFallback } from "../SMImage/ImageWithFallback";
 import { useRouter } from "../SMRouter/SMRouter";
+import { useSession, signOut } from "next-auth/react";
+
+interface UserData {
+  id: number;
+  login: string;
+  email: string;
+  name: string;
+  phone: string;
+  registration_date: string;
+}
 
 export function AccountContent() {
   const { navigate, currentRoute } = useRouter();
+  const { data: session, status } = useSession();
+  const [user, setUser] = useState<UserData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const pathParts = currentRoute.replace(/^\/+|\/+$/g, '').split('/');
   
   let sectionFromUrl = '';
@@ -63,6 +84,16 @@ export function AccountContent() {
     "idle" | "success" | "error"
   >("idle");
 
+  // Обновляем email в настройках подписки, когда загружаются данные пользователя
+  useEffect(() => {
+    if (user?.email) {
+      setSubscriptionSettings(prev => ({
+        ...prev,
+        email: user.email,
+      }));
+    }
+  }, [user]);
+
   useEffect(() => {
     if (sectionFromUrl && ['subscriptions', 'materials', 'contact'].includes(sectionFromUrl)) {
       setActiveSection(sectionFromUrl);
@@ -70,6 +101,81 @@ export function AccountContent() {
       setActiveSection('');
     }
   }, [sectionFromUrl]);
+
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      fetchUserData();
+    } else if (status === "unauthenticated") {
+      setIsLoading(false);
+    }
+  }, [status, session]);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("/api/auth/me");
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        console.error("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Получаем имя пользователя из данных пользователя
+  const getUserName = () => {
+    // Если пользователь загружен и есть имя
+    if (user?.name && user.name.trim()) {
+      const nameParts = user.name.trim().split(" ").filter(part => part.length > 0);
+      return {
+        firstName: nameParts[1] || nameParts[0] || "",
+        lastName: nameParts[0] || "",
+        fullName: user.name,
+        name: user.name,
+        email: user.email || "",
+      };
+    }
+    
+    // Если пользователь загружен, но имени нет - используем логин или email
+    if (user) {
+      const displayName = user.login || user.email || "Пользователь";
+      return {
+        firstName: displayName,
+        lastName: "",
+        fullName: displayName,
+        name: displayName,
+        email: user.email || "",
+      };
+    }
+    
+    // Если пользователь еще не загружен - возвращаем пустые значения
+    // (не используем моковые данные)
+    return {
+      firstName: "",
+      lastName: "",
+      fullName: "",
+      name: "",
+      email: "",
+    };
+  };
+
+  const displayUser = getUserName();
+
+  const handleLogoutClick = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const handleLogoutConfirm = async () => {
+    setShowLogoutDialog(false);
+    await signOut({ 
+      callbackUrl: "/",
+      redirect: true 
+    });
+  };
 
   const handleSubscriptionSubmit = () => {
     console.log("Subscription settings:", subscriptionSettings);
@@ -383,7 +489,7 @@ export function AccountContent() {
                 id="name"
                 type="text"
                 placeholder="Введите ваше имя"
-                value={contactForm.name}
+                value={contactForm.name || displayUser.fullName || ""}
                 onChange={(e) =>
                   setContactForm({
                     ...contactForm,
@@ -476,14 +582,14 @@ export function AccountContent() {
               <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
                 <div className="w-20 h-20 lg:w-24 lg:h-24 bg-[#18A36C] rounded-full flex items-center justify-center">
                   <span className="text-3xl text-white">
-                    {mockUser.firstName?.[0] || ""}
-                    {mockUser.lastName?.[0] || ""}
+                    {displayUser.firstName?.[0] || ""}
+                    {displayUser.lastName?.[0] || ""}
                   </span>
                 </div>
 
                 <div className="text-center lg:text-left">
                   <h1 className="text-3xl lg:text-4xl text-gray-800 mb-2">
-                    Добро пожаловать, {mockUser.firstName}!
+                    Добро пожаловать, {displayUser.firstName || "Пользователь"}!
                   </h1>
                   <p className="text-gray-600 text-lg mb-6">
                     Ваш персональный медицинский помощник
@@ -673,18 +779,20 @@ export function AccountContent() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-[#18A36C] rounded-full flex items-center justify-center text-white text-xl">
-                {mockUser.firstName?.[0] || ""}
-                {mockUser.lastName?.[0] || ""}
+                {displayUser.firstName?.[0] || ""}
+                {displayUser.lastName?.[0] || ""}
               </div>
               <div>
                 <h3 className="text-xl text-gray-800 mb-1">
-                  {mockUser.name}
+                  {displayUser.fullName || displayUser.name || "Пользователь"}
                 </h3>
                 <p className="text-gray-600 mb-1">
-                  {mockUser.email}
+                  {displayUser.email || "Email не указан"}
                 </p>
                 <p className="text-sm text-gray-500">
-                  Участник с 2025 года
+                  {user?.registration_date
+                    ? `Участник с ${new Date(user.registration_date).getFullYear()} года`
+                    : "Участник"}
                 </p>
               </div>
             </div>
@@ -697,7 +805,7 @@ export function AccountContent() {
                 Редактировать профиль
               </Button>
               <Button
-                onClick={() => navigate("/")}
+                onClick={handleLogoutClick}
                 variant="outline"
                 className="text-red-600 border-red-300 hover:bg-red-50"
               >
@@ -708,6 +816,37 @@ export function AccountContent() {
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <DialogContent className="sm:max-w-md border-0">
+          <DialogHeader>
+            <DialogTitle className="text-xl text-[#2E2E2E]">
+              Подтверждение выхода
+            </DialogTitle>
+            <DialogDescription className="text-gray-600 pt-2">
+              Вы уверены, что хотите выйти из аккаунта?
+              <br />
+              Вам потребуется войти снова для доступа к личному кабинету.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-3 sm:gap-2 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowLogoutDialog(false)}
+              className="w-full sm:w-auto border-gray-300 text-[#2E2E2E] hover:bg-gray-50"
+            >
+              Отмена
+            </Button>
+            <Button
+              onClick={handleLogoutConfirm}
+              className="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Выйти
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 
