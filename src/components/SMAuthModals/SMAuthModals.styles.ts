@@ -24,6 +24,5 @@ export interface RegisterData {
     password: string;
     confirmPassword: string;
     login: string;
-    captcha: string;
     agreeToTerms: boolean;
   };

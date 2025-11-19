@@ -16,6 +16,7 @@ import contactsConfig from "@/config/contacts.json";
 import { SMProfileButton } from "../common/SMProfileButton/SMProfileButton";
 import { signIn } from "next-auth/react";
 import { LoginData, RegisterData } from "../SMAuthModals/SMAuthModals.styles";
+import { useContacts } from "@/hooks/useContacts";
 
 export function Header() {
   const { isBurgerMenuOpen, setIsBurgerMenuOpen } = useMenu();
@@ -25,6 +26,7 @@ export function Header() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { contacts } = useContacts();
   
 
   useEffect(() => {
@@ -54,13 +56,13 @@ export function Header() {
           <div className="flex items-center">
             <div className="flex items-center gap-2 lg:gap-3">
               <MapPin className="w-3 h-3 lg:w-4 lg:h-4 flex-shrink-0" />
-              <span className="text-xs lg:text-sm">{contactsConfig.address}</span>
+              <span className="text-xs lg:text-sm">{contacts?.address || contactsConfig.address}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2 lg:gap-3">
             <Mail className="w-3 h-3 lg:w-4 lg:h-4 text-white flex-shrink-0" />
-            <span className="text-xs lg:text-sm">{contactsConfig.email}</span>
+            <span className="text-xs lg:text-sm">{contacts?.email || contactsConfig.email}</span>
           </div>
         </div>
       </div>
@@ -81,7 +83,7 @@ export function Header() {
               <div className="text-right">
                 <div className="flex items-center gap-2 text-[#2E2E2E] text-lg">
                   <Phone className="w-5 h-5 text-[#18A36C]" />
-                  <span>{contactsConfig.phone}</span>
+                  <span>{contacts?.phone_number || contactsConfig.phone}</span>
                 </div>
                 <button className="text-sm text-gray-500 hover:text-[#18A36C] transition-colors">
                   {contactsConfig.callbackText}

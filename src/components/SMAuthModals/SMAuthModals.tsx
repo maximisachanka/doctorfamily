@@ -63,15 +63,57 @@ export function AuthModals({
       firstName: "",
       middleName: "",
       email: "",
-      phone: "",
+      phone: "+375",
       password: "",
       confirmPassword: "",
       login: "",
-      captcha: "",
       agreeToTerms: false,
     });
 
   const [forgotEmail, setForgotEmail] = useState("");
+
+  // Форматирование белорусского номера телефона
+  const formatPhoneNumber = (value: string): string => {
+    // Удаляем все кроме цифр
+    const digits = value.replace(/\D/g, '');
+
+    // Убираем префикс 375 если он есть в начале
+    let phoneDigits = digits;
+    if (digits.startsWith('375')) {
+      phoneDigits = digits.slice(3);
+    }
+
+    // Ограничиваем до 9 цифр (XX XXX XX XX)
+    phoneDigits = phoneDigits.slice(0, 9);
+
+    // Форматируем
+    let formatted = '+375';
+    if (phoneDigits.length > 0) {
+      formatted += '(' + phoneDigits.slice(0, 2);
+    }
+    if (phoneDigits.length >= 2) {
+      formatted += ')';
+    }
+    if (phoneDigits.length > 2) {
+      formatted += phoneDigits.slice(2, 5);
+    }
+    if (phoneDigits.length > 5) {
+      formatted += '-' + phoneDigits.slice(5, 7);
+    }
+    if (phoneDigits.length > 7) {
+      formatted += '-' + phoneDigits.slice(7, 9);
+    }
+
+    return formatted;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setRegisterData({
+      ...registerData,
+      phone: formatted,
+    });
+  };
 
   const handleSubmit = () => {
     if (modalType === "login" && onLogin) {
@@ -84,7 +126,7 @@ export function AuthModals({
     ) {
       onForgotPassword(forgotEmail);
     }
-    onClose();
+    // Modal closing is handled by parent component after API response
   };
 
   const resetForms = () => {
@@ -98,11 +140,10 @@ export function AuthModals({
       firstName: "",
       middleName: "",
       email: "",
-      phone: "",
+      phone: "+375",
       password: "",
       confirmPassword: "",
       login: "",
-      captcha: "",
       agreeToTerms: false,
     });
     setForgotEmail("");
@@ -397,14 +438,9 @@ export function AuthModals({
             <Input
               id="regPhone"
               type="tel"
-              placeholder="+375 29 123-45-67"
+              placeholder="+375(29)123-45-67"
               value={registerData.phone}
-              onChange={(e) =>
-                setRegisterData({
-                  ...registerData,
-                  phone: e.target.value,
-                })
-              }
+              onChange={handlePhoneChange}
               className="pl-12 h-11 border-gray-300 focus:border-[#18A36C] transition-all duration-200 rounded-lg"
             />
           </div>
@@ -507,35 +543,6 @@ export function AuthModals({
                   <Eye className="w-5 h-5" />
                 )}
               </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="captcha" className="text-[#2E2E2E]">
-            Капча
-          </Label>
-          <div className="flex gap-4 items-center">
-            <div className="flex-1 relative group">
-              <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#18A36C] transition-colors" />
-              <Input
-                id="captcha"
-                type="text"
-                placeholder="Введите код"
-                value={registerData.captcha}
-                onChange={(e) =>
-                  setRegisterData({
-                    ...registerData,
-                    captcha: e.target.value,
-                  })
-                }
-                className="pl-12 h-11 border-gray-300 focus:border-[#18A36C] transition-all duration-200 rounded-lg"
-              />
-            </div>
-            <div className="w-24 h-11 bg-[#18A36C]/10 rounded-lg border border-gray-300 flex items-center justify-center">
-              <span className="text-[#18A36C] text-lg tracking-widest font-mono">
-                A7B3
-              </span>
             </div>
           </div>
         </div>
