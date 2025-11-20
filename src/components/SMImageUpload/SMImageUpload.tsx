@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { Upload, X, Image as ImageIcon, Video, Loader2 } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
+import { useAlert } from '../common/SMAlert/AlertProvider';
 
 interface UploadedFile {
   public_id: string;
@@ -35,8 +36,8 @@ export function ImageUpload({
   className = '',
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const alert = useAlert();
 
   const handleUpload = useCallback(async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -46,7 +47,6 @@ export function ImageUpload({
       : [files[0]];
 
     setUploading(true);
-    setError(null);
 
     try {
       for (const file of filesToUpload) {
@@ -68,12 +68,22 @@ export function ImageUpload({
         const result = await response.json();
         onUpload(result.data);
       }
+
+      alert.success(
+        filesToUpload.length === 1
+          ? 'Файл успешно загружен!'
+          : `Загружено файлов: ${filesToUpload.length}`,
+        'Успешная загрузка'
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ошибка загрузки файла');
+      alert.error(
+        err instanceof Error ? err.message : 'Ошибка загрузки файла',
+        'Ошибка загрузки'
+      );
     } finally {
       setUploading(false);
     }
-  }, [folder, resourceType, multiple, maxFiles, currentImages.length, onUpload]);
+  }, [folder, resourceType, multiple, maxFiles, currentImages.length, onUpload, alert]);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -151,12 +161,6 @@ export function ImageUpload({
           </div>
         </div>
       </div>
-
-      {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-600">{error}</p>
-        </div>
-      )}
 
       {currentImages.length > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

@@ -17,16 +17,17 @@ import { SMProfileButton } from "../common/SMProfileButton/SMProfileButton";
 import { signIn } from "next-auth/react";
 import { LoginData, RegisterData } from "../SMAuthModals/SMAuthModals.styles";
 import { useContacts } from "@/hooks/useContacts";
+import { useAlert } from "../common/SMAlert/AlertProvider";
 
 export function Header() {
   const { isBurgerMenuOpen, setIsBurgerMenuOpen } = useMenu();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const { contacts } = useContacts();
+  const alert = useAlert();
   
 
   useEffect(() => {
@@ -193,17 +194,13 @@ export function Header() {
 
       <AuthModals
         isOpen={isAuthModalOpen}
-        error={error}
         isLoading={isLoading}
-        onErrorClear={() => setError(null)}
         onClose={() => {
           setIsAuthModalOpen(false);
-          setError(null);
         }}
         onLogin={async (credentials: LoginData) => {
           setIsLoading(true);
-          setError(null);
-          
+
           try {
             const result = await signIn("credentials", {
               login: credentials.login,
@@ -212,14 +209,15 @@ export function Header() {
             });
 
             if (result?.error) {
-              setError("Неверный логин или пароль");
+              alert.error("Неверный логин или пароль", "Ошибка входа");
             } else if (result?.ok) {
               setIsAuthModalOpen(false);
+              alert.success("Вы успешно вошли в систему!", "Добро пожаловать");
               router.push("/account");
               router.refresh();
             }
           } catch (err) {
-            setError("Ошибка при входе. Попробуйте позже.");
+            alert.error("Ошибка при входе. Попробуйте позже.", "Ошибка");
             console.error("Login error:", err);
           } finally {
             setIsLoading(false);
@@ -227,7 +225,6 @@ export function Header() {
         }}
         onRegister={async (userData: RegisterData) => {
           setIsLoading(true);
-          setError(null);
 
           try {
             const response = await fetch("/api/auth/register", {
@@ -250,7 +247,7 @@ export function Header() {
             const data = await response.json();
 
             if (!response.ok) {
-              setError(data.error || "Ошибка при регистрации");
+              alert.error(data.error || "Ошибка при регистрации", "Ошибка регистрации");
               return;
             }
 
@@ -263,11 +260,12 @@ export function Header() {
 
             if (loginResult?.ok) {
               setIsAuthModalOpen(false);
+              alert.success("Регистрация прошла успешно! Добро пожаловать!", "Успешная регистрация");
               router.push("/account");
               router.refresh();
             }
           } catch (err) {
-            setError("Ошибка при регистрации. Попробуйте позже.");
+            alert.error("Ошибка при регистрации. Попробуйте позже.", "Ошибка");
             console.error("Register error:", err);
           } finally {
             setIsLoading(false);
@@ -275,14 +273,13 @@ export function Header() {
         }}
         onForgotPassword={async (email: string) => {
           setIsLoading(true);
-          setError(null);
 
           try {
             // TODO: Реализовать API для восстановления пароля
             console.log("Forgot password:", email);
-            setError("Функция восстановления пароля пока не реализована");
+            alert.warning("Функция восстановления пароля пока не реализована", "Скоро будет");
           } catch (err) {
-            setError("Ошибка при восстановлении пароля. Попробуйте позже.");
+            alert.error("Ошибка при восстановлении пароля. Попробуйте позже.", "Ошибка");
             console.error("Forgot password error:", err);
           } finally {
             setIsLoading(false);

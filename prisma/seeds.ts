@@ -14,6 +14,7 @@ async function main() {
   await prisma.vacancy.deleteMany();
   await prisma.contacts.deleteMany();
   await prisma.patient.deleteMany();
+  await prisma.material.deleteMany();
 
   // Categories
   const dentistry = await prisma.category.create({
@@ -2262,6 +2263,76 @@ async function main() {
         service_id: null
       }
     ]
+  });
+
+  // Materials (Special Offers)
+  await prisma.material.createMany({
+    data: [
+      {
+        title: 'Новогодние скидки на стоматологические услуги',
+        content: 'Специальное предложение на все виды стоматологических услуг в январе',
+        image_url: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=400&h=300&fit=crop',
+        date: new Date('2025-01-15'),
+        year: 2025,
+        is_active: true,
+      },
+      {
+        title: 'Комплексная диагностика со скидкой 30%',
+        content: 'Полное обследование организма по специальной цене',
+        image_url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=300&fit=crop',
+        date: new Date('2025-01-10'),
+        year: 2025,
+        is_active: true,
+      },
+      {
+        title: 'Акция на вакцинацию',
+        content: 'Скидки на все виды вакцинации для взрослых и детей',
+        image_url: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop',
+        date: new Date('2024-12-20'),
+        year: 2024,
+        is_active: true,
+      },
+      {
+        title: 'Профилактические осмотры',
+        content: 'Бесплатные консультации специалистов в рамках профилактики',
+        image_url: 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=400&h=300&fit=crop',
+        date: new Date('2024-11-15'),
+        year: 2024,
+        is_active: true,
+      },
+      {
+        title: 'Летние скидки на косметологию',
+        content: 'Специальные цены на косметологические процедуры',
+        image_url: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop',
+        date: new Date('2023-07-01'),
+        year: 2023,
+        is_active: true,
+      },
+      {
+        title: 'Скидка 20% на УЗИ диагностику',
+        content: 'Пройдите УЗИ диагностику со значительной скидкой до конца месяца',
+        image_url: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=400&h=300&fit=crop',
+        date: new Date('2024-10-05'),
+        year: 2024,
+        is_active: true,
+      },
+      {
+        title: 'Бесплатная консультация гинеколога',
+        content: 'Получите бесплатную первичную консультацию гинеколога',
+        image_url: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=400&h=300&fit=crop',
+        date: new Date('2025-02-01'),
+        year: 2025,
+        is_active: true,
+      },
+      {
+        title: 'Детская стоматология: скидка 15%',
+        content: 'Специальное предложение для детей до 12 лет на все стоматологические услуги',
+        image_url: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&fit=crop',
+        date: new Date('2024-09-10'),
+        year: 2024,
+        is_active: true,
+      },
+    ],
   });
 
   console.log('✅ Seed data has been inserted successfully.');

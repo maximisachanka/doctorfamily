@@ -157,3 +157,19 @@ model Patient {
 
   @@map("patients")
 }
+
+model Material {
+  id          Int      @id @default(autoincrement()) @map("material_id")
+  title       String
+  content     String   @db.Text
+  image_url   String
+  date        DateTime @db.Date
+  year        Int
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("materials")
+  @@index([year])
+  @@index([is_active])
+}

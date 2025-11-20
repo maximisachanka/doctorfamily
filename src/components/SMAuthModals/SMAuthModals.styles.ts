@@ -4,9 +4,7 @@ export interface AuthModalsProps {
     onLogin?: (credentials: LoginData) => void;
     onRegister?: (userData: RegisterData) => void;
     onForgotPassword?: (email: string) => void;
-    error?: string | null;
     isLoading?: boolean;
-    onErrorClear?: () => void;
   };
   
 export interface LoginData {
