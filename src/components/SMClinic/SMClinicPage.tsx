@@ -12,6 +12,19 @@ import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import { PartnerModal } from './SMPartnerModal';
 import { VacancyModal } from './SMVacancyModal';
+import { useContacts } from '@/hooks/useContacts';
+import {
+  PartnersListSkeleton,
+  SinglePartnerSkeleton,
+  VacanciesListSkeleton,
+  SingleVacancySkeleton,
+  ReviewsPageSkeleton,
+  FAQPageSkeleton,
+  PartnerCardSkeleton,
+  VacancyCardSkeleton,
+  ReviewItemSkeleton,
+  FAQItemSkeleton
+} from './SMClinicSkeleton';
 
 // Types from API
 interface Partner {
@@ -62,6 +75,11 @@ const REVIEWS_PER_PAGE = 10;
 const VACANCIES_PER_PAGE = 6;
 const PARTNERS_PER_PAGE = 6;
 
+// Компонент скелетона для текста
+function TextSkeleton({ className = '' }: { className?: string }) {
+  return <span className={`inline-block animate-pulse bg-gray-200 rounded ${className}`}>&nbsp;</span>;
+}
+
 export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   const [activeTab, setActiveTab] = useState('info');
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,11 +93,13 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   const [clinicFaqsData, setClinicFaqsData] = useState<ClinicFaq[]>([]);
   const [reviewsTotal, setReviewsTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [faqLoading, setFaqLoading] = useState(false);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [selectedVacancy, setSelectedVacancy] = useState<Vacancy | null>(null);
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
   const [isVacancyModalOpen, setIsVacancyModalOpen] = useState(false);
   const { navigate, currentRoute} = useRouter();
+  const { contacts, loading: contactsLoading } = useContacts();
 
   const clinicItem = getClinicItemById(itemId);
   const categoryItem = categoryId !== itemId ? getClinicItemById(categoryId) : null;
@@ -153,12 +173,12 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                            'womens-health', 'curettage'];
 
     if (faqCategories.includes(itemId)) {
-      setLoading(true);
+      setFaqLoading(true);
       fetch(`/api/clinic-faqs?category=${itemId}`)
         .then(res => res.json())
         .then(data => setClinicFaqsData(data))
         .catch(err => console.error('Failed to load clinic FAQs:', err))
-        .finally(() => setLoading(false));
+        .finally(() => setFaqLoading(false));
     }
   }, [itemId]);
 
@@ -213,8 +233,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             </motion.div>
 
             {loading ? (
-              <div className="text-center py-12">
-                <p className="text-gray-600">Загрузка...</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <PartnerCardSkeleton key={i} />
+                ))}
               </div>
             ) : (
               <>
@@ -308,13 +330,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   // Handle individual partner page
   if (currentRoute.includes('/clinic/partners/') && !['medical-labs', 'insurance', 'dental-labs'].includes(itemId)) {
     if (loading) {
-      return (
-        <div className="p-4 lg:p-8">
-          <div className="text-center py-12">
-            <p className="text-gray-600">Загрузка...</p>
-          </div>
-        </div>
-      );
+      return <SinglePartnerSkeleton />;
     }
 
     if (!singlePartner) {
@@ -436,54 +452,66 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           <div className="mb-6">
             <div className="flex items-center justify-between">
               <h2 className="text-xl text-[#2E2E2E]">Отзывы пациентов</h2>
-              <div className="text-sm text-gray-600">
-                Страница {currentPage} из {totalPages} ({reviewsTotal} отзывов)
-              </div>
+              {!loading && (
+                <div className="text-sm text-gray-600">
+                  Страница {currentPage} из {totalPages} ({reviewsTotal} отзывов)
+                </div>
+              )}
             </div>
           </div>
-          
-          <div className="space-y-6">
-            {currentReviews.map((review) => (
-              <div key={review.id} className="border-b border-gray-200 last:border-b-0 pb-6 last:pb-0">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
-                      <span className="text-[#18A36C] font-medium">
-                        {review.name.charAt(0)}
-                      </span>
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-medium text-[#2E2E2E]">{review.name}</h4>
+
+          {loading ? (
+            <div className="space-y-6">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <ReviewItemSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="space-y-6">
+                {currentReviews.map((review) => (
+                  <div key={review.id} className="border-b border-gray-200 last:border-b-0 pb-6 last:pb-0">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
+                          <span className="text-[#18A36C] font-medium">
+                            {review.name.charAt(0)}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium text-[#2E2E2E]">{review.name}</h4>
+                          </div>
+                          <p className="text-sm text-gray-500">{typeof review.date === 'string' ? review.date : new Date(review.date).toLocaleDateString('ru-RU')}</p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-500">{typeof review.date === 'string' ? review.date : new Date(review.date).toLocaleDateString('ru-RU')}</p>
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < review.grade
+                                ? 'fill-[#18A36C] text-[#18A36C]'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
                     </div>
+                    <p className="text-gray-700 leading-relaxed">{review.text}</p>
                   </div>
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < review.grade
-                            ? 'fill-[#18A36C] text-[#18A36C]'
-                            : 'text-gray-300'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-gray-700 leading-relaxed">{review.text}</p>
+                ))}
               </div>
-            ))}
-          </div>
-          
-          {/* Pagination for reviews */}
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            className="mt-8"
-          />
+
+              {/* Pagination for reviews */}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                className="mt-8"
+              />
+            </>
+          )}
         </Card>
 
         <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
@@ -535,8 +563,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             </motion.div>
 
             {loading ? (
-              <div className="text-center py-12">
-                <p className="text-gray-600">Загрузка...</p>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <VacancyCardSkeleton key={i} />
+                ))}
               </div>
             ) : (
               <>
@@ -630,13 +660,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   // Handle individual vacancy page
   if (currentRoute.includes('/clinic/vacancies/') && itemId !== 'vacancies') {
     if (loading) {
-      return (
-        <div className="p-4 lg:p-8">
-          <div className="text-center py-12">
-            <p className="text-gray-600">Загрузка...</p>
-          </div>
-        </div>
-      );
+      return <SingleVacancySkeleton />;
     }
 
     if (!singleVacancy) {
@@ -796,20 +820,61 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             <div>
               <h2 className="text-xl text-[#2E2E2E] mb-4">Юридическая информация</h2>
               <div className="space-y-3">
-                {clinicItem.content?.split('\n').map((line, index) => {
-                  const [label, value] = line.split(':');
-                  if (!value) return null;
-                  
-                  return (
-                    <div key={index} className="flex flex-col">
-                      <span className="text-sm text-gray-600 mb-1">{label.trim()}</span>
-                      <span className="text-[#212121]">{value.trim()}</span>
-                    </div>
-                  );
-                })}
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">Полное наименование</span>
+                  <span className="text-[#212121]">Общество с ограниченной ответственностью «Смарт Медикал»</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">Сокращенное наименование</span>
+                  <span className="text-[#212121]">ООО «Смарт Медикал»</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">УНП</span>
+                  <span className="text-[#212121]">193215226</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">Юридический адрес</span>
+                  <span className="text-[#212121]">
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-64 h-5" />
+                    ) : (
+                      contacts?.address || 'г. Минск, пр-т Победителей, д. 119, пом. 504'
+                    )}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">Фактический адрес</span>
+                  <span className="text-[#212121]">
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-64 h-5" />
+                    ) : (
+                      contacts?.address || 'г. Минск, пр-т Победителей, д. 119, пом. 504'
+                    )}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">Телефон</span>
+                  <span className="text-[#212121]">
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-36 h-5" />
+                    ) : (
+                      contacts?.phone_number || '+375-29-161-01-01'
+                    )}
+                  </span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-600 mb-1">Электронная почта</span>
+                  <span className="text-[#212121]">
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-48 h-5" />
+                    ) : (
+                      contacts?.email || 'smartmedical.by@gmail.com'
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
-            
+
             <div>
               <h2 className="text-xl text-[#2E2E2E] mb-4">Контактная информация</h2>
               <div className="space-y-4">
@@ -817,26 +882,44 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                   <MapPin className="w-5 h-5 text-[#18A36C] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-600">Адрес</p>
-                    <p className="text-[#212121]">г. Минск, пр-т Победителей, д. 119, пом. 504</p>
+                    <p className="text-[#212121]">
+                      {contactsLoading ? (
+                        <TextSkeleton className="w-64 h-5" />
+                      ) : (
+                        contacts?.address || 'г. Минск, пр-т Победителей, д. 119, пом. 504'
+                      )}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-[#18A36C] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-600">Телефон</p>
-                    <p className="text-[#212121]">+375-29-161-01-01</p>
+                    <p className="text-[#212121]">
+                      {contactsLoading ? (
+                        <TextSkeleton className="w-36 h-5" />
+                      ) : (
+                        contacts?.phone_number || '+375-29-161-01-01'
+                      )}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-[#18A36C] mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-600">Email</p>
-                    <p className="text-[#212121]">smartmedical.by@gmail.com</p>
+                    <p className="text-[#212121]">
+                      {contactsLoading ? (
+                        <TextSkeleton className="w-48 h-5" />
+                      ) : (
+                        contacts?.email || 'smartmedical.by@gmail.com'
+                      )}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-3">
                   <Globe className="w-5 h-5 text-[#18A36C] mt-0.5" />
                   <div>
@@ -880,7 +963,16 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
         </div>
       )}
 
-      {(clinicFaqsData.length > 0 || (clinicItem.faq && clinicItem.faq.length > 0)) && (
+      {faqLoading ? (
+        <Card className="p-6 lg:p-8">
+          <h2 className="text-xl text-[#2E2E2E] mb-6">Часто задаваемые вопросы</h2>
+          <div className="space-y-4">
+            {[1, 2, 3, 4].map((i) => (
+              <FAQItemSkeleton key={i} />
+            ))}
+          </div>
+        </Card>
+      ) : (clinicFaqsData.length > 0 || (clinicItem.faq && clinicItem.faq.length > 0)) ? (
         <Card className="p-6 lg:p-8">
           <h2 className="text-xl text-[#2E2E2E] mb-6">Часто задаваемые вопросы</h2>
           <Accordion type="single" collapsible className="w-full">
@@ -896,7 +988,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             ))}
           </Accordion>
         </Card>
-      )}
+      ) : null}
 
       <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
         <div className="text-center">

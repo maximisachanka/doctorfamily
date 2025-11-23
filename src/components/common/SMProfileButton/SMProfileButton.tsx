@@ -11,8 +11,18 @@ interface SMProfileButtonProps {
   onAuthModalOpen?: () => void;
 }
 
+// Скелетон для кнопки профиля
+function ProfileButtonSkeleton({ className }: { className?: string }) {
+  return (
+    <div className={`flex items-center gap-2 px-2 lg:px-3 py-2 ${className || ''}`}>
+      <div className="w-4 h-4 animate-pulse bg-gray-200 rounded" />
+      <div className="w-16 h-4 animate-pulse bg-gray-200 rounded" />
+    </div>
+  );
+}
+
 export const SMProfileButton: React.FC<SMProfileButtonProps> = ({ className, onAuthModalOpen }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -34,6 +44,11 @@ export const SMProfileButton: React.FC<SMProfileButtonProps> = ({ className, onA
       router.push('/account');
     }
   };
+
+  // Показываем скелетон пока сессия загружается
+  if (status === 'loading') {
+    return <ProfileButtonSkeleton className={className} />;
+  }
 
   return (
     <Button

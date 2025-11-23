@@ -5,9 +5,15 @@ import { motion } from "framer-motion";
 import { Button } from "../common/SMButton/SMButton";
 import contactsPageConfig from "@/config/contactsPage.json";
 import { useContacts } from "@/hooks/useContacts";
+import { ContactsPageSkeleton } from "./SMContactsSkeleton";
 
 export function SMContactsPage() {
-  const { contacts } = useContacts();
+  const { contacts, loading } = useContacts();
+
+  // Показываем скелетон во время загрузки
+  if (loading) {
+    return <ContactsPageSkeleton />;
+  }
 
   // Prepare phone numbers array
   const phoneNumbers = contacts?.phone_number

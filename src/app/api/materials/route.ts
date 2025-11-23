@@ -36,12 +36,14 @@ export async function GET(request: NextRequest) {
       id: material.id.toString(),
       title: material.title,
       content: material.content,
+      detailed_content: material.detailed_content,
       image: material.image_url,
       date: material.date.toLocaleDateString("ru-RU", {
         day: "numeric",
         month: "long",
         year: "numeric",
       }),
+      dateRaw: material.date.toISOString(), // Для расчета "Новое"
       year: material.year,
     }));
 

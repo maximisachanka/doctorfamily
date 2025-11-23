@@ -25,12 +25,6 @@ interface MenuItem {
 
 const menuData: MenuItem[] = [
   {
-    id: 'subscriptions',
-    title: 'Подписки',
-    icon: <Settings className="w-4 h-4" />,
-    children: []
-  },
-  {
     id: 'materials',
     title: 'Материалы',
     icon: <FileText className="w-4 h-4" />,
@@ -87,40 +81,43 @@ function MenuItemComponent({
   };
 
   return (
-    <div>
+    <div className={level === 0 ? 'mb-1' : ''}>
       <button
         onClick={handleToggle}
-        className={`w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition-all duration-300 group ${
-          isSelected 
-            ? 'bg-gray-50 border-r-4 border-[#18A36C]' 
-            : ''
+        className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group rounded-lg mx-1 ${
+          isSelected
+            ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
+            : 'hover:bg-gray-50'
         } ${level > 0 ? 'ml-6 border-l-2 border-gray-200' : ''} ${
-          item.isAction ? 'text-red-600 hover:text-red-700' : ''
+          item.isAction ? 'hover:bg-red-50' : ''
         }`}
+        style={{ width: 'calc(100% - 8px)' }}
       >
         <div className="flex items-center gap-3">
           {item.icon && (
-            <div className={`flex-shrink-0 transition-colors duration-300 ${
-              isSelected ? 'text-[#18A36C]' : 'text-gray-500 group-hover:text-[#18A36C]'
-            } ${item.isAction ? 'text-red-600 group-hover:text-red-700' : ''}`}>
+            <div className={`flex-shrink-0 transition-all duration-300 ${
+              isSelected
+                ? 'text-[#18A36C] scale-110'
+                : 'text-gray-500 group-hover:text-[#18A36C] group-hover:scale-110'
+            } ${item.isAction ? 'text-red-500 group-hover:text-red-600' : ''}`}>
               {item.icon}
             </div>
           )}
-          <span className={`break-words-soft transition-colors duration-300 ${
-            isSelected ? 'text-[#18A36C]' : 'text-gray-800 group-hover:text-[#18A36C]'
-          } ${item.isAction ? 'text-red-600 group-hover:text-red-700' : ''}`}>
+          <span className={`font-medium transition-colors duration-300 ${
+            isSelected ? 'text-[#18A36C]' : 'text-gray-700 group-hover:text-[#18A36C]'
+          } ${item.isAction ? 'text-red-500 group-hover:text-red-600' : ''}`}>
             {item.title}
           </span>
         </div>
         {hasChildren && (
           <div className={`flex-shrink-0 transition-all duration-300 ${
-            isSelected ? 'text-[#18A36C]' : 'text-gray-500 group-hover:text-[#18A36C]'
+            isSelected ? 'text-[#18A36C]' : 'text-gray-400 group-hover:text-[#18A36C]'
           }`}>
             {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           </div>
         )}
       </button>
-      
+
       {hasChildren && isExpanded && (
         <div className="ml-4">
           {item.children!.map((child) => (
@@ -153,7 +150,7 @@ export function NavigableAccountMenu() {
   if (pathParts[0] === 'account') {
     sectionFromUrl = pathParts[1] || '';
   }
-  const selectedItem = sectionFromUrl && ['subscriptions', 'materials', 'contact'].includes(sectionFromUrl)
+  const selectedItem = sectionFromUrl && ['materials', 'contact'].includes(sectionFromUrl)
     ? sectionFromUrl
     : null;
 
@@ -185,38 +182,40 @@ export function NavigableAccountMenu() {
   };
 
   const MenuContent = ({ onItemClick: onItemClickProp }: { onItemClick?: (item: MenuItem) => void }) => (
-    <div className="bg-white h-full flex flex-col shadow-lg">
-      <div className="p-4 lg:p-6 border-b border-gray-200 bg-white">
+    <div className="bg-white h-full flex flex-col">
+      {/* Header with gradient accent */}
+      <div className="p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50">
         <button
           onClick={handleHeaderClick}
-          className={`w-full flex items-center gap-3 transition-colors ${
-            sectionFromUrl 
-              ? 'cursor-pointer hover:bg-gray-50 rounded-lg p-2 -m-2' 
-              : 'cursor-default'
+          className={`w-full flex items-center gap-3 transition-all duration-300 ${
+            sectionFromUrl
+              ? 'cursor-pointer hover:bg-[#18A36C]/5 rounded-xl p-3 -m-3'
+              : 'cursor-default p-3 -m-3'
           }`}
           disabled={!sectionFromUrl}
         >
-          <div className="w-10 h-10 bg-[#18A36C] rounded-full flex items-center justify-center flex-shrink-0">
-            <User className="w-5 h-5 text-white" />
+          <div className="w-12 h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <User className="w-6 h-6 text-white" />
           </div>
           <div className="text-left flex-1">
-            <h2 className={`text-lg lg:text-xl mb-1 ${
-              sectionFromUrl 
-                ? 'text-[#18A36C] hover:text-[#18A36C]/80' 
+            <h2 className={`text-lg lg:text-xl font-semibold transition-colors duration-300 ${
+              sectionFromUrl
+                ? 'text-[#18A36C]'
                 : 'text-gray-800'
             }`}>
               Личный кабинет
             </h2>
-            <p className="text-xs lg:text-sm text-gray-600">Управление аккаунтом</p>
+            <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Управление аккаунтом</p>
           </div>
           {sectionFromUrl && (
-            <ChevronRight className="w-4 h-4 text-[#18A36C] flex-shrink-0" />
+            <ChevronRight className="w-5 h-5 text-[#18A36C] flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
           )}
         </button>
       </div>
 
+      {/* Navigation items */}
       <div className="flex-1 overflow-y-auto">
-        <nav className="py-2">
+        <nav className="py-4 px-2">
           {menuData.map((item) => (
             <MenuItemComponent
               key={item.id}
@@ -231,8 +230,9 @@ export function NavigableAccountMenu() {
         </nav>
       </div>
 
-      <div className="p-3 lg:p-4 border-t border-gray-200 bg-gray-50">
-        <p className="text-xs text-gray-600 text-center">
+      {/* Footer */}
+      <div className="p-4 border-t border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+        <p className="text-xs text-gray-500 text-center font-medium">
           Doctor Family © 2025
         </p>
       </div>

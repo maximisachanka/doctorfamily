@@ -146,6 +146,11 @@ model Contacts {
   @@map("contacts")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model Patient {
   id                 Int      @id @default(autoincrement()) @map("patient_id")
   login              String
@@ -154,20 +159,23 @@ model Patient {
   name               String
   phone              String @unique
   registration_date  DateTime @db.Date
+  avatar_url         String?  // URL аватарки пользователя (опционально)
+  role               Role     @default(USER)
 
   @@map("patients")
 }
 
 model Material {
-  id          Int      @id @default(autoincrement()) @map("material_id")
-  title       String
-  content     String   @db.Text
-  image_url   String
-  date        DateTime @db.Date
-  year        Int
-  is_active   Boolean  @default(true)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id               Int      @id @default(autoincrement()) @map("material_id")
+  title            String
+  content          String   @db.Text
+  detailed_content String?  @db.Text // Подробное описание для модального окна
+  image_url        String
+  date             DateTime @db.Date
+  year             Int
+  is_active        Boolean  @default(true)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
 
   @@map("materials")
   @@index([year])

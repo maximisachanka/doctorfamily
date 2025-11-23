@@ -7,9 +7,14 @@ import { useRouter } from "next/navigation";
 import footerConfig from "@/config/footer.json";
 import { useContacts } from "@/hooks/useContacts";
 
+// Компонент скелетона для текста
+function TextSkeleton({ className = '' }: { className?: string }) {
+  return <span className={`inline-block animate-pulse bg-gray-200 rounded ${className}`}>&nbsp;</span>;
+}
+
 export function Footer() {
   const router = useRouter();
-  const { contacts } = useContacts();
+  const { contacts, loading: contactsLoading } = useContacts();
 
   const handleNavigation = (path: string) => {
     router.push(path);
@@ -90,7 +95,11 @@ export function Footer() {
                 <Phone className="w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0 text-[#18A36C]" />
                 <div>
                   <div className="text-[#2E2E2E] text-sm lg:text-base">
-                    {contacts?.phone_number || footerConfig.contactInfo.phone.number}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-32 h-5" />
+                    ) : (
+                      contacts?.phone_number || footerConfig.contactInfo.phone.number
+                    )}
                   </div>
                   <div className="text-gray-500 text-xs lg:text-sm">
                     {footerConfig.contactInfo.phone.workingHours}
@@ -102,7 +111,11 @@ export function Footer() {
                 <Mail className="w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0 text-[#18A36C]" />
                 <div>
                   <div className="text-[#2E2E2E] text-sm lg:text-base">
-                    {contacts?.email || footerConfig.contactInfo.email.address}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-40 h-5" />
+                    ) : (
+                      contacts?.email || footerConfig.contactInfo.email.address
+                    )}
                   </div>
                   <div className="text-gray-500 text-xs lg:text-sm">
                     {footerConfig.contactInfo.email.responseTime}
@@ -114,7 +127,11 @@ export function Footer() {
                 <MapPin className="w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0 text-[#18A36C]" />
                 <div>
                   <div className="text-[#2E2E2E] text-sm lg:text-base">
-                    {contacts?.address || footerConfig.contactInfo.address.full}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-48 h-5" />
+                    ) : (
+                      contacts?.address || footerConfig.contactInfo.address.full
+                    )}
                   </div>
                   <div className="text-gray-500 text-xs lg:text-sm">
                     {footerConfig.contactInfo.address.note}
@@ -129,7 +146,11 @@ export function Footer() {
                     {footerConfig.contactInfo.schedule.title}
                   </div>
                   <div className="text-gray-500 text-xs lg:text-sm">
-                    {contacts?.work_hours_main || footerConfig.contactInfo.schedule.hours}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-24 h-4" />
+                    ) : (
+                      contacts?.work_hours_main || footerConfig.contactInfo.schedule.hours
+                    )}
                   </div>
                 </div>
               </div>

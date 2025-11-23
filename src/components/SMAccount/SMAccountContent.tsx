@@ -39,6 +39,9 @@ import {
   Phone,
   Lock,
   AtSign,
+  Edit3,
+  Eye,
+  Shield,
 } from "lucide-react";
 import {
   accountData,
@@ -48,8 +51,15 @@ import { ImageWithFallback } from "../SMImage/ImageWithFallback";
 import { useRouter } from "../SMRouter/SMRouter";
 import { useSession, signOut } from "next-auth/react";
 import { ChangePasswordModal } from "./SMChangePasswordModal";
+import { EditProfileModal } from "./SMEditProfileModal";
+import { MaterialDetailModal, isNewMaterial } from "./SMMaterialDetailModal";
 import { useAlert } from "../common/SMAlert/AlertProvider";
 import { Pagination } from "../common/SMPagination/SMPagination";
+import {
+  WelcomeDashboardSkeleton,
+  MaterialsPageSkeleton,
+  ContactSkeleton,
+} from "./SMAccountSkeleton";
 
 interface UserData {
   id: number;
@@ -58,14 +68,18 @@ interface UserData {
   name: string;
   phone: string;
   registration_date: string;
+  avatar_url?: string | null;
+  role?: 'USER' | 'ADMIN';
 }
 
 interface Material {
   id: string;
   title: string;
   content: string;
+  detailed_content?: string | null;
   image: string;
   date: string;
+  dateRaw?: string;
   year: number;
 }
 
@@ -77,6 +91,9 @@ export function AccountContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+  const [showMaterialDetailModal, setShowMaterialDetailModal] = useState(false);
+  const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
   const [materials, setMaterials] = useState<Material[]>([]);
   const [materialsLoading, setMaterialsLoading] = useState(false);
   const pathParts = currentRoute.replace(/^\/+|\/+$/g, '').split('/');
@@ -87,7 +104,7 @@ export function AccountContent() {
   }
 
   const [activeSection, setActiveSection] = useState<string>(
-    sectionFromUrl && ['subscriptions', 'materials', 'contact'].includes(sectionFromUrl)
+    sectionFromUrl && ['materials', 'contact'].includes(sectionFromUrl)
       ? sectionFromUrl
       : ''
   );
@@ -144,7 +161,7 @@ export function AccountContent() {
   }, [selectedYear, alert]);
 
   useEffect(() => {
-    if (sectionFromUrl && ['subscriptions', 'materials', 'contact'].includes(sectionFromUrl)) {
+    if (sectionFromUrl && ['materials', 'contact'].includes(sectionFromUrl)) {
       setActiveSection(sectionFromUrl);
     } else {
       setActiveSection('');
@@ -174,43 +191,81 @@ export function AccountContent() {
   };
 
   // Получаем имя пользователя из данных пользователя
+  // Формат имени в БД: "Фамилия Имя Отчество"
   const getUserName = () => {
     // Если пользователь загружен и есть имя
     if (user?.name && user.name.trim()) {
       const nameParts = user.name.trim().split(" ").filter(part => part.length > 0);
+      // Фамилия Имя Отчество -> lastName firstName middleName
+      const lastName = nameParts[0] || "";
+      const firstName = nameParts[1] || "";
+      const middleName = nameParts[2] || "";
+
       return {
-        firstName: nameParts[1] || nameParts[0] || "",
-        lastName: nameParts[0] || "",
+        firstName: firstName || lastName, // Если имени нет, используем фамилию
+        lastName: lastName,
+        middleName: middleName,
         fullName: user.name,
         name: user.name,
         email: user.email || "",
+        avatarUrl: user.avatar_url || null,
       };
     }
-    
+
     // Если пользователь загружен, но имени нет - используем логин или email
     if (user) {
       const displayName = user.login || user.email || "Пользователь";
       return {
         firstName: displayName,
         lastName: "",
+        middleName: "",
         fullName: displayName,
         name: displayName,
         email: user.email || "",
+        avatarUrl: user.avatar_url || null,
       };
     }
-    
+
     // Если пользователь еще не загружен - возвращаем пустые значения
-    // (не используем моковые данные)
     return {
       firstName: "",
       lastName: "",
+      middleName: "",
       fullName: "",
       name: "",
       email: "",
+      avatarUrl: null,
     };
   };
 
   const displayUser = getUserName();
+
+  // Получаем инициалы для аватара (первая буква имени + первая буква фамилии)
+  const getInitials = () => {
+    // В формате "Фамилия Имя Отчество": firstName = Имя, lastName = Фамилия
+    // Отображаем: первая буква Имени + первая буква Фамилии
+    if (displayUser.firstName && displayUser.lastName) {
+      return `${displayUser.firstName[0]}${displayUser.lastName[0]}`.toUpperCase();
+    }
+    if (displayUser.firstName) {
+      return displayUser.firstName[0].toUpperCase();
+    }
+    if (displayUser.lastName) {
+      return displayUser.lastName[0].toUpperCase();
+    }
+    return "U";
+  };
+
+  // Обработчик обновления профиля
+  const handleProfileUpdate = (updatedUser: UserData) => {
+    setUser(updatedUser);
+  };
+
+  // Обработчик открытия деталей материала
+  const handleMaterialClick = (material: Material) => {
+    setSelectedMaterial(material);
+    setShowMaterialDetailModal(true);
+  };
 
   const handleLogoutClick = () => {
     setShowLogoutDialog(true);
@@ -469,10 +524,15 @@ export function AccountContent() {
                 alt={item.title}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-4 left-4 flex gap-2">
                 <Badge className="bg-[#18A36C] text-white">
                   Специальное предложение
                 </Badge>
+                {isNewMaterial(item.dateRaw) && (
+                  <Badge className="bg-orange-500 text-white">
+                    Новое
+                  </Badge>
+                )}
               </div>
             </div>
             <CardContent className="p-6">
@@ -482,9 +542,20 @@ export function AccountContent() {
               <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                 {item.content}
               </p>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <CalendarDays className="w-4 h-4" />
-                <span>{item.date}</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <CalendarDays className="w-4 h-4" />
+                  <span>{item.date}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleMaterialClick(item)}
+                  className="text-[#18A36C] hover:text-[#18A36C]/80 hover:bg-[#18A36C]/10"
+                >
+                  <Eye className="w-4 h-4 mr-1" />
+                  Подробнее
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -643,37 +714,35 @@ export function AccountContent() {
             {/* Avatar and Welcome Text */}
             <div className="flex-1">
               <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6">
-                <div className="w-20 h-20 lg:w-24 lg:h-24 bg-[#18A36C] rounded-full flex items-center justify-center">
-                  <span className="text-3xl text-white">
-                    {displayUser.firstName?.[0] || ""}
-                    {displayUser.lastName?.[0] || ""}
-                  </span>
+                <div className="w-20 h-20 lg:w-24 lg:h-24 bg-[#18A36C] rounded-full flex items-center justify-center overflow-hidden border-4 border-gray-100 shadow-lg">
+                  {displayUser.avatarUrl ? (
+                    <img
+                      src={displayUser.avatarUrl}
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-3xl text-white font-medium">
+                      {getInitials()}
+                    </span>
+                  )}
                 </div>
 
                 <div className="text-center lg:text-left">
-                  <h1 className="text-3xl lg:text-4xl text-gray-800 mb-2">
-                    Добро пожаловать, {displayUser.firstName || "Пользователь"}!
-                  </h1>
-                  <p className="text-gray-600 text-lg mb-6">
+                  <div className="flex items-center justify-center lg:justify-start gap-3 mb-2">
+                    <h1 className="text-3xl lg:text-4xl text-gray-800">
+                      Добро пожаловать, {displayUser.firstName || "Пользователь"}!
+                    </h1>
+                    {user?.role === 'ADMIN' && (
+                      <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#18A36C] text-white text-sm rounded-full">
+                        <Shield className="w-4 h-4" />
+                        Админ
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-600 text-lg">
                     Ваш персональный медицинский помощник
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-[5px] justify-center lg:justify-start">
-                    <Button
-                      onClick={() => navigate("/account/subscriptions")}
-                      className="bg-[#18A36C] text-white hover:bg-[#18A36C]/90 transition-all duration-300"
-                    >
-                      Настройки
-                      <Settings2 className="w-4 h-4 ml-[2.5px]" />
-                    </Button>
-                    <Button
-                      onClick={() => navigate("/account/contact")}
-                      variant="outline"
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-300"
-                    >
-                      Связаться с врачом
-                      <MessageSquare className="w-4 h-4 ml-[2.5px]" />
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -724,12 +793,12 @@ export function AccountContent() {
                 </div>
               </div>
               <Button
-                onClick={() => setShowChangePasswordModal(true)}
+                onClick={() => setShowEditProfileModal(true)}
                 variant="outline"
                 className="border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white transition-all duration-300"
               >
-                <Lock className="w-4 h-4 mr-2" />
-                Сменить пароль
+                <Edit3 className="w-4 h-4 mr-2" />
+                Редактировать профиль
               </Button>
             </div>
           </CardHeader>
@@ -919,10 +988,12 @@ export function AccountContent() {
                     alt={item.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-[#18A36C] text-white">
-                      Новое
-                    </Badge>
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    {isNewMaterial(item.dateRaw) && (
+                      <Badge className="bg-orange-500 text-white">
+                        Новое
+                      </Badge>
+                    )}
                   </div>
                 </div>
                 <CardContent className="p-4">
@@ -932,9 +1003,20 @@ export function AccountContent() {
                   <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                     {item.content}
                   </p>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
-                    <CalendarDays className="w-3 h-3" />
-                    <span>{item.date}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <CalendarDays className="w-3 h-3" />
+                      <span>{item.date}</span>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleMaterialClick(item)}
+                      className="text-[#18A36C] hover:text-[#18A36C]/80 hover:bg-[#18A36C]/10 p-2"
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
+                      Подробнее
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -947,9 +1029,18 @@ export function AccountContent() {
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-[#18A36C] rounded-full flex items-center justify-center text-white text-xl">
-                {displayUser.firstName?.[0] || ""}
-                {displayUser.lastName?.[0] || ""}
+              <div className="w-16 h-16 bg-[#18A36C] rounded-full flex items-center justify-center overflow-hidden border-2 border-gray-100 shadow-md">
+                {displayUser.avatarUrl ? (
+                  <img
+                    src={displayUser.avatarUrl}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xl text-white font-medium">
+                    {getInitials()}
+                  </span>
+                )}
               </div>
               <div>
                 <h3 className="text-xl text-gray-800 mb-1">
@@ -967,11 +1058,20 @@ export function AccountContent() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
+                onClick={() => setShowEditProfileModal(true)}
                 variant="outline"
                 className="text-gray-700 border-gray-300 hover:bg-gray-50"
               >
-                <Settings2 className="w-4 h-4 mr-[2.5px]" />
+                <Edit3 className="w-4 h-4 mr-[2.5px]" />
                 Редактировать профиль
+              </Button>
+              <Button
+                onClick={() => setShowChangePasswordModal(true)}
+                variant="outline"
+                className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C]/10"
+              >
+                <Lock className="w-4 h-4 mr-[2.5px]" />
+                Сменить пароль
               </Button>
               <Button
                 onClick={handleLogoutClick}
@@ -1022,13 +1122,39 @@ export function AccountContent() {
         isOpen={showChangePasswordModal}
         onClose={() => setShowChangePasswordModal(false)}
       />
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal
+        isOpen={showEditProfileModal}
+        onClose={() => setShowEditProfileModal(false)}
+        user={user}
+        onProfileUpdate={handleProfileUpdate}
+      />
+
+      {/* Material Detail Modal */}
+      <MaterialDetailModal
+        isOpen={showMaterialDetailModal}
+        onClose={() => {
+          setShowMaterialDetailModal(false);
+          setSelectedMaterial(null);
+        }}
+        material={selectedMaterial}
+      />
     </div>
   );
 
-  // Render based on activeSection
-  if (activeSection === "subscriptions") {
-    return renderSubscriptions();
+  // Show skeleton during initial loading
+  if (isLoading) {
+    if (activeSection === "materials") {
+      return <MaterialsPageSkeleton />;
+    }
+    if (activeSection === "contact") {
+      return <ContactSkeleton />;
+    }
+    return <WelcomeDashboardSkeleton />;
   }
+
+  // Render based on activeSection
   if (activeSection === "materials") {
     return renderMaterials();
   }

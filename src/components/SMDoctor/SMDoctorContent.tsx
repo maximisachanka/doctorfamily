@@ -6,6 +6,7 @@ import { Card } from '../common/SMCard/SMCard';
 import { useRouter } from '@/components/SMRouter/SMRouter';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import { getCategoryIdBySlug } from '@/utils/categoryMapper';
+import { SpecialistCardSkeleton } from './SMDoctorSkeleton';
 
 interface Specialist {
   id: number;
@@ -246,14 +247,10 @@ export function DoctorsContent() {
         </motion.div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-[#E8E6E3] rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Users className="w-8 h-8 text-gray-600 animate-pulse" />
-            </div>
-            <h3 className="text-lg text-gray-600 mb-2">Загрузка...</h3>
-            <p className="text-sm text-gray-600">
-              Пожалуйста, подождите
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <SpecialistCardSkeleton key={i} />
+            ))}
           </div>
         ) : error ? (
           <div className="text-center py-12">

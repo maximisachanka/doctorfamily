@@ -16,6 +16,7 @@ import { Star, Play, Award, Calendar, FileText, HelpCircle, MessageSquare } from
 import { getServiceData, ServiceData } from '@/data/SMServicesData/SMServicesData';
 import { useEffect, useState } from 'react';
 import { mapServiceFromDBToServiceData, ServiceFromDB } from '@/utils/serviceMapper';
+import { ServicePageSkeleton } from '../../components/SMServices/SMServicesSkeleton';
 
 interface ServicePageProps {
   serviceId: string;
@@ -68,16 +69,9 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
     }
   }, [serviceId, categoryId]);
 
-  // Показываем загрузку только если данные еще не загружены
+  // Показываем скелетон только если данные еще не загружены
   if (loading && !serviceData) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#18A36C] mx-auto mb-4"></div>
-          <p className="text-gray-600">Загрузка данных...</p>
-        </div>
-      </div>
-    );
+    return <ServicePageSkeleton />;
   }
 
   // Если данных нет после загрузки, показываем fallback

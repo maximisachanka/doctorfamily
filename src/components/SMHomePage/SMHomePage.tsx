@@ -7,10 +7,17 @@ import { useRouter } from "../SMRouter/SMRouter";
 import { ImageWithFallback } from "../SMImage/ImageWithFallback";
 import homePageConfig from "@/config/homePage.json";
 import { iconMap, IconName } from "@/utils/iconMapper";
+import { useContacts } from "@/hooks/useContacts";
+
+// Компонент скелетона для текста
+function TextSkeleton({ className = '' }: { className?: string }) {
+  return <span className={`inline-block animate-pulse bg-gray-200 rounded ${className}`}>&nbsp;</span>;
+}
 
 export function SMHomePage() {
   const { navigate } = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  const { contacts, loading: contactsLoading } = useContacts();
 
   useEffect(() => {
     setIsVisible(true);
@@ -147,7 +154,11 @@ export function SMHomePage() {
                     {homePageConfig.contactSection.contactInfo.phone.title}
                   </h3>
                   <p className="text-[#2E2E2E] mb-2">
-                    {homePageConfig.contactSection.contactInfo.phone.number}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-36 h-6" />
+                    ) : (
+                      contacts?.phone_number || homePageConfig.contactSection.contactInfo.phone.number
+                    )}
                   </p>
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.phone.description}
@@ -161,7 +172,11 @@ export function SMHomePage() {
                     {homePageConfig.contactSection.contactInfo.address.title}
                   </h3>
                   <p className="text-[#2E2E2E] mb-2">
-                    {homePageConfig.contactSection.contactInfo.address.full}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-64 h-6" />
+                    ) : (
+                      contacts?.address || homePageConfig.contactSection.contactInfo.address.full
+                    )}
                   </p>
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.address.description}
@@ -175,7 +190,11 @@ export function SMHomePage() {
                     {homePageConfig.contactSection.contactInfo.email.title}
                   </h3>
                   <p className="text-[#2E2E2E] mb-2">
-                    {homePageConfig.contactSection.contactInfo.email.address}
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-48 h-6" />
+                    ) : (
+                      contacts?.email || homePageConfig.contactSection.contactInfo.email.address
+                    )}
                   </p>
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.email.description}

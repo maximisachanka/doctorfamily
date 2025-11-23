@@ -7,6 +7,7 @@ import { useRouter } from '../SMRouter/SMRouter';
 import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import commonConfig from '@/config/common.json';
+import { DoctorPageSkeleton } from './SMDoctorSkeleton';
 
 interface DoctorPageProps {
   doctorId: string;
@@ -85,13 +86,7 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
   }, [doctorId]);
 
   if (loading) {
-    return (
-      <div className="p-6 lg:p-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="animate-pulse">Загрузка...</div>
-        </div>
-      </div>
-    );
+    return <DoctorPageSkeleton />;
   }
 
   if (error || !doctor) {

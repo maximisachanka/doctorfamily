@@ -28,6 +28,8 @@ export async function GET(request: NextRequest) {
         name: true,
         phone: true,
         registration_date: true,
+        avatar_url: true,
+        role: true,
       },
     });
 

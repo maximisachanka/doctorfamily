@@ -1,0 +1,186 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare } from 'lucide-react';
+import { Button } from '../common/SMButton/SMButton';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
+
+interface MenuItem {
+  id: string;
+  title: string;
+  icon: React.ReactNode;
+  href: string;
+}
+
+const menuItems: MenuItem[] = [
+  {
+    id: 'specialists',
+    title: 'Специалисты',
+    icon: <Users className="w-4 h-4" />,
+    href: '/admin',
+  },
+  {
+    id: 'materials',
+    title: 'Материалы',
+    icon: <FileText className="w-4 h-4" />,
+    href: '/admin/materials',
+  },
+  {
+    id: 'partners',
+    title: 'Партнёры',
+    icon: <Handshake className="w-4 h-4" />,
+    href: '/admin/partners',
+  },
+  {
+    id: 'vacancies',
+    title: 'Вакансии',
+    icon: <Briefcase className="w-4 h-4" />,
+    href: '/admin/vacancies',
+  },
+  {
+    id: 'questions',
+    title: 'Вопросы (FAQ)',
+    icon: <HelpCircle className="w-4 h-4" />,
+    href: '/admin/questions',
+  },
+  {
+    id: 'feedbacks',
+    title: 'Отзывы',
+    icon: <MessageSquare className="w-4 h-4" />,
+    href: '/admin/feedbacks',
+  },
+];
+
+interface AdminMenuProps {
+  onNavigate?: (href: string) => void;
+}
+
+export function AdminMenu({ onNavigate }: AdminMenuProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleItemClick = (item: MenuItem) => {
+    if (onNavigate) {
+      onNavigate(item.href);
+    } else {
+      router.push(item.href);
+    }
+    setMobileMenuOpen(false);
+  };
+
+  const handleExitAdmin = () => {
+    router.push('/');
+    setMobileMenuOpen(false);
+  };
+
+  const isActive = (href: string) => {
+    if (href === '/admin') {
+      return pathname === '/admin' || pathname === '/admin/specialists';
+    }
+    return pathname === href || pathname?.startsWith(href + '/');
+  };
+
+  const MenuContent = () => (
+    <div className="bg-white h-full flex flex-col">
+      {/* Header */}
+      <div className="p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <Shield className="w-6 h-6 text-white" />
+          </div>
+          <div className="text-left flex-1">
+            <h2 className="text-lg lg:text-xl font-semibold text-gray-800">
+              Админ-панель
+            </h2>
+            <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Управление контентом</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div className="flex-1 overflow-y-auto">
+        <nav className="py-4 px-2">
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleItemClick(item)}
+              className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group rounded-lg mx-1 mb-1 ${
+                isActive(item.href)
+                  ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
+                  : 'hover:bg-gray-50'
+              }`}
+              style={{ width: 'calc(100% - 8px)' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className={`flex-shrink-0 transition-all duration-300 ${
+                  isActive(item.href)
+                    ? 'text-[#18A36C] scale-110'
+                    : 'text-gray-500 group-hover:text-[#18A36C] group-hover:scale-110'
+                }`}>
+                  {item.icon}
+                </div>
+                <span className={`font-medium transition-colors duration-300 ${
+                  isActive(item.href) ? 'text-[#18A36C]' : 'text-gray-700 group-hover:text-[#18A36C]'
+                }`}>
+                  {item.title}
+                </span>
+              </div>
+              {isActive(item.href) && (
+                <ChevronRight className="w-4 h-4 text-[#18A36C]" />
+              )}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Footer with exit button */}
+      <div className="p-4 border-t border-gray-100 space-y-3">
+        <button
+          onClick={handleExitAdmin}
+          className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-300 group rounded-lg hover:bg-gray-50"
+        >
+          <Home className="w-4 h-4 text-gray-500 group-hover:text-[#18A36C] transition-colors" />
+          <span className="font-medium text-gray-700 group-hover:text-[#18A36C] transition-colors">
+            На сайт
+          </span>
+        </button>
+        <p className="text-xs text-gray-500 text-center font-medium">
+          Doctor Family © 2025
+        </p>
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop menu */}
+      <div className="hidden lg:block w-80 flex-shrink-0 h-screen overflow-y-auto bg-white border-r border-gray-200 shadow-lg">
+        <MenuContent />
+      </div>
+
+      {/* Mobile menu */}
+      <div className="lg:hidden fixed top-4 left-4 z-50">
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <Button
+              size="sm"
+              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white shadow-xl rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110 active:scale-95"
+            >
+              <Shield className="w-6 h-6" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-80 p-0">
+            <SheetHeader className="sr-only">
+              <SheetTitle>Админ-панель</SheetTitle>
+              <SheetDescription>Управление контентом сайта</SheetDescription>
+            </SheetHeader>
+            <MenuContent />
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
+  );
+}
