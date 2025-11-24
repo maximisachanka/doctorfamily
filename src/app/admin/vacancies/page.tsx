@@ -19,6 +19,10 @@ import {
 import NotFound from '../../not-found';
 import { AdminAuthForm } from '@/components/SMAdmin/SMAdminAuthForm';
 import { useAdminSession } from '@/hooks/useAdminSession';
+import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
+import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useAlert } from '@/components/common/SMAlert';
 
 interface Vacancy {
   id: number;
@@ -34,6 +38,8 @@ export default function AdminVacanciesPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const confirmDialog = useConfirmDialog();
+  const { success, error: showError } = useAlert();
 
   // Data states
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
@@ -160,19 +166,28 @@ export default function AdminVacanciesPage() {
       if (res.ok) {
         await loadData();
         resetForm();
+        success(editingVacancy ? 'Вакансия обновлена' : 'Вакансия создана');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка сохранения');
+        showError(error.error || 'Ошибка сохранения');
       }
     } catch (error) {
-      alert('Ошибка сохранения');
+      showError('Ошибка сохранения');
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Вы уверены, что хотите удалить вакансию?')) return;
+  const handleDelete = async (id: number, vacancyName: string) => {
+    const confirmed = await confirmDialog.confirm({
+      title: 'Удаление вакансии',
+      message: `Вы уверены, что хотите удалить вакансию "${vacancyName}"? Это действие нельзя отменить.`,
+      confirmText: 'Удалить',
+      cancelText: 'Отмена',
+      variant: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/vacancies/${id}`, {
@@ -181,30 +196,24 @@ export default function AdminVacanciesPage() {
 
       if (res.ok) {
         await loadData();
+        success('Вакансия удалена');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка удаления');
+        showError(error.error || 'Ошибка удаления');
       }
     } catch (error) {
-      alert('Ошибка удаления');
+      showError('Ошибка удаления');
     }
   };
 
   // Format salary
   const formatSalary = (payment: number) => {
-    return new Intl.NumberFormat('ru-RU').format(payment) + ' ₽';
+    return new Intl.NumberFormat('ru-RU').format(payment) + ' BYN';
   };
 
   // Loading state
   if (status === 'loading' || hasAdminRole === null || sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mx-auto mb-4" />
-          <p className="text-gray-500">Проверка доступа...</p>
-        </div>
-      </div>
-    );
+    return <AdminAccessSkeleton />;
   }
 
   // Not admin - show 404
@@ -281,7 +290,7 @@ export default function AdminVacanciesPage() {
                       <div className="flex items-center justify-end mt-4 pt-4 border-t border-gray-100">
                         <CardActions
                           onEdit={() => handleEdit(vacancy)}
-                          onDelete={() => handleDelete(vacancy.id)}
+                          onDelete={() => handleDelete(vacancy.id, vacancy.name)}
                         />
                       </div>
                     </ItemCard>
@@ -329,7 +338,7 @@ export default function AdminVacanciesPage() {
               </FormField>
 
               <div className="grid grid-cols-2 gap-4">
-                <FormField label="Зарплата (₽)" required>
+                <FormField label="Зарплата (BYN)" required>
                   <FormInput
                     type="number"
                     value={formData.payment}
@@ -359,6 +368,19 @@ export default function AdminVacanciesPage() {
               </FormField>
             </div>
           </FormModal>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={confirmDialog.isOpen}
+            onClose={confirmDialog.handleCancel}
+            onConfirm={confirmDialog.handleConfirm}
+            title={confirmDialog.options.title}
+            message={confirmDialog.options.message}
+            confirmText={confirmDialog.options.confirmText}
+            cancelText={confirmDialog.options.cancelText}
+            variant={confirmDialog.options.variant}
+            loading={confirmDialog.loading}
+          />
         </div>
       </div>
     </div>

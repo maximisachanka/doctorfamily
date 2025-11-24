@@ -1,9 +1,10 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { LucideIcon, Plus, Search, Loader2 } from 'lucide-react';
+import { LucideIcon, Plus, Search, Loader2, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
+import { AdminGridSkeleton } from './SMAdminSkeleton';
 
 interface AdminSectionProps {
   title: string;
@@ -12,9 +13,10 @@ interface AdminSectionProps {
   loading: boolean;
   searchValue: string;
   onSearchChange: (value: string) => void;
-  onAdd: () => void;
+  onAdd?: () => void;
   children: ReactNode;
   addButtonText?: string;
+  loadingSkeleton?: ReactNode;
 }
 
 export function AdminSection({
@@ -27,6 +29,7 @@ export function AdminSection({
   onAdd,
   children,
   addButtonText = 'Добавить',
+  loadingSkeleton,
 }: AdminSectionProps) {
   return (
     <motion.div
@@ -64,13 +67,15 @@ export function AdminSection({
             </div>
 
             {/* Add button */}
-            <Button
-              onClick={onAdd}
-              className="bg-gradient-to-r from-[#18A36C] to-[#15905f] hover:from-[#15905f] hover:to-[#128a54] text-white shadow-lg shadow-[#18A36C]/20 rounded-xl px-5 py-2.5 transition-all hover:shadow-xl hover:shadow-[#18A36C]/30"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              {addButtonText}
-            </Button>
+            {onAdd && (
+              <Button
+                onClick={onAdd}
+                className="bg-gradient-to-r from-[#18A36C] to-[#15905f] hover:from-[#15905f] hover:to-[#128a54] text-white shadow-lg shadow-[#18A36C]/20 rounded-xl px-5 py-2.5 transition-all hover:shadow-xl hover:shadow-[#18A36C]/30"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                {addButtonText}
+              </Button>
+            )}
           </div>
         </div>
       </div>
@@ -78,10 +83,7 @@ export function AdminSection({
       {/* Content */}
       <div className="p-6">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mb-4" />
-            <p className="text-gray-500">Загрузка данных...</p>
-          </div>
+          loadingSkeleton || <AdminGridSkeleton count={12} />
         ) : (
           children
         )}
@@ -307,6 +309,315 @@ export function FormTextarea({
       {...props}
       className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all resize-none"
     />
+  );
+}
+
+// Стилизованный date input с кастомным календарем
+interface FormDateInputProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+const MONTHS_RU = [
+  'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+  'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+];
+
+const MONTHS_SHORT_RU = [
+  'Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн',
+  'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'
+];
+
+const WEEKDAYS_RU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+type CalendarView = 'days' | 'months' | 'years';
+
+export function FormDateInput({ value, onChange, placeholder }: FormDateInputProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<CalendarView>('days');
+  const [viewDate, setViewDate] = useState(() => {
+    if (value) return new Date(value);
+    return new Date();
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Закрытие при клике вне компонента
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setView('days');
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const formatDisplayDate = (dateString: string) => {
+    if (!dateString) return placeholder || 'Выберите дату';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+
+    let startDay = firstDay.getDay() - 1;
+    if (startDay < 0) startDay = 6;
+
+    const days: (number | null)[] = [];
+
+    for (let i = 0; i < startDay; i++) {
+      days.push(null);
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      days.push(i);
+    }
+
+    return days;
+  };
+
+  const handlePrevMonth = () => {
+    setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1));
+  };
+
+  const handlePrevYear = () => {
+    setViewDate(new Date(viewDate.getFullYear() - 1, viewDate.getMonth(), 1));
+  };
+
+  const handleNextYear = () => {
+    setViewDate(new Date(viewDate.getFullYear() + 1, viewDate.getMonth(), 1));
+  };
+
+  const handlePrevDecade = () => {
+    setViewDate(new Date(viewDate.getFullYear() - 12, viewDate.getMonth(), 1));
+  };
+
+  const handleNextDecade = () => {
+    setViewDate(new Date(viewDate.getFullYear() + 12, viewDate.getMonth(), 1));
+  };
+
+  const handleSelectDay = (day: number) => {
+    const selectedDate = new Date(viewDate.getFullYear(), viewDate.getMonth(), day);
+    const formatted = selectedDate.toISOString().split('T')[0];
+    onChange(formatted);
+    setIsOpen(false);
+    setView('days');
+  };
+
+  const handleSelectMonth = (month: number) => {
+    setViewDate(new Date(viewDate.getFullYear(), month, 1));
+    setView('days');
+  };
+
+  const handleSelectYear = (year: number) => {
+    setViewDate(new Date(year, viewDate.getMonth(), 1));
+    setView('months');
+  };
+
+  const isSelectedDay = (day: number) => {
+    if (!value) return false;
+    const selected = new Date(value);
+    return (
+      selected.getDate() === day &&
+      selected.getMonth() === viewDate.getMonth() &&
+      selected.getFullYear() === viewDate.getFullYear()
+    );
+  };
+
+  const isToday = (day: number) => {
+    const today = new Date();
+    return (
+      today.getDate() === day &&
+      today.getMonth() === viewDate.getMonth() &&
+      today.getFullYear() === viewDate.getFullYear()
+    );
+  };
+
+  const isCurrentMonth = (month: number) => {
+    const today = new Date();
+    return today.getMonth() === month && today.getFullYear() === viewDate.getFullYear();
+  };
+
+  const isSelectedMonth = (month: number) => {
+    if (!value) return false;
+    const selected = new Date(value);
+    return selected.getMonth() === month && selected.getFullYear() === viewDate.getFullYear();
+  };
+
+  const isCurrentYear = (year: number) => {
+    const today = new Date();
+    return today.getFullYear() === year;
+  };
+
+  const isSelectedYear = (year: number) => {
+    if (!value) return false;
+    const selected = new Date(value);
+    return selected.getFullYear() === year;
+  };
+
+  const days = getDaysInMonth(viewDate);
+  const startYear = Math.floor(viewDate.getFullYear() / 12) * 12;
+  const years = Array.from({ length: 12 }, (_, i) => startYear + i);
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full px-4 py-2.5 pr-10 border rounded-xl text-sm text-left transition-all bg-white ${
+          isOpen
+            ? 'border-[#18A36C] ring-2 ring-[#18A36C]/20'
+            : 'border-gray-200 hover:border-gray-300'
+        } ${value ? 'text-gray-900' : 'text-gray-400'}`}
+      >
+        {formatDisplayDate(value)}
+      </button>
+      <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#18A36C] pointer-events-none" />
+
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.15 }}
+          className="absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50 w-[320px]"
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-[#18A36C] to-[#15905f] px-4 py-3">
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={view === 'days' ? handlePrevMonth : view === 'months' ? handlePrevYear : handlePrevDecade}
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5 text-white" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setView(view === 'days' ? 'months' : view === 'months' ? 'years' : 'years')}
+                className="px-3 py-1 hover:bg-white/20 rounded-lg transition-colors"
+              >
+                <span className="font-semibold text-white">
+                  {view === 'days' && `${MONTHS_RU[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
+                  {view === 'months' && viewDate.getFullYear()}
+                  {view === 'years' && `${startYear} - ${startYear + 11}`}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={view === 'days' ? handleNextMonth : view === 'months' ? handleNextYear : handleNextDecade}
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+              >
+                <ChevronRight className="w-5 h-5 text-white" />
+              </button>
+            </div>
+          </div>
+
+          <div className="p-4">
+            {/* Days View */}
+            {view === 'days' && (
+              <>
+                <div className="grid grid-cols-7 gap-1 mb-2">
+                  {WEEKDAYS_RU.map((day, i) => (
+                    <div
+                      key={day}
+                      className={`text-center text-xs font-semibold py-2 ${
+                        i >= 5 ? 'text-red-400' : 'text-gray-400'
+                      }`}
+                    >
+                      {day}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-7 gap-1">
+                  {days.map((day, index) => (
+                    <div key={index} className="aspect-square p-0.5">
+                      {day !== null && (
+                        <button
+                          type="button"
+                          onClick={() => handleSelectDay(day)}
+                          className={`w-full h-full flex items-center justify-center text-sm rounded-xl transition-all font-medium ${
+                            isSelectedDay(day)
+                              ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white shadow-lg shadow-[#18A36C]/30'
+                              : isToday(day)
+                              ? 'bg-[#18A36C]/10 text-[#18A36C] ring-2 ring-[#18A36C]/30'
+                              : 'text-gray-700 hover:bg-gray-100'
+                          }`}
+                        >
+                          {day}
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Months View */}
+            {view === 'months' && (
+              <div className="grid grid-cols-3 gap-2">
+                {MONTHS_SHORT_RU.map((month, index) => (
+                  <button
+                    key={month}
+                    type="button"
+                    onClick={() => handleSelectMonth(index)}
+                    className={`py-3 px-2 rounded-xl text-sm font-medium transition-all ${
+                      isSelectedMonth(index)
+                        ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white shadow-lg shadow-[#18A36C]/30'
+                        : isCurrentMonth(index)
+                        ? 'bg-[#18A36C]/10 text-[#18A36C] ring-2 ring-[#18A36C]/30'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    {month}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Years View */}
+            {view === 'years' && (
+              <div className="grid grid-cols-3 gap-2">
+                {years.map((year) => (
+                  <button
+                    key={year}
+                    type="button"
+                    onClick={() => handleSelectYear(year)}
+                    className={`py-3 px-2 rounded-xl text-sm font-medium transition-all ${
+                      isSelectedYear(year)
+                        ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white shadow-lg shadow-[#18A36C]/30'
+                        : isCurrentYear(year)
+                        ? 'bg-[#18A36C]/10 text-[#18A36C] ring-2 ring-[#18A36C]/30'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </div>
   );
 }
 

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare } from 'lucide-react';
+import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare, ShoppingBag, Phone, Mail, UserCog } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 
@@ -12,14 +12,21 @@ interface MenuItem {
   title: string;
   icon: React.ReactNode;
   href: string;
+  chiefDoctorOnly?: boolean; // Only visible to CHIEF_DOCTOR
 }
 
-const menuItems: MenuItem[] = [
+const allMenuItems: MenuItem[] = [
   {
     id: 'specialists',
     title: 'Специалисты',
     icon: <Users className="w-4 h-4" />,
     href: '/admin',
+  },
+  {
+    id: 'services',
+    title: 'Услуги',
+    icon: <ShoppingBag className="w-4 h-4" />,
+    href: '/admin/services',
   },
   {
     id: 'materials',
@@ -51,6 +58,26 @@ const menuItems: MenuItem[] = [
     icon: <MessageSquare className="w-4 h-4" />,
     href: '/admin/feedbacks',
   },
+  {
+    id: 'contacts',
+    title: 'Контакты',
+    icon: <Phone className="w-4 h-4" />,
+    href: '/admin/contacts',
+  },
+  {
+    id: 'letters',
+    title: 'Письма',
+    icon: <Mail className="w-4 h-4" />,
+    href: '/admin/letters',
+    chiefDoctorOnly: true,
+  },
+  {
+    id: 'users',
+    title: 'Пользователи',
+    icon: <UserCog className="w-4 h-4" />,
+    href: '/admin/users',
+    chiefDoctorOnly: true,
+  },
 ];
 
 interface AdminMenuProps {
@@ -61,6 +88,31 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isChiefDoctor, setIsChiefDoctor] = useState(false);
+
+  // Check if user is chief doctor
+  useEffect(() => {
+    const checkRole = async () => {
+      try {
+        const res = await fetch('/api/admin/auth');
+        const data = await res.json();
+        setIsChiefDoctor(data.isChiefDoctor === true);
+      } catch (error) {
+        setIsChiefDoctor(false);
+      }
+    };
+    checkRole();
+  }, []);
+
+  // Filter menu items based on role
+  const menuItems = useMemo(() => {
+    return allMenuItems.filter(item => {
+      if (item.chiefDoctorOnly) {
+        return isChiefDoctor;
+      }
+      return true;
+    });
+  }, [isChiefDoctor]);
 
   const handleItemClick = (item: MenuItem) => {
     if (onNavigate) {
@@ -157,7 +209,7 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
   return (
     <>
       {/* Desktop menu */}
-      <div className="hidden lg:block w-80 flex-shrink-0 h-screen overflow-y-auto bg-white border-r border-gray-200 shadow-lg">
+      <div className="hidden lg:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto bg-white border-r border-gray-200 shadow-lg">
         <MenuContent />
       </div>
 

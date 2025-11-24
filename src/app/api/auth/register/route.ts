@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import {
+  validatePassword,
+  validateNamePart,
+  validateLogin,
+  validateEmail,
+  validatePhone,
+  capitalizeName,
+} from "@/utils/validation";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,6 +32,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Валидация логина
+    const loginValidation = validateLogin(login);
+    if (!loginValidation.isValid) {
+      return NextResponse.json(
+        { error: loginValidation.error },
+        { status: 400 }
+      );
+    }
+
+    // Валидация имени
+    const firstNameValidation = validateNamePart(firstName, 'Имя');
+    if (!firstNameValidation.isValid) {
+      return NextResponse.json(
+        { error: firstNameValidation.error },
+        { status: 400 }
+      );
+    }
+
+    // Валидация фамилии
+    const lastNameValidation = validateNamePart(lastName, 'Фамилия');
+    if (!lastNameValidation.isValid) {
+      return NextResponse.json(
+        { error: lastNameValidation.error },
+        { status: 400 }
+      );
+    }
+
+    // Валидация отчества (если указано)
+    if (middleName && middleName.trim()) {
+      const middleNameValidation = validateNamePart(middleName, 'Отчество');
+      if (!middleNameValidation.isValid) {
+        return NextResponse.json(
+          { error: middleNameValidation.error },
+          { status: 400 }
+        );
+      }
+    }
+
     // Проверка совпадения паролей
     if (password !== confirmPassword) {
       return NextResponse.json(
@@ -32,36 +78,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Проверка минимальной длины пароля
-    if (password.length < 6) {
+    // Валидация пароля (мин. 4 символа, заглавная буква, спецсимвол)
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
       return NextResponse.json(
-        { error: "Пароль должен содержать минимум 6 символов" },
-        { status: 400 }
-      );
-    }
-
-    // Проверка минимальной длины логина
-    if (login.length < 3) {
-      return NextResponse.json(
-        { error: "Логин должен содержать минимум 3 символа" },
+        { error: passwordValidation.error },
         { status: 400 }
       );
     }
 
     // Валидация формата email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
       return NextResponse.json(
-        { error: "Некорректный формат email" },
+        { error: emailValidation.error },
         { status: 400 }
       );
     }
 
-    // Валидация формата белорусского телефона: +375(XX)XXX-XX-XX
-    const phoneRegex = /^\+375\((25|29|33|44|17)\)\d{3}-\d{2}-\d{2}$/;
-    if (!phoneRegex.test(phone)) {
+    // Валидация формата телефона
+    const phoneValidation = validatePhone(phone);
+    if (!phoneValidation.isValid) {
       return NextResponse.json(
-        { error: "Некорректный формат телефона. Используйте формат: +375(29)123-45-67" },
+        { error: phoneValidation.error },
         { status: 400 }
       );
     }
@@ -90,9 +129,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Проверка уникальности телефона
-    const existingUserByPhone = await prisma.patient.findFirst({
-      where: { phone },
+    // Нормализуем телефон - оставляем только цифры
+    const normalizedPhone = phone.replace(/\D/g, '');
+    const last9Digits = normalizedPhone.slice(-9);
+
+    // Проверка уникальности телефона (проверяем после нормализации для совместимости)
+    const allPatients = await prisma.patient.findMany({
+      select: { id: true, phone: true },
+    });
+
+    const existingUserByPhone = allPatients.find(patient => {
+      const patientNormalized = patient.phone.replace(/\D/g, '');
+      return patientNormalized === normalizedPhone ||
+             patientNormalized.slice(-9) === last9Digits;
     });
 
     if (existingUserByPhone) {
@@ -105,8 +154,11 @@ export async function POST(request: NextRequest) {
     // Хеширование пароля
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Формирование полного имени
-    const fullName = `${lastName} ${firstName}${middleName ? ` ${middleName}` : ""}`.trim();
+    // Формирование полного имени с капитализацией
+    const capitalizedLastName = capitalizeName(lastName);
+    const capitalizedFirstName = capitalizeName(firstName);
+    const capitalizedMiddleName = middleName ? capitalizeName(middleName) : "";
+    const fullName = `${capitalizedLastName} ${capitalizedFirstName}${capitalizedMiddleName ? ` ${capitalizedMiddleName}` : ""}`.trim();
 
     // Создание пользователя
     const user = await prisma.patient.create({
@@ -115,7 +167,7 @@ export async function POST(request: NextRequest) {
         email,
         password: hashedPassword,
         name: fullName,
-        phone,
+        phone: normalizedPhone, // Сохраняем нормализованный телефон (только цифры)
         registration_date: new Date(),
       },
     });

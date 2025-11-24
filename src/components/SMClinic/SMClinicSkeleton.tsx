@@ -123,7 +123,7 @@ export function SinglePartnerSkeleton() {
 // Скелетон для карточки вакансии
 export function VacancyCardSkeleton() {
   return (
-    <Card className="p-6 h-full flex flex-col">
+    <Card className="p-6 h-full flex flex-col border-gray-200">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <Skeleton className="h-6 w-48 mb-2" />

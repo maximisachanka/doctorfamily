@@ -1,4 +1,5 @@
 "use client"
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Calendar,
@@ -27,8 +28,42 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Alert, AlertDescription } from "../common/SMAlert/alert";
 import patientContentConfig from "@/config/patientContent.json";
 
+interface ContactData {
+  phone_number: string;
+  phone_number_sec?: string;
+  email: string;
+  address: string;
+  map_geo: string;
+  work_hours_main: string;
+  work_hours_sunday: string;
+}
+
 export function SMPatientContent() {
   const { navigate } = useRouter();
+  const [contacts, setContacts] = useState<ContactData | null>(null);
+  const [isLoadingContacts, setIsLoadingContacts] = useState(true);
+
+  // Load contacts from API
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await fetch('/api/contacts');
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Loaded contacts from API:', data);
+          setContacts(data);
+        } else {
+          console.error('Failed to load contacts:', response.status);
+        }
+      } catch (error) {
+        console.error('Error loading contacts:', error);
+      } finally {
+        setIsLoadingContacts(false);
+      }
+    };
+
+    fetchContacts();
+  }, []);
 
   const appointmentSteps = [
     { icon: Phone },
@@ -119,13 +154,25 @@ export function SMPatientContent() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                   {patientContentConfig.appointment.steps.map((step, index) => {
                     const IconComponent = appointmentSteps[index].icon;
+                    // Для первого шага (Позвоните нам) используем ТОЛЬКО данные из БД
+                    let stepDescription = step.description;
+                    if (index === 0) {
+                      if (isLoadingContacts) {
+                        stepDescription = "Загрузка номера телефона...";
+                      } else if (contacts?.phone_number) {
+                        stepDescription = `Свяжитесь с нами по телефону ${contacts.phone_number} или другим удобным способом`;
+                      } else {
+                        stepDescription = "Номер телефона недоступен";
+                      }
+                    }
+
                     return (
                       <div key={index} className="text-center">
                         <div className="w-20 h-20 bg-[#18A36C] rounded-lg flex items-center justify-center mx-auto mb-5">
                           <IconComponent className="w-10 h-10 text-white" />
                         </div>
                         <h3 className="text-lg text-[#2E2E2E] mb-3">{step.title}</h3>
-                        <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                        <p className="text-gray-600 leading-relaxed">{stepDescription}</p>
                       </div>
                     );
                   })}
@@ -225,10 +272,16 @@ export function SMPatientContent() {
                 <p className="text-gray-600 mb-8 text-lg">{patientContentConfig.appointment.ctaSubtitle}</p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
-                    className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
-                    onClick={() => window.open('tel:+375291610101')}
+                    className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => {
+                      if (contacts?.phone_number) {
+                        const phoneNumber = contacts.phone_number.replace(/[\s\-()]/g, '');
+                        window.open(`tel:${phoneNumber}`);
+                      }
+                    }}
+                    disabled={isLoadingContacts || !contacts?.phone_number}
                   >
-                    {patientContentConfig.appointment.callButton}
+                    {isLoadingContacts ? 'Загрузка...' : patientContentConfig.appointment.callButton}
                     <Phone className="w-5 h-5 ml-[2.5px]" />
                   </Button>
                   <Button

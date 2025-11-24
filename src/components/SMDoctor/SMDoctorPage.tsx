@@ -24,7 +24,7 @@ interface Specialist {
   image_url: string;
   activity_area: string | null;
   education_details: string | null;
-  conferences: string | null;
+  conferences: string[];
   specializations: string[];
   education: string[];
   work_examples: Array<{ title: string; images: string[] }> | null;
@@ -111,10 +111,8 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
     console.log(`Booking appointment with ${doctor.name}`);
   };
 
-  // Преобразуем conferences из строки в массив
-  const conferencesList = doctor.conferences 
-    ? doctor.conferences.split(',').map(c => c.trim()).filter(Boolean)
-    : [];
+  // conferences уже массив из БД
+  const conferencesList = doctor.conferences?.filter(Boolean) || [];
 
   const breadcrumbItems = [
     { label: 'Главная', href: '/' },

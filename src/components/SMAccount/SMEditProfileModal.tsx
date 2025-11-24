@@ -231,12 +231,12 @@ export function EditProfileModal({ isOpen, onClose, user, onProfileUpdate }: Edi
             {/* Avatar Section */}
             <div className="flex flex-col items-center gap-4">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-[#18A36C] flex items-center justify-center overflow-hidden border-4 border-gray-100 shadow-lg">
+                <div className="w-24 h-24 aspect-square rounded-full bg-[#18A36C] flex items-center justify-center overflow-hidden border-4 border-gray-100 shadow-lg flex-shrink-0">
                   {avatarUrl ? (
                     <img
                       src={avatarUrl}
                       alt="Avatar"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover rounded-full"
                     />
                   ) : (
                     <span className="text-3xl text-white font-medium">
@@ -317,31 +317,31 @@ export function EditProfileModal({ isOpen, onClose, user, onProfileUpdate }: Edi
 
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#18A36C]" />
+                  <Mail className="w-4 h-4 text-gray-400" />
                   Email
+                  <span className="text-xs text-gray-400">(нельзя изменить)</span>
                 </Label>
                 <Input
                   id="email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="example@email.com"
-                  className="border-gray-300"
+                  disabled
+                  className="border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-gray-700 flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-[#18A36C]" />
+                  <Phone className="w-4 h-4 text-gray-400" />
                   Телефон
+                  <span className="text-xs text-gray-400">(нельзя изменить)</span>
                 </Label>
                 <Input
                   id="phone"
                   type="tel"
                   value={formData.phone}
-                  onChange={(e) => handlePhoneChange(e.target.value)}
-                  placeholder="+375 (XX) XXX-XX-XX"
-                  className="border-gray-300"
+                  disabled
+                  className="border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed"
                 />
               </div>
             </div>

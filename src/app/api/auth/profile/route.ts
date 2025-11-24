@@ -19,9 +19,9 @@ export async function PUT(request: NextRequest) {
 
     const userId = parseInt(token.id as string);
     const body = await request.json();
-    const { name, email, phone, login } = body;
+    const { name, login } = body;
 
-    // Валидация
+    // Валидация имени
     if (!name || name.trim().length < 2) {
       return NextResponse.json(
         { error: "Имя должно содержать минимум 2 символа" },
@@ -29,20 +29,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json(
-        { error: "Некорректный email адрес" },
-        { status: 400 }
-      );
-    }
-
-    if (!phone || phone.trim().length < 10) {
-      return NextResponse.json(
-        { error: "Некорректный номер телефона" },
-        { status: 400 }
-      );
-    }
-
+    // Валидация логина
     if (!login || login.trim().length < 3) {
       return NextResponse.json(
         { error: "Логин должен содержать минимум 3 символа" },
@@ -50,43 +37,26 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Проверяем уникальность email (кроме текущего пользователя)
-    const existingEmailUser = await prisma.patient.findFirst({
+    // Проверяем уникальность логина (кроме текущего пользователя)
+    const existingLoginUser = await prisma.patient.findFirst({
       where: {
-        email: email,
+        login: login.trim(),
         NOT: { id: userId }
       }
     });
 
-    if (existingEmailUser) {
+    if (existingLoginUser) {
       return NextResponse.json(
-        { error: "Этот email уже используется" },
+        { error: "Этот логин уже занят" },
         { status: 400 }
       );
     }
 
-    // Проверяем уникальность телефона (кроме текущего пользователя)
-    const existingPhoneUser = await prisma.patient.findFirst({
-      where: {
-        phone: phone,
-        NOT: { id: userId }
-      }
-    });
-
-    if (existingPhoneUser) {
-      return NextResponse.json(
-        { error: "Этот номер телефона уже используется" },
-        { status: 400 }
-      );
-    }
-
-    // Обновляем профиль
+    // Обновляем профиль (только имя и логин, email и телефон нельзя менять)
     const updatedUser = await prisma.patient.update({
       where: { id: userId },
       data: {
         name: name.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
         login: login.trim(),
       },
       select: {

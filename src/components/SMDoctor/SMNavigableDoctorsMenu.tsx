@@ -3,10 +3,13 @@
 import type { ComponentType } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { ChevronRight, Baby, Smile, Heart, Stethoscope, Activity, Eye, Search, Building2, Users, Syringe } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 import { useRouter } from '../SMRouter/SMRouter';
 import { useMenu } from '../SMMenuContext/SMMenuContext';
+import { MenuSkeleton } from '../common/SMMenuSkeleton';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../common/SMTooltip/SMTooltip';
 
 interface MenuItem {
   id: string;
@@ -59,13 +62,13 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
   const paddingLeft = level === 0 ? 'pl-4' : level === 1 ? 'pl-8' : 'pl-12';
   
   return (
-    <div>
+    <div className="px-2">
       <Button
         variant="ghost"
-        className={`w-full justify-start ${paddingLeft} pr-4 py-3 h-auto text-left transition-all duration-200 rounded-none border-l-4 hover:bg-white hover:border-l-[#18A36C] ${
-          isActive || isRouteActive 
-            ? 'bg-[#18A36C]/10 border-l-[#18A36C] text-[#18A36C]' 
-            : 'border-l-transparent text-[#2E2E2E] hover:text-[#18A36C]'
+        className={`w-full justify-start px-4 py-3 h-auto text-left transition-all duration-300 rounded-lg mb-1 ${
+          isActive || isRouteActive
+            ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
+            : 'text-gray-700 hover:bg-gray-50 hover:text-[#18A36C]'
         }`}
         onClick={() => {
           if (hasChildren) {
@@ -82,11 +85,18 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
                 {item.icon}
               </div>
             )}
-            <span className={`text-sm lg:text-base break-words-soft transition-colors ${
-              isActive || isRouteActive ? 'text-[#18A36C] font-medium' : ''
-            }`}>
-              {item.title}
-            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className={`text-sm lg:text-base transition-colors truncate max-w-[180px] ${
+                  isActive || isRouteActive ? 'text-[#18A36C] font-medium' : ''
+                }`}>
+                  {item.title}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                {item.title}
+              </TooltipContent>
+            </Tooltip>
           </div>
           
           {hasChildren && (
@@ -99,26 +109,38 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
         </div>
       </Button>
       
-      {hasChildren && (
-        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-        }`}>
-          <div className="bg-white">
-            {item.children!.map((child) => (
-              <MenuItemComponent
-                key={child.id}
-                item={child}
-                level={level + 1}
-                activeItem={activeItem}
-                onItemClick={onItemClick}
-                expandedItems={expandedItems}
-                onToggleExpand={onToggleExpand}
-                currentRoute={currentRoute}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {hasChildren && isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="bg-white">
+              {item.children!.map((child, index) => (
+                <motion.div
+                  key={child.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.2 }}
+                >
+                  <MenuItemComponent
+                    item={child}
+                    level={level + 1}
+                    activeItem={activeItem}
+                    onItemClick={onItemClick}
+                    expandedItems={expandedItems}
+                    onToggleExpand={onToggleExpand}
+                    currentRoute={currentRoute}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -190,15 +212,22 @@ export function NavigableDoctorsMenu() {
   };
 
   const MenuContent = ({ onItemClick: onItemClickProp }: { onItemClick?: (itemId: string, item: MenuItem) => void }) => (
-    <div className="bg-white flex flex-col">
-      <div className="bg-[#18A36C] p-4 lg:p-6">
-        <h2 className="text-white text-lg lg:text-xl mb-1 lg:mb-2">Специалисты</h2>
-        <p className="text-white/80 text-xs lg:text-sm">Выберите нужное направление</p>
+    <div className="bg-white flex flex-col h-full">
+      <div className="p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <Users className="w-6 h-6 text-white" />
+          </div>
+          <div className="text-left flex-1">
+            <h2 className="text-lg lg:text-xl font-semibold text-gray-800">Специалисты</h2>
+            <p className="text-xs lg:text-sm text-gray-500 mt-0.5">Выберите нужное направление</p>
+          </div>
+        </div>
       </div>
       
       <div className="py-2">
         {isLoading ? (
-          <div className="px-4 py-6 text-sm text-gray-500">Загрузка категорий...</div>
+          <MenuSkeleton itemCount={8} showHeader={false} showFooter={false} />
         ) : error ? (
           <div className="px-4 py-6 text-sm text-red-600">{error}</div>
         ) : menuItems.length > 0 ? (

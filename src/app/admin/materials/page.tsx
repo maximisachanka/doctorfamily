@@ -4,6 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { FileText, Loader2, Calendar } from 'lucide-react';
+import { Pagination } from '@/components/common/SMPagination/SMPagination';
+import { ImageUploader } from '@/components/ImageUploader';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
 import {
   AdminSection,
@@ -14,11 +16,17 @@ import {
   FormField,
   FormInput,
   FormTextarea,
+  FormDateInput,
   Badge,
 } from '@/components/SMAdmin/SMAdminSection';
 import NotFound from '../../not-found';
 import { AdminAuthForm } from '@/components/SMAdmin/SMAdminAuthForm';
 import { useAdminSession } from '@/hooks/useAdminSession';
+import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
+import { ImageWithFallback } from '@/components/SMImage/ImageWithFallback';
+import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useAlert } from '@/components/common/SMAlert';
 
 interface Material {
   id: number;
@@ -35,11 +43,15 @@ export default function AdminMaterialsPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const confirmDialog = useConfirmDialog();
+  const { success, error: showError } = useAlert();
 
   // Data states
   const [materials, setMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -111,6 +123,18 @@ export default function AdminMaterialsPage() {
     );
   }, [materials, searchQuery]);
 
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredMaterials.length / ITEMS_PER_PAGE);
+  const paginatedMaterials = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredMaterials.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredMaterials, currentPage]);
+
   // Form handlers
   const resetForm = () => {
     setFormData({
@@ -167,19 +191,28 @@ export default function AdminMaterialsPage() {
       if (res.ok) {
         await loadData();
         resetForm();
+        success(editingMaterial ? 'Материал обновлен' : 'Материал создан');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка сохранения');
+        showError(error.error || 'Ошибка сохранения');
       }
     } catch (error) {
-      alert('Ошибка сохранения');
+      showError('Ошибка сохранения');
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Вы уверены, что хотите удалить материал?')) return;
+  const handleDelete = async (id: number, materialTitle: string) => {
+    const confirmed = await confirmDialog.confirm({
+      title: 'Удаление материала',
+      message: `Вы уверены, что хотите удалить материал "${materialTitle}"? Это действие нельзя отменить.`,
+      confirmText: 'Удалить',
+      cancelText: 'Отмена',
+      variant: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/materials/${id}`, {
@@ -188,25 +221,19 @@ export default function AdminMaterialsPage() {
 
       if (res.ok) {
         await loadData();
+        success('Материал удален');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка удаления');
+        showError(error.error || 'Ошибка удаления');
       }
     } catch (error) {
-      alert('Ошибка удаления');
+      showError('Ошибка удаления');
     }
   };
 
   // Loading state
   if (status === 'loading' || hasAdminRole === null || sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mx-auto mb-4" />
-          <p className="text-gray-500">Проверка доступа...</p>
-        </div>
-      </div>
-    );
+    return <AdminAccessSkeleton />;
   }
 
   // Not admin - show 404
@@ -244,13 +271,14 @@ export default function AdminMaterialsPage() {
                 onAction={!searchQuery ? handleAdd : undefined}
               />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <AnimatePresence>
-                  {filteredMaterials.map((material) => (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <AnimatePresence>
+                    {paginatedMaterials.map((material) => (
                     <ItemCard key={material.id}>
                       {/* Image */}
                       <div className="w-full h-40 rounded-xl overflow-hidden bg-gray-100 mb-4">
-                        <img
+                        <ImageWithFallback
                           src={material.image_url}
                           alt={material.title}
                           className="w-full h-full object-cover"
@@ -277,13 +305,24 @@ export default function AdminMaterialsPage() {
                         </span>
                         <CardActions
                           onEdit={() => handleEdit(material)}
-                          onDelete={() => handleDelete(material.id)}
+                          onDelete={() => handleDelete(material.id, material.title)}
                         />
                       </div>
                     </ItemCard>
                   ))}
                 </AnimatePresence>
-              </div>
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    className="mt-6"
+                  />
+                )}
+              </>
             )}
           </AdminSection>
 
@@ -324,21 +363,21 @@ export default function AdminMaterialsPage() {
                 />
               </FormField>
 
-              <FormField label="URL изображения" required>
-                <FormInput
-                  type="text"
+              <FormField label="Изображение" required>
+                <ImageUploader
                   value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="/images/materials/material.jpg"
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="smartmedical/materials"
+                  placeholder="Загрузите изображение материала"
+                  maxSizeMB={10}
                 />
               </FormField>
 
               <div className="grid grid-cols-2 gap-4">
                 <FormField label="Дата" required>
-                  <FormInput
-                    type="date"
+                  <FormDateInput
                     value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    onChange={(date) => setFormData({ ...formData, date })}
                   />
                 </FormField>
 
@@ -372,6 +411,19 @@ export default function AdminMaterialsPage() {
               </div>
             </div>
           </FormModal>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={confirmDialog.isOpen}
+            onClose={confirmDialog.handleCancel}
+            onConfirm={confirmDialog.handleConfirm}
+            title={confirmDialog.options.title}
+            message={confirmDialog.options.message}
+            confirmText={confirmDialog.options.confirmText}
+            cancelText={confirmDialog.options.cancelText}
+            variant={confirmDialog.options.variant}
+            loading={confirmDialog.loading}
+          />
         </div>
       </div>
     </div>

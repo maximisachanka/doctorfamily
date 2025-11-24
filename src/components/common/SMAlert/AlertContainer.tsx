@@ -39,7 +39,7 @@ export function AlertContainer({
 
   const container = (
     <div
-      className={`fixed z-50 flex flex-col gap-3 max-h-screen overflow-hidden pointer-events-none ${positionClasses[position]}`}
+      className={`fixed z-[9999] flex flex-col gap-3 max-h-screen overflow-hidden pointer-events-none ${positionClasses[position]}`}
       style={{ maxWidth: 'calc(100vw - 2rem)' }}
     >
       <AnimatePresence mode="popLayout">

@@ -18,7 +18,7 @@ async function checkAdmin(request: NextRequest) {
     select: { role: true },
   });
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user || (user.role !== "ADMIN" && user.role !== "CHIEF_DOCTOR")) {
     return { isAdmin: false, error: "Нет прав доступа" };
   }
 
@@ -45,10 +45,10 @@ export async function PUT(
       data: {
         name: data.name,
         description: data.description,
-        image_url: data.image_url,
-        website_url: data.website_url,
-        number: parseInt(data.number),
-        category_id: parseInt(data.category_id),
+        image_url: data.image_url || '',
+        website_url: data.website_url || '',
+        number: parseInt(data.number) || 1,
+        // category_id не меняем - оставляем существующую
       },
       include: {
         category: true,

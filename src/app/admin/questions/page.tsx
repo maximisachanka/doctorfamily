@@ -20,6 +20,10 @@ import {
 import NotFound from '../../not-found';
 import { AdminAuthForm } from '@/components/SMAdmin/SMAdminAuthForm';
 import { useAdminSession } from '@/hooks/useAdminSession';
+import { AdminAccessSkeleton, AdminQuestionsGridSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
+import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useAlert } from '@/components/common/SMAlert';
 
 interface Question {
   id: number;
@@ -38,10 +42,32 @@ interface Service {
   title: string;
 }
 
+// Захардкоженные категории FAQ (соответствуют категориям на странице Клиники)
+const FAQ_CATEGORIES: Record<string, string> = {
+  'children-teeth': 'Детские зубы',
+  'girls-hygiene': 'Гигиена девочек',
+  'boys-hygiene': 'Гигиена мальчиков',
+  'girls-puberty': 'Половое созревание девочек',
+  'culdocentesis': 'Кульдоцентез',
+  'stomatology': 'Стоматология',
+  'polyp-removal': 'Удаления полипов | Полипэктомия',
+  'ultrasound': 'УЗИ',
+  'womens-health': 'Женское здоровье',
+  'curettage': 'Раздельное диагностическое выскабливание',
+};
+
+// Функция для получения русского названия категории
+const getCategoryLabel = (category: string | null): string => {
+  if (!category) return '';
+  return FAQ_CATEGORIES[category] || category;
+};
+
 export default function AdminQuestionsPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const confirmDialog = useConfirmDialog();
+  const { success, error: showError } = useAlert();
 
   // Data states
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -122,7 +148,7 @@ export default function AdminQuestionsPage() {
       (q) =>
         q.question.toLowerCase().includes(query) ||
         q.answer?.toLowerCase().includes(query) ||
-        q.category?.toLowerCase().includes(query)
+        getCategoryLabel(q.category).toLowerCase().includes(query)
     );
   }, [questions, searchQuery]);
 
@@ -172,19 +198,28 @@ export default function AdminQuestionsPage() {
       if (res.ok) {
         await loadData();
         resetForm();
+        success(editingQuestion ? 'Вопрос обновлен' : 'Вопрос создан');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка сохранения');
+        showError(error.error || 'Ошибка сохранения');
       }
     } catch (error) {
-      alert('Ошибка сохранения');
+      showError('Ошибка сохранения');
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Вы уверены, что хотите удалить вопрос?')) return;
+  const handleDelete = async (id: number, questionText: string) => {
+    const confirmed = await confirmDialog.confirm({
+      title: 'Удаление вопроса',
+      message: `Вы уверены, что хотите удалить вопрос "${questionText.substring(0, 50)}${questionText.length > 50 ? '...' : ''}"? Это действие нельзя отменить.`,
+      confirmText: 'Удалить',
+      cancelText: 'Отмена',
+      variant: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/questions/${id}`, {
@@ -193,25 +228,19 @@ export default function AdminQuestionsPage() {
 
       if (res.ok) {
         await loadData();
+        success('Вопрос удален');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка удаления');
+        showError(error.error || 'Ошибка удаления');
       }
     } catch (error) {
-      alert('Ошибка удаления');
+      showError('Ошибка удаления');
     }
   };
 
   // Loading state
   if (status === 'loading' || hasAdminRole === null || sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mx-auto mb-4" />
-          <p className="text-gray-500">Проверка доступа...</p>
-        </div>
-      </div>
-    );
+    return <AdminAccessSkeleton />;
   }
 
   // Not admin - show 404
@@ -239,6 +268,7 @@ export default function AdminQuestionsPage() {
             onSearchChange={setSearchQuery}
             onAdd={handleAdd}
             addButtonText="Добавить вопрос"
+            loadingSkeleton={<AdminQuestionsGridSkeleton count={12} />}
           >
             {filteredQuestions.length === 0 ? (
               <EmptyState
@@ -266,7 +296,7 @@ export default function AdminQuestionsPage() {
                           {/* Tags */}
                           <div className="flex items-center gap-2 flex-wrap">
                             {question.category && (
-                              <Badge variant="primary">{question.category}</Badge>
+                              <Badge variant="primary">{getCategoryLabel(question.category)}</Badge>
                             )}
                             {question.service && (
                               <Badge variant="secondary">{question.service.title}</Badge>
@@ -279,7 +309,7 @@ export default function AdminQuestionsPage() {
 
                         <CardActions
                           onEdit={() => handleEdit(question)}
-                          onDelete={() => handleDelete(question.id)}
+                          onDelete={() => handleDelete(question.id, question.question)}
                         />
                       </div>
                     </ItemCard>
@@ -317,13 +347,18 @@ export default function AdminQuestionsPage() {
                 />
               </FormField>
 
-              <FormField label="Категория (для общих FAQ)">
-                <FormInput
-                  type="text"
+              <FormField label="Категория FAQ (для страницы Клиника)">
+                <FormSelect
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  placeholder="stomatology, ultrasound и т.д."
-                />
+                >
+                  <option value="">Не выбрано</option>
+                  {Object.entries(FAQ_CATEGORIES).map(([slug, name]) => (
+                    <option key={slug} value={slug}>
+                      {name}
+                    </option>
+                  ))}
+                </FormSelect>
               </FormField>
 
               <FormField label="Привязка к услуге (опционально)">
@@ -341,6 +376,19 @@ export default function AdminQuestionsPage() {
               </FormField>
             </div>
           </FormModal>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={confirmDialog.isOpen}
+            onClose={confirmDialog.handleCancel}
+            onConfirm={confirmDialog.handleConfirm}
+            title={confirmDialog.options.title}
+            message={confirmDialog.options.message}
+            confirmText={confirmDialog.options.confirmText}
+            cancelText={confirmDialog.options.cancelText}
+            variant={confirmDialog.options.variant}
+            loading={confirmDialog.loading}
+          />
         </div>
       </div>
     </div>

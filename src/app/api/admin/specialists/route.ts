@@ -19,7 +19,7 @@ async function checkAdmin(request: NextRequest) {
     select: { role: true },
   });
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user || (user.role !== "ADMIN" && user.role !== "CHIEF_DOCTOR")) {
     return { isAdmin: false, error: "Нет прав доступа" };
   }
 
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
         image_url: data.image_url || "/images/default-doctor.jpg",
         activity_area: data.activity_area || null,
         education_details: data.education_details || null,
-        conferences: data.conferences || null,
+        conferences: data.conferences || [],
         specializations: data.specializations || [],
         education: data.education || [],
         work_examples: data.work_examples || null,

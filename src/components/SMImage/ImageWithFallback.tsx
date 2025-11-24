@@ -14,13 +14,16 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
 
   const { src, alt, style, className, ...rest } = props
 
-  return didError ? (
+  // Показываем fallback если src пустой или произошла ошибка
+  const showFallback = didError || !src
+
+  return showFallback ? (
     <div
       className={`inline-block bg-gray-100 text-center align-middle ${className ?? ''}`}
       style={style}
     >
       <div className="flex items-center justify-center w-full h-full">
-        <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} />
+        <img src={ERROR_IMG_SRC} alt={alt || "Нет фото"} {...rest} data-original-url={src} />
       </div>
     </div>
   ) : (

@@ -3,7 +3,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
-import { Handshake, Loader2, Globe, Hash } from 'lucide-react';
+import { Handshake, Globe, Hash } from 'lucide-react';
+import { Pagination } from '@/components/common/SMPagination/SMPagination';
+import { ImageUploader } from '@/components/ImageUploader';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
 import {
   AdminSection,
@@ -14,12 +16,15 @@ import {
   FormField,
   FormInput,
   FormTextarea,
-  FormSelect,
   Badge,
 } from '@/components/SMAdmin/SMAdminSection';
 import NotFound from '../../not-found';
 import { AdminAuthForm } from '@/components/SMAdmin/SMAdminAuthForm';
 import { useAdminSession } from '@/hooks/useAdminSession';
+import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
+import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useAlert } from '@/components/common/SMAlert';
 
 interface Partner {
   id: number;
@@ -36,22 +41,19 @@ interface Partner {
   };
 }
 
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
-
 export default function AdminPartnersPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const confirmDialog = useConfirmDialog();
+  const { success, error: showError } = useAlert();
 
   // Data states
   const [partners, setPartners] = useState<Partner[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,7 +65,6 @@ export default function AdminPartnersPage() {
     image_url: '',
     website_url: '',
     number: '1',
-    category_id: '',
   });
 
   // Check admin role
@@ -99,19 +100,10 @@ export default function AdminPartnersPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [partnersRes, categoriesRes] = await Promise.all([
-        fetch('/api/admin/partners'),
-        fetch('/api/categories'),
-      ]);
-
-      if (partnersRes.ok) {
-        const data = await partnersRes.json();
+      const res = await fetch('/api/admin/partners');
+      if (res.ok) {
+        const data = await res.json();
         setPartners(data);
-      }
-
-      if (categoriesRes.ok) {
-        const data = await categoriesRes.json();
-        setCategories(data);
       }
     } catch (error) {
       console.error('Error loading data:', error);
@@ -127,10 +119,21 @@ export default function AdminPartnersPage() {
     return partners.filter(
       (p) =>
         p.name.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query) ||
-        p.category.name.toLowerCase().includes(query)
+        p.description.toLowerCase().includes(query)
     );
   }, [partners, searchQuery]);
+
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredPartners.length / ITEMS_PER_PAGE);
+  const paginatedPartners = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredPartners.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredPartners, currentPage]);
 
   // Form handlers
   const resetForm = () => {
@@ -140,7 +143,6 @@ export default function AdminPartnersPage() {
       image_url: '',
       website_url: '',
       number: '1',
-      category_id: '',
     });
     setEditingPartner(null);
     setIsModalOpen(false);
@@ -159,7 +161,6 @@ export default function AdminPartnersPage() {
       image_url: partner.image_url,
       website_url: partner.website_url,
       number: partner.number.toString(),
-      category_id: partner.category_id.toString(),
     });
     setIsModalOpen(true);
   };
@@ -182,19 +183,28 @@ export default function AdminPartnersPage() {
       if (res.ok) {
         await loadData();
         resetForm();
+        success(editingPartner ? 'Партнёр обновлен' : 'Партнёр создан');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка сохранения');
+        showError(error.error || 'Ошибка сохранения');
       }
     } catch (error) {
-      alert('Ошибка сохранения');
+      showError('Ошибка сохранения');
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Вы уверены, что хотите удалить партнёра?')) return;
+  const handleDelete = async (id: number, partnerName: string) => {
+    const confirmed = await confirmDialog.confirm({
+      title: 'Удаление партнёра',
+      message: `Вы уверены, что хотите удалить партнёра "${partnerName}"? Это действие нельзя отменить.`,
+      confirmText: 'Удалить',
+      cancelText: 'Отмена',
+      variant: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/partners/${id}`, {
@@ -203,25 +213,19 @@ export default function AdminPartnersPage() {
 
       if (res.ok) {
         await loadData();
+        success('Партнёр удален');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка удаления');
+        showError(error.error || 'Ошибка удаления');
       }
     } catch (error) {
-      alert('Ошибка удаления');
+      showError('Ошибка удаления');
     }
   };
 
   // Loading state
   if (status === 'loading' || hasAdminRole === null || sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mx-auto mb-4" />
-          <p className="text-gray-500">Проверка доступа...</p>
-        </div>
-      </div>
-    );
+    return <AdminAccessSkeleton />;
   }
 
   // Not admin - show 404
@@ -259,18 +263,25 @@ export default function AdminPartnersPage() {
                 onAction={!searchQuery ? handleAdd : undefined}
               />
             ) : (
+              <>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 <AnimatePresence>
-                  {filteredPartners.map((partner) => (
+                  {paginatedPartners.map((partner) => (
                     <ItemCard key={partner.id}>
                       <div className="flex gap-4">
                         {/* Logo */}
-                        <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100 flex items-center justify-center p-2">
-                          <img
-                            src={partner.image_url}
-                            alt={partner.name}
-                            className="w-full h-full object-contain"
-                          />
+                        <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
+                          {partner.image_url ? (
+                            <img
+                              src={partner.image_url}
+                              alt={partner.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400">
+                              <Handshake className="w-8 h-8" />
+                            </div>
+                          )}
                         </div>
 
                         {/* Info */}
@@ -282,7 +293,6 @@ export default function AdminPartnersPage() {
 
                       {/* Tags */}
                       <div className="flex items-center gap-2 mt-3">
-                        <Badge variant="primary">{partner.category.name}</Badge>
                         <Badge variant="secondary">
                           <Hash className="w-3 h-3 mr-1" />
                           {partner.number}
@@ -303,13 +313,24 @@ export default function AdminPartnersPage() {
                         </a>
                         <CardActions
                           onEdit={() => handleEdit(partner)}
-                          onDelete={() => handleDelete(partner.id)}
+                          onDelete={() => handleDelete(partner.id, partner.name)}
                         />
                       </div>
                     </ItemCard>
                   ))}
                 </AnimatePresence>
               </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  className="mt-6"
+                />
+              )}
+              </>
             )}
           </AdminSection>
 
@@ -320,7 +341,7 @@ export default function AdminPartnersPage() {
             title={editingPartner ? 'Редактирование партнёра' : 'Новый партнёр'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.name || !formData.description || !formData.category_id}
+            disabled={!formData.name || !formData.description}
           >
             <div className="space-y-6">
               <FormField label="Название" required>
@@ -341,26 +362,13 @@ export default function AdminPartnersPage() {
                 />
               </FormField>
 
-              <FormField label="Категория" required>
-                <FormSelect
-                  value={formData.category_id}
-                  onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                >
-                  <option value="">Выберите категорию</option>
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </FormSelect>
-              </FormField>
-
-              <FormField label="URL логотипа" required>
-                <FormInput
-                  type="text"
+              <FormField label="Логотип компании" required>
+                <ImageUploader
                   value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="/images/partners/logo.png"
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="smartmedical/partners"
+                  placeholder="Загрузите логотип партнёра"
+                  maxSizeMB={5}
                 />
               </FormField>
 
@@ -383,6 +391,19 @@ export default function AdminPartnersPage() {
               </FormField>
             </div>
           </FormModal>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={confirmDialog.isOpen}
+            onClose={confirmDialog.handleCancel}
+            onConfirm={confirmDialog.handleConfirm}
+            title={confirmDialog.options.title}
+            message={confirmDialog.options.message}
+            confirmText={confirmDialog.options.confirmText}
+            cancelText={confirmDialog.options.cancelText}
+            variant={confirmDialog.options.variant}
+            loading={confirmDialog.loading}
+          />
         </div>
       </div>
     </div>

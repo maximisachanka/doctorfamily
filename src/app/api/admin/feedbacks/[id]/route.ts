@@ -18,7 +18,7 @@ async function checkAdmin(request: NextRequest) {
     select: { role: true },
   });
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user || (user.role !== "ADMIN" && user.role !== "CHIEF_DOCTOR")) {
     return { isAdmin: false, error: "Нет прав доступа" };
   }
 
@@ -40,17 +40,22 @@ export async function PUT(
     const feedbackId = parseInt(id);
     const data = await request.json();
 
+    // Формируем объект обновления только с переданными полями
+    const updateData: Record<string, unknown> = {};
+
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.text !== undefined) updateData.text = data.text;
+    if (data.date !== undefined) updateData.date = new Date(data.date);
+    if (data.grade !== undefined) updateData.grade = parseInt(data.grade);
+    if (data.image_url !== undefined) updateData.image_url = data.image_url;
+    if (data.verified !== undefined) updateData.verified = data.verified;
+    if (data.service_id !== undefined) {
+      updateData.service_id = data.service_id ? parseInt(data.service_id) : null;
+    }
+
     const feedback = await prisma.feedback.update({
       where: { id: feedbackId },
-      data: {
-        name: data.name,
-        text: data.text,
-        date: new Date(data.date),
-        grade: parseInt(data.grade),
-        image_url: data.image_url,
-        verified: data.verified ?? false,
-        service_id: data.service_id ? parseInt(data.service_id) : null,
-      },
+      data: updateData,
       include: {
         service: {
           select: { id: true, title: true },

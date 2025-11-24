@@ -71,15 +71,15 @@ const alertConfig = {
   info: {
     icon: Info,
     colors: {
-      bg: 'bg-gradient-to-br from-blue-500 via-cyan-500 to-indigo-600',
+      bg: 'bg-gradient-to-br from-emerald-500 via-teal-500 to-green-600',
       iconBg: 'bg-white/20 backdrop-blur-sm',
       iconColor: 'text-white',
       titleColor: 'text-white',
-      messageColor: 'text-blue-50',
+      messageColor: 'text-emerald-50',
       progressBg: 'bg-white/20',
       progressFill: 'bg-white',
-      glow: 'shadow-[0_0_30px_rgba(59,130,246,0.6)]',
-      particles: 'from-blue-300 to-cyan-300',
+      glow: 'shadow-[0_0_30px_rgba(16,185,129,0.6)]',
+      particles: 'from-emerald-300 to-teal-300',
     },
   },
 };
@@ -206,7 +206,7 @@ export function SMAlert({
       />
 
       {/* Content */}
-      <div className="relative p-5 flex gap-4">
+      <div className="relative p-5 flex gap-4 items-center">
         {/* Icon with animation and glow */}
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
@@ -248,7 +248,7 @@ export function SMAlert({
         </motion.div>
 
         {/* Text content */}
-        <div className="flex-1 pt-1">
+        <div className="flex-1">
           {title && (
             <motion.h4
               initial={{ opacity: 0, y: -5 }}
@@ -281,7 +281,7 @@ export function SMAlert({
           <motion.button
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             transition={{ delay: 0.3 }}
             onClick={onClose}

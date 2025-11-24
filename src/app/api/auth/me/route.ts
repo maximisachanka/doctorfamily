@@ -30,6 +30,7 @@ export async function GET(request: NextRequest) {
         registration_date: true,
         avatar_url: true,
         role: true,
+        is_messages_blocked: true,
       },
     });
 

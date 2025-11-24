@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (!user || user.role !== "ADMIN") {
+    if (!user || (user.role !== "ADMIN" && user.role !== "CHIEF_DOCTOR")) {
       return NextResponse.json(
         { error: "Нет прав доступа" },
         { status: 403 }
@@ -95,7 +95,8 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      isAdmin: user.role === "ADMIN",
+      isAdmin: user.role === "ADMIN" || user.role === "CHIEF_DOCTOR",
+      isChiefDoctor: user.role === "CHIEF_DOCTOR",
       role: user.role
     });
   } catch (error) {

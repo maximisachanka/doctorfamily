@@ -33,8 +33,8 @@ export function Header() {
   const pathname = usePathname();
   const { contacts, loading: contactsLoading } = useContacts();
   const alert = useAlert();
-  
 
+  // Все useEffect хуки должны быть ДО любых условных return
   useEffect(() => {
     if (isBurgerMenuOpen) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -63,6 +63,11 @@ export function Header() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Не показываем хедер на страницах админки (после всех хуков!)
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   const handleNavigation = (path: string) => {
     router.push(path);

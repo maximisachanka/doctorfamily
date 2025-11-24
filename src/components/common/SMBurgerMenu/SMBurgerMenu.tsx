@@ -1,7 +1,6 @@
 "use client";
 
 import SMBurgerMenuLogo from "@/icons/SMBurgerMenuLogo";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../SMButton/SMButton";
 import { useRouter } from "next/navigation";
@@ -11,11 +10,12 @@ import navigationConfig from "@/config/navigation.json";
 import contactsConfig from "@/config/contacts.json";
 import { iconMap, IconName } from "@/utils/iconMapper";
 import { useContacts } from "@/hooks/useContacts";
+import { useSession } from "next-auth/react";
 
 const SMBurgerMenu = () => {
   const { isBurgerMenuOpen, setIsBurgerMenuOpen } = useMenu();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isAuthenticated] = useState(false);
+  const { data: session } = useSession();
+  const isAuthenticated = !!session?.user;
   const router = useRouter();
   const { contacts } = useContacts();
 
@@ -33,7 +33,7 @@ const SMBurgerMenu = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden"
             onClick={() => setIsBurgerMenuOpen(false)}
           />
 
@@ -47,7 +47,7 @@ const SMBurgerMenu = () => {
               stiffness: 200,
               duration: 0.4,
             }}
-            className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 lg:hidden overflow-y-auto"
+            className="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-[70] lg:hidden overflow-y-auto"
           >
             {/* Header */}
             <div className="bg-[#18A36C] p-6 text-white">
@@ -123,14 +123,11 @@ const SMBurgerMenu = () => {
                       onClick={() => handleNavigation("/account")}
                       className="text-sm hover:text-[#18A36C]/80 transition-colors"
                     >
-                      Личный кабинет
+                      Мой кабинет
                     </button>
                   ) : (
                     <button
-                      onClick={() => {
-                        setIsAuthModalOpen(true);
-                        setIsBurgerMenuOpen(false);
-                      }}
+                      onClick={() => handleNavigation("/account")}
                       className="text-sm hover:text-[#18A36C]/80 transition-colors"
                     >
                       Войти

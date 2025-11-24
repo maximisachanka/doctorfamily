@@ -8,10 +8,10 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
 
-    // Получаем только общие отзывы клиники (service_id = null)
+    // Получаем отзывы для общей страницы клиники (verified = true)
     const reviews = await prisma.feedback.findMany({
       where: {
-        service_id: null
+        verified: true
       },
       orderBy: {
         date: 'desc'
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     // Получаем общее количество отзывов
     const total = await prisma.feedback.count({
       where: {
-        service_id: null
+        verified: true
       }
     });
 

@@ -5,6 +5,10 @@ import { MenuProvider } from "@/components/SMMenuContext/SMMenuContext";
 import { Router } from "@/components/SMRouter/SMRouter";
 import { Footer } from "@/components/Footer/Footer";
 import { Providers } from "./providers";
+import { AIAssistant } from "@/components/AIAssistant/AIAssistant";
+import { CookieConsent } from "@/components/common/CookieConsent";
+import { LetterNotifications } from "@/components/LetterNotifications/LetterNotifications";
+import { Onboarding } from "@/components/Onboarding";
 
 export const metadata: Metadata = {
   title: "Медицинский центр Doctor Family",
@@ -25,6 +29,10 @@ export default function RootLayout({
               <Header />
               <main>{children}</main>
               <Footer />
+              <AIAssistant />
+              <CookieConsent />
+              <LetterNotifications />
+              <Onboarding />
             </Router>
           </MenuProvider>
         </Providers>

@@ -9,12 +9,19 @@ export interface ServiceData {
   fullDescription: string;
   faq: Array<{ question: string; answer: string }>;
   gallery: string[];
-  doctors: Array<{
-    id: string;
+  specialists: Array<{
+    id: number;
     name: string;
-    position: string;
-    experience: string;
-    image: string;
+    specialization: string;
+    qualification: string;
+    experience: number;
+    grade: number;
+    image_url: string;
+    category?: {
+      id: number;
+      name: string;
+      slug: string;
+    };
   }>;
   reviews: Array<{
     id: string;
@@ -22,6 +29,7 @@ export interface ServiceData {
     rating: number;
     text: string;
     date: string;
+    image_url?: string;
   }>;
 }
 
@@ -120,7 +128,7 @@ export function getServiceData(serviceId: string, categoryId: string): ServiceDa
     fullDescription: getServiceDescription(categoryId, serviceId),
     faq: getServiceFaq(categoryId, serviceId),
     gallery: getServiceGallery(categoryId, serviceId),
-    doctors: getServiceDoctors(categoryId, serviceId),
+    specialists: [], // Fallback данные не должны показывать специалистов, так как привязка идет через БД
     reviews: getServiceReviews(categoryId, serviceId)
   };
 
@@ -235,50 +243,60 @@ function getServiceGallery(categoryId: string, serviceId: string): string[] {
   return galleries[categoryId] || galleries['dentistry'];
 }
 
-function getServiceDoctors(categoryId: string, serviceId: string) {
-  const doctors: Record<string, Array<any>> = {
+function getServiceSpecialists(categoryId: string, serviceId: string) {
+  const specialists: Record<string, Array<any>> = {
     'pediatric-dentistry': [
       {
-        id: '1',
+        id: 1,
         name: 'Анна Петрова',
-        position: 'Детский стоматолог',
-        experience: '8 лет',
-        image: 'https://images.unsplash.com/photo-1685022036259-04cf91a89af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
+        specialization: 'Детский стоматолог',
+        qualification: 'Врач высшей категории',
+        experience: 8,
+        grade: 5,
+        image_url: 'https://images.unsplash.com/photo-1685022036259-04cf91a89af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
       },
       {
-        id: '2', 
+        id: 2,
         name: 'Михаил Козлов',
-        position: 'Детский хирург-стоматолог',
-        experience: '12 лет',
-        image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
+        specialization: 'Детский хирург-стоматолог',
+        qualification: 'Врач высшей категории',
+        experience: 12,
+        grade: 5,
+        image_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
       },
       {
-        id: '3',
-        name: 'Екатерина Смирнова', 
-        position: 'Детский ортодонт',
-        experience: '6 лет',
-        image: 'https://images.unsplash.com/photo-1685022036259-04cf91a89af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
+        id: 3,
+        name: 'Екатерина Смирнова',
+        specialization: 'Детский ортодонт',
+        qualification: 'Врач первой категории',
+        experience: 6,
+        grade: 5,
+        image_url: 'https://images.unsplash.com/photo-1685022036259-04cf91a89af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
       }
     ],
     'dentistry': [
       {
-        id: '4',
+        id: 4,
         name: 'Дмитрий Волков',
-        position: 'Стоматолог-терапевт',
-        experience: '10 лет',
-        image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
+        specialization: 'Стоматолог-терапевт',
+        qualification: 'Врач высшей категории',
+        experience: 10,
+        grade: 5,
+        image_url: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
       },
       {
-        id: '5',
+        id: 5,
         name: 'Ольга Морозова',
-        position: 'Стоматолог-хирург',
-        experience: '15 лет',
-        image: 'https://images.unsplash.com/photo-1685022036259-04cf91a89af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
+        specialization: 'Стоматолог-хирург',
+        qualification: 'Врач высшей категории',
+        experience: 15,
+        grade: 5,
+        image_url: 'https://images.unsplash.com/photo-1685022036259-04cf91a89af1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200'
       }
     ]
   };
-  
-  return doctors[categoryId] || doctors['dentistry'];
+
+  return specialists[categoryId] || specialists['dentistry'];
 }
 
 function getServiceReviews(categoryId: string, serviceId: string) {

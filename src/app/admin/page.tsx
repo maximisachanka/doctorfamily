@@ -4,6 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { Users, Loader2 } from 'lucide-react';
+import { Pagination } from '@/components/common/SMPagination/SMPagination';
+import { ImageUploader } from '@/components/ImageUploader';
 import { ImageWithFallback } from '@/components/SMImage/ImageWithFallback';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
 import {
@@ -20,6 +22,10 @@ import {
 } from '@/components/SMAdmin/SMAdminSection';
 import { AdminAuthForm } from '@/components/SMAdmin/SMAdminAuthForm';
 import { useAdminSession } from '@/hooks/useAdminSession';
+import { AdminAccessSkeleton, AdminSectionSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
+import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useAlert } from '@/components/common/SMAlert';
 import NotFound from '../not-found';
 
 // Types
@@ -33,7 +39,7 @@ interface Specialist {
   image_url: string;
   activity_area: string | null;
   education_details: string | null;
-  conferences: string | null;
+  conferences: string[];
   specializations: string[];
   education: string[];
   work_examples: Array<{ title: string; images: string[] }> | null;
@@ -55,12 +61,16 @@ export default function AdminPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const confirmDialog = useConfirmDialog();
+  const { success, error: showError } = useAlert();
 
   // Data states
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 12;
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -147,6 +157,18 @@ export default function AdminPage() {
     );
   }, [specialists, searchQuery]);
 
+  // Reset page when search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredSpecialists.length / ITEMS_PER_PAGE);
+  const paginatedSpecialists = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredSpecialists.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredSpecialists, currentPage]);
+
   // Form handlers
   const resetForm = () => {
     setFormData({
@@ -183,7 +205,7 @@ export default function AdminPage() {
       image_url: specialist.image_url,
       activity_area: specialist.activity_area || '',
       education_details: specialist.education_details || '',
-      conferences: specialist.conferences || '',
+      conferences: specialist.conferences.join('\n'),
       specializations: specialist.specializations.join('\n'),
       education: specialist.education.join('\n'),
       category_id: specialist.category_id.toString(),
@@ -198,6 +220,7 @@ export default function AdminPage() {
         ...formData,
         specializations: formData.specializations.split('\n').filter((s) => s.trim()),
         education: formData.education.split('\n').filter((e) => e.trim()),
+        conferences: formData.conferences.split('\n').filter((c) => c.trim()),
       };
 
       const url = editingSpecialist
@@ -215,19 +238,28 @@ export default function AdminPage() {
       if (res.ok) {
         await loadData();
         resetForm();
+        success(editingSpecialist ? 'Специалист обновлен' : 'Специалист создан');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка сохранения');
+        showError(error.error || 'Ошибка сохранения');
       }
     } catch (error) {
-      alert('Ошибка сохранения');
+      showError('Ошибка сохранения');
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Вы уверены, что хотите удалить специалиста?')) return;
+  const handleDelete = async (id: number, specialistName: string) => {
+    const confirmed = await confirmDialog.confirm({
+      title: 'Удаление специалиста',
+      message: `Вы уверены, что хотите удалить специалиста "${specialistName}"? Это действие нельзя отменить.`,
+      confirmText: 'Удалить',
+      cancelText: 'Отмена',
+      variant: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/specialists/${id}`, {
@@ -236,25 +268,19 @@ export default function AdminPage() {
 
       if (res.ok) {
         await loadData();
+        success('Специалист удален');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка удаления');
+        showError(error.error || 'Ошибка удаления');
       }
     } catch (error) {
-      alert('Ошибка удаления');
+      showError('Ошибка удаления');
     }
   };
 
   // Loading state
   if (status === 'loading' || hasAdminRole === null || sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mx-auto mb-4" />
-          <p className="text-gray-500">Проверка доступа...</p>
-        </div>
-      </div>
-    );
+    return <AdminAccessSkeleton />;
   }
 
   // Not admin - show 404
@@ -293,43 +319,55 @@ export default function AdminPage() {
                 onAction={!searchQuery ? handleAdd : undefined}
               />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                <AnimatePresence>
-                  {filteredSpecialists.map((specialist) => (
-                    <ItemCard key={specialist.id}>
-                      <div className="flex gap-4">
-                        {/* Photo */}
-                        <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
-                          <ImageWithFallback
-                            src={specialist.image_url}
-                            alt={specialist.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <AnimatePresence>
+                    {paginatedSpecialists.map((specialist) => (
+                      <ItemCard key={specialist.id}>
+                        <div className="flex gap-4">
+                          {/* Photo */}
+                          <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
+                            <ImageWithFallback
+                              src={specialist.image_url}
+                              alt={specialist.name}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
 
-                        {/* Info */}
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-gray-800 truncate">{specialist.name}</h3>
-                          <p className="text-sm text-gray-500 truncate">{specialist.specialization}</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <Badge variant="primary">{specialist.category.name}</Badge>
-                            <Badge variant="secondary">{specialist.experience} лет</Badge>
+                          {/* Info */}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-800 truncate">{specialist.name}</h3>
+                            <p className="text-sm text-gray-500 truncate">{specialist.specialization}</p>
+                            <div className="flex items-center gap-2 mt-2">
+                              <Badge variant="primary">{specialist.category.name}</Badge>
+                              <Badge variant="secondary">{specialist.experience} лет</Badge>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Actions */}
-                      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                        <span className="text-xs text-gray-400">{specialist.qualification}</span>
-                        <CardActions
-                          onEdit={() => handleEdit(specialist)}
-                          onDelete={() => handleDelete(specialist.id)}
-                        />
-                      </div>
-                    </ItemCard>
-                  ))}
-                </AnimatePresence>
-              </div>
+                        {/* Actions */}
+                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                          <span className="text-xs text-gray-400">{specialist.qualification}</span>
+                          <CardActions
+                            onEdit={() => handleEdit(specialist)}
+                            onDelete={() => handleDelete(specialist.id, specialist.name)}
+                          />
+                        </div>
+                      </ItemCard>
+                    ))}
+                  </AnimatePresence>
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    className="mt-6"
+                  />
+                )}
+              </>
             )}
           </AdminSection>
 
@@ -404,12 +442,13 @@ export default function AdminPage() {
               </FormField>
 
               <div className="md:col-span-2">
-                <FormField label="URL фото">
-                  <FormInput
-                    type="text"
+                <FormField label="Фото специалиста">
+                  <ImageUploader
                     value={formData.image_url}
-                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    placeholder="/images/doctors/specialist.jpg"
+                    onChange={(url) => setFormData({ ...formData, image_url: url })}
+                    folder="smartmedical/specialists"
+                    placeholder="Загрузите фото специалиста"
+                    maxSizeMB={10}
                   />
                 </FormField>
               </div>
@@ -437,17 +476,30 @@ export default function AdminPage() {
               </div>
 
               <div className="md:col-span-2">
-                <FormField label="Конференции">
+                <FormField label="Конференции (каждая с новой строки)">
                   <FormTextarea
                     value={formData.conferences}
                     onChange={(e) => setFormData({ ...formData, conferences: e.target.value })}
-                    rows={2}
-                    placeholder="Участник международных конференций..."
+                    rows={3}
+                    placeholder="Международная конференция стоматологов 2023&#10;DentalTech Summit 2024&#10;European Dental Congress 2024"
                   />
                 </FormField>
               </div>
             </div>
           </FormModal>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={confirmDialog.isOpen}
+            onClose={confirmDialog.handleCancel}
+            onConfirm={confirmDialog.handleConfirm}
+            title={confirmDialog.options.title}
+            message={confirmDialog.options.message}
+            confirmText={confirmDialog.options.confirmText}
+            cancelText={confirmDialog.options.cancelText}
+            variant={confirmDialog.options.variant}
+            loading={confirmDialog.loading}
+          />
         </div>
       </div>
     </div>

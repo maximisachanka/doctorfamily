@@ -7,7 +7,6 @@ export interface ServiceFromDB {
   price: number;
   video_url: string;
   description: string;
-  specialists_id: number;
   image_url: string;
   image_url_1: string;
   image_url_2: string;
@@ -21,7 +20,7 @@ export interface ServiceFromDB {
     name: string;
     slug: string;
   };
-  specialist: {
+  specialists: Array<{
     id: number;
     name: string;
     specialization: string;
@@ -34,7 +33,7 @@ export interface ServiceFromDB {
       name: string;
       slug: string;
     };
-  };
+  }>;
   questions: Array<{
     id: number;
     question: string;
@@ -77,33 +76,35 @@ export function mapServiceFromDBToServiceData(service: ServiceFromDB): ServiceDa
 
   // Форматируем отзывы
   const reviews = service.feedbacks.map((feedback) => {
-    const date = typeof feedback.date === 'string' 
-      ? new Date(feedback.date) 
+    const date = typeof feedback.date === 'string'
+      ? new Date(feedback.date)
       : feedback.date;
-    
+
     return {
       id: feedback.id.toString(),
       name: feedback.name,
       rating: feedback.grade,
       text: feedback.text,
+      image_url: feedback.image_url,
       date: date.toLocaleDateString('ru-RU', {
-        day: '2-digit',
-        month: '2-digit',
+        day: 'numeric',
+        month: 'long',
         year: 'numeric',
       }),
     };
   });
 
-  // Форматируем врачей (специалистов)
-  const doctors = [
-    {
-      id: service.specialist.id.toString(),
-      name: service.specialist.name,
-      position: service.specialist.specialization,
-      experience: `${service.specialist.experience} лет`,
-      image: service.specialist.image_url,
-    },
-  ];
+  // Форматируем врачей (специалистов) - передаем полные данные для использования в SpecialistCard
+  const specialists = service.specialists.map(specialist => ({
+    id: specialist.id,
+    name: specialist.name,
+    specialization: specialist.specialization,
+    qualification: specialist.qualification,
+    experience: specialist.experience,
+    grade: specialist.grade,
+    image_url: specialist.image_url,
+    category: specialist.category,
+  }));
 
   return {
     title: service.title,
@@ -133,7 +134,7 @@ export function mapServiceFromDBToServiceData(service: ServiceFromDB): ServiceDa
       },
     ],
     gallery: gallery.length > 0 ? gallery : [service.image_url],
-    doctors,
+    specialists,
     reviews: reviews.length > 0 ? reviews : [
       {
         id: '1',

@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
-import { AnimatePresence } from 'framer-motion';
-import { MessageSquare, Loader2, Star, Calendar, CheckCircle } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MessageSquare, Loader2, Star, Calendar, CheckCircle, Clock, Check, Eye, X } from 'lucide-react';
+import { Pagination } from '@/components/common/SMPagination/SMPagination';
+import { ImageUploader } from '@/components/ImageUploader';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
 import {
   AdminSection,
@@ -15,11 +17,16 @@ import {
   FormInput,
   FormTextarea,
   FormSelect,
+  FormDateInput,
   Badge,
 } from '@/components/SMAdmin/SMAdminSection';
 import NotFound from '../../not-found';
 import { AdminAuthForm } from '@/components/SMAdmin/SMAdminAuthForm';
 import { useAdminSession } from '@/hooks/useAdminSession';
+import { AdminAccessSkeleton, AdminFeedbacksGridSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
+import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
+import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { useAlert } from '@/components/common/SMAlert';
 
 interface Feedback {
   id: number;
@@ -45,12 +52,21 @@ export default function AdminFeedbacksPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const confirmDialog = useConfirmDialog();
+  const { success, error: showError } = useAlert();
 
   // Data states
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filterStatus, setFilterStatus] = useState<'pending' | 'approved'>('pending');
+  const [viewingFeedback, setViewingFeedback] = useState<Feedback | null>(null);
+  const [approvingFeedback, setApprovingFeedback] = useState<Feedback | null>(null);
+  const [approveData, setApproveData] = useState({ service_id: '', verified: true });
+  const [approveLoading, setApproveLoading] = useState(false);
+  const ITEMS_PER_PAGE = 12;
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -122,15 +138,45 @@ export default function AdminFeedbacksPage() {
 
   // Filtered feedbacks
   const filteredFeedbacks = useMemo(() => {
-    if (!searchQuery) return feedbacks;
-    const query = searchQuery.toLowerCase();
-    return feedbacks.filter(
-      (f) =>
-        f.name.toLowerCase().includes(query) ||
-        f.text.toLowerCase().includes(query) ||
-        f.service?.title.toLowerCase().includes(query)
-    );
-  }, [feedbacks, searchQuery]);
+    let result = feedbacks;
+
+    // Filter by status
+    if (filterStatus === 'pending') {
+      result = result.filter(f => !f.verified);
+    } else {
+      result = result.filter(f => f.verified);
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (f) =>
+          f.name.toLowerCase().includes(query) ||
+          f.text.toLowerCase().includes(query) ||
+          f.service?.title.toLowerCase().includes(query)
+      );
+    }
+
+    return result;
+  }, [feedbacks, searchQuery, filterStatus]);
+
+  // Count pending reviews
+  const pendingCount = useMemo(() => {
+    return feedbacks.filter(f => !f.verified).length;
+  }, [feedbacks]);
+
+  // Reset page when search or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterStatus]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredFeedbacks.length / ITEMS_PER_PAGE);
+  const paginatedFeedbacks = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredFeedbacks.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredFeedbacks, currentPage]);
 
   // Form handlers
   const resetForm = () => {
@@ -152,6 +198,7 @@ export default function AdminFeedbacksPage() {
     setFormData(prev => ({
       ...prev,
       date: new Date().toISOString().split('T')[0],
+      verified: true, // Отзывы созданные через админку сразу одобрены
     }));
     setIsModalOpen(true);
   };
@@ -188,19 +235,62 @@ export default function AdminFeedbacksPage() {
       if (res.ok) {
         await loadData();
         resetForm();
+        success(editingFeedback ? 'Отзыв обновлен' : 'Отзыв создан');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка сохранения');
+        showError(error.error || 'Ошибка сохранения');
       }
     } catch (error) {
-      alert('Ошибка сохранения');
+      showError('Ошибка сохранения');
     } finally {
       setFormLoading(false);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Вы уверены, что хотите удалить отзыв?')) return;
+  const openApproveModal = (feedback: Feedback) => {
+    setApprovingFeedback(feedback);
+    setApproveData({ service_id: '', verified: true });
+  };
+
+  const handleApproveSubmit = async () => {
+    if (!approvingFeedback) return;
+
+    setApproveLoading(true);
+    try {
+      const res = await fetch(`/api/admin/feedbacks/${approvingFeedback.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          verified: approveData.verified,
+          service_id: approveData.service_id || null,
+        }),
+      });
+
+      if (res.ok) {
+        await loadData();
+        setApprovingFeedback(null);
+        success('Отзыв одобрен');
+      } else {
+        const error = await res.json();
+        showError(error.error || 'Ошибка одобрения');
+      }
+    } catch (error) {
+      showError('Ошибка одобрения');
+    } finally {
+      setApproveLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: number, feedbackAuthor: string) => {
+    const confirmed = await confirmDialog.confirm({
+      title: 'Удаление отзыва',
+      message: `Вы уверены, что хотите удалить отзыв от "${feedbackAuthor}"? Это действие нельзя отменить.`,
+      confirmText: 'Удалить',
+      cancelText: 'Отмена',
+      variant: 'danger',
+    });
+
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/feedbacks/${id}`, {
@@ -209,12 +299,13 @@ export default function AdminFeedbacksPage() {
 
       if (res.ok) {
         await loadData();
+        success('Отзыв удален');
       } else {
         const error = await res.json();
-        alert(error.error || 'Ошибка удаления');
+        showError(error.error || 'Ошибка удаления');
       }
     } catch (error) {
-      alert('Ошибка удаления');
+      showError('Ошибка удаления');
     }
   };
 
@@ -234,14 +325,7 @@ export default function AdminFeedbacksPage() {
 
   // Loading state
   if (status === 'loading' || hasAdminRole === null || sessionLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-[#18A36C] mx-auto mb-4" />
-          <p className="text-gray-500">Проверка доступа...</p>
-        </div>
-      </div>
-    );
+    return <AdminAccessSkeleton />;
   }
 
   // Not admin - show 404
@@ -269,7 +353,40 @@ export default function AdminFeedbacksPage() {
             onSearchChange={setSearchQuery}
             onAdd={handleAdd}
             addButtonText="Добавить отзыв"
+            loadingSkeleton={<AdminFeedbacksGridSkeleton count={ITEMS_PER_PAGE} />}
           >
+            {/* Filter Tabs */}
+            <div className="flex items-center gap-2 mb-6">
+              <button
+                onClick={() => setFilterStatus('pending')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filterStatus === 'pending'
+                    ? 'bg-amber-500 text-white shadow-md'
+                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                  }`}
+              >
+                <Clock className="w-4 h-4" />
+                На модерации
+                {pendingCount > 0 && (
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${filterStatus === 'pending'
+                      ? 'bg-white/20 text-white'
+                      : 'bg-amber-100 text-amber-700'
+                    }`}>
+                    {pendingCount}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setFilterStatus('approved')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filterStatus === 'approved'
+                    ? 'bg-[#18A36C] text-white shadow-md'
+                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                  }`}
+              >
+                <CheckCircle className="w-4 h-4" />
+                Одобренные
+              </button>
+            </div>
+
             {filteredFeedbacks.length === 0 ? (
               <EmptyState
                 icon={MessageSquare}
@@ -279,65 +396,132 @@ export default function AdminFeedbacksPage() {
                 onAction={!searchQuery ? handleAdd : undefined}
               />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <AnimatePresence>
-                  {filteredFeedbacks.map((feedback) => (
-                    <ItemCard key={feedback.id}>
-                      <div className="flex gap-4">
-                        {/* Avatar */}
-                        <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-gray-100">
-                          <img
-                            src={feedback.image_url}
-                            alt={feedback.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <AnimatePresence>
+                    {paginatedFeedbacks.map((feedback) => {
+                      // Генерация инициалов из имени
+                      const getInitials = (name: string) => {
+                        const parts = name.trim().split(/\s+/);
+                        if (parts.length >= 2) {
+                          return (parts[0][0] + parts[1][0]).toUpperCase();
+                        }
+                        return name.slice(0, 2).toUpperCase();
+                      };
 
-                        {/* Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold text-gray-800">{feedback.name}</h3>
-                            {feedback.verified && (
-                              <CheckCircle className="w-4 h-4 text-[#18A36C]" />
+                      return (
+                        <ItemCard key={feedback.id}>
+                          <div className="flex gap-4">
+                            {/* Avatar */}
+                            <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-gray-100 flex items-center justify-center">
+                              {feedback.image_url ? (
+                                <img
+                                  src={feedback.image_url}
+                                  alt={feedback.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <span className="text-lg font-semibold text-gray-500">
+                                  {getInitials(feedback.name)}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <h3 className="font-semibold text-gray-800">{feedback.name}</h3>
+                                {feedback.verified && (
+                                  <CheckCircle className="w-4 h-4 text-[#18A36C]" />
+                                )}
+                              </div>
+
+                              <div className="flex items-center gap-3 mb-2">
+                                {renderStars(feedback.grade)}
+                                <span className="text-xs text-gray-400 flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" />
+                                  {new Date(feedback.date).toLocaleDateString('ru-RU', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                  })}
+                                </span>
+                              </div>
+
+                              <p className="text-sm text-gray-500 line-clamp-2">{feedback.text}</p>
+                            </div>
+                          </div>
+
+                          {/* Tags */}
+                          <div className="flex items-center gap-2 mt-3">
+                            {feedback.service && (
+                              <Badge variant="secondary">{feedback.service.title}</Badge>
+                            )}
+                            {!feedback.service && (
+                              <Badge variant="primary">Без услуги</Badge>
+                            )}
+                            {feedback.verified ? (
+                              <Badge variant="success">Опубликован</Badge>
+                            ) : (
+                              <Badge variant="warning">На модерации</Badge>
                             )}
                           </div>
 
-                          <div className="flex items-center gap-3 mb-2">
-                            {renderStars(feedback.grade)}
-                            <span className="text-xs text-gray-400 flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
-                              {new Date(feedback.date).toLocaleDateString('ru-RU')}
-                            </span>
+                          {/* Actions */}
+                          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                            {!feedback.verified ? (
+                              <button
+                                onClick={() => openApproveModal(feedback)}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#18A36C] text-white text-sm font-medium rounded-lg hover:bg-[#15905f] transition-colors"
+                              >
+                                <Check className="w-4 h-4" />
+                                Одобрить
+                              </button>
+                            ) : (
+                              <div />
+                            )}
+                            <div className="flex items-center gap-2">
+                              {!feedback.verified ? (
+                                <button
+                                  onClick={() => setViewingFeedback(feedback)}
+                                  className="p-2 text-gray-400 hover:text-[#18A36C] hover:bg-[#18A36C]/10 rounded-lg transition-colors"
+                                  title="Просмотреть"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </button>
+                              ) : (
+                                <CardActions
+                                  onEdit={() => handleEdit(feedback)}
+                                  onDelete={() => handleDelete(feedback.id, feedback.name)}
+                                />
+                              )}
+                              {!feedback.verified && (
+                                <button
+                                  onClick={() => handleDelete(feedback.id, feedback.name)}
+                                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                  title="Удалить"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              )}
+                            </div>
                           </div>
+                        </ItemCard>
+                      );
+                    })}
+                  </AnimatePresence>
+                </div>
 
-                          <p className="text-sm text-gray-500 line-clamp-2">{feedback.text}</p>
-                        </div>
-                      </div>
-
-                      {/* Tags */}
-                      <div className="flex items-center gap-2 mt-3">
-                        {feedback.service && (
-                          <Badge variant="secondary">{feedback.service.title}</Badge>
-                        )}
-                        {!feedback.service && (
-                          <Badge variant="primary">Общий отзыв</Badge>
-                        )}
-                        {feedback.verified && (
-                          <Badge variant="success">Верифицирован</Badge>
-                        )}
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center justify-end mt-4 pt-4 border-t border-gray-100">
-                        <CardActions
-                          onEdit={() => handleEdit(feedback)}
-                          onDelete={() => handleDelete(feedback.id)}
-                        />
-                      </div>
-                    </ItemCard>
-                  ))}
-                </AnimatePresence>
-              </div>
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                    className="mt-6"
+                  />
+                )}
+              </>
             )}
           </AdminSection>
 
@@ -348,7 +532,7 @@ export default function AdminFeedbacksPage() {
             title={editingFeedback ? 'Редактирование отзыва' : 'Новый отзыв'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.name || !formData.text || !formData.image_url}
+            disabled={!formData.name || !formData.text}
           >
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
@@ -362,10 +546,9 @@ export default function AdminFeedbacksPage() {
                 </FormField>
 
                 <FormField label="Дата" required>
-                  <FormInput
-                    type="date"
+                  <FormDateInput
                     value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    onChange={(date) => setFormData({ ...formData, date })}
                   />
                 </FormField>
               </div>
@@ -398,7 +581,7 @@ export default function AdminFeedbacksPage() {
                     value={formData.service_id}
                     onChange={(e) => setFormData({ ...formData, service_id: e.target.value })}
                   >
-                    <option value="">Общий отзыв клиники</option>
+                    <option value="">Без привязки к услуге</option>
                     {services.map((service) => (
                       <option key={service.id} value={service.id}>
                         {service.title}
@@ -408,12 +591,13 @@ export default function AdminFeedbacksPage() {
                 </FormField>
               </div>
 
-              <FormField label="URL фото автора" required>
-                <FormInput
-                  type="text"
+              <FormField label="Фото автора">
+                <ImageUploader
                   value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="/images/reviews/avatar.jpg"
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="smartmedical/feedbacks"
+                  placeholder="Загрузите фото автора отзыва"
+                  maxSizeMB={5}
                 />
               </FormField>
 
@@ -421,22 +605,240 @@ export default function AdminFeedbacksPage() {
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, verified: !formData.verified })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    formData.verified ? 'bg-[#18A36C]' : 'bg-gray-300'
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.verified ? 'bg-[#18A36C]' : 'bg-gray-300'
+                    }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      formData.verified ? 'translate-x-6' : 'translate-x-1'
-                    }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${formData.verified ? 'translate-x-6' : 'translate-x-1'
+                      }`}
                   />
                 </button>
                 <span className="text-sm text-gray-700">
-                  {formData.verified ? 'Отзыв верифицирован' : 'Отзыв не верифицирован'}
+                  {formData.verified ? 'Показывать в общих отзывах клиники' : 'Не показывать в общих отзывах клиники'}
                 </span>
               </div>
             </div>
           </FormModal>
+
+          {/* View Modal for pending reviews */}
+          <AnimatePresence>
+            {viewingFeedback && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setViewingFeedback(null)}
+                  className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  className="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden"
+                >
+                  {/* Header */}
+                  <div className="bg-[#18A36C] px-6 py-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xl font-semibold text-white">Просмотр отзыва</h2>
+                      <button
+                        onClick={() => setViewingFeedback(null)}
+                        className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                      >
+                        <X className="w-5 h-5 text-white" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-gray-100 flex items-center justify-center">
+                        {viewingFeedback.image_url ? (
+                          <img
+                            src={viewingFeedback.image_url}
+                            alt={viewingFeedback.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-lg font-semibold text-gray-500">
+                            {viewingFeedback.name.trim().split(/\s+/).length >= 2
+                              ? (viewingFeedback.name.trim().split(/\s+/)[0][0] + viewingFeedback.name.trim().split(/\s+/)[1][0]).toUpperCase()
+                              : viewingFeedback.name.slice(0, 2).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-800 text-lg">{viewingFeedback.name}</h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          {renderStars(viewingFeedback.grade)}
+                          <span className="text-sm text-gray-500">
+                            {new Date(viewingFeedback.date).toLocaleDateString('ru-RU', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                      <p className="text-gray-700 whitespace-pre-wrap">{viewingFeedback.text}</p>
+                    </div>
+
+                    {viewingFeedback.service && (
+                      <div className="mb-4">
+                        <span className="text-sm text-gray-500">Услуга: </span>
+                        <span className="text-sm font-medium text-gray-700">{viewingFeedback.service.title}</span>
+                      </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                      <button
+                        onClick={() => {
+                          openApproveModal(viewingFeedback);
+                          setViewingFeedback(null);
+                        }}
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#18A36C] text-white font-medium rounded-xl hover:bg-[#15905f] transition-colors"
+                      >
+                        <Check className="w-4 h-4" />
+                        Одобрить
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleDelete(viewingFeedback.id, viewingFeedback.name);
+                          setViewingFeedback(null);
+                        }}
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500 text-white font-medium rounded-xl hover:bg-red-600 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                        Отклонить
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* Approve Modal */}
+          <AnimatePresence>
+            {approvingFeedback && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => !approveLoading && setApprovingFeedback(null)}
+                  className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+                >
+                  {/* Header */}
+                  <div className="bg-[#18A36C] px-6 py-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-xl font-semibold text-white">Одобрение отзыва</h2>
+                      <button
+                        onClick={() => !approveLoading && setApprovingFeedback(null)}
+                        className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                      >
+                        <X className="w-5 h-5 text-white" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 space-y-5">
+                    {/* Preview */}
+                    <div className="p-4 bg-gray-50 rounded-xl">
+                      <p className="text-sm text-gray-500 mb-1">Отзыв от</p>
+                      <p className="font-medium text-gray-800">{approvingFeedback.name}</p>
+                      <p className="text-sm text-gray-600 mt-2 line-clamp-2">{approvingFeedback.text}</p>
+                    </div>
+
+                    {/* Service select */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Привязка к услуге
+                      </label>
+                      <select
+                        value={approveData.service_id}
+                        onChange={(e) => setApproveData({ ...approveData, service_id: e.target.value })}
+                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all"
+                      >
+                        <option value="">Без привязки к услуге</option>
+                        {services.map((service) => (
+                          <option key={service.id} value={service.id}>
+                            {service.title}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Show in clinic reviews toggle */}
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setApproveData({ ...approveData, verified: !approveData.verified })}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${approveData.verified ? 'bg-[#18A36C]' : 'bg-gray-300'
+                          }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${approveData.verified ? 'translate-x-6' : 'translate-x-1'
+                            }`}
+                        />
+                      </button>
+                      <span className="text-sm text-gray-700">
+                        Показывать в общих отзывах клиники
+                      </span>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-3 pt-2">
+                      <button
+                        onClick={() => setApprovingFeedback(null)}
+                        disabled={approveLoading}
+                        className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50"
+                      >
+                        Отмена
+                      </button>
+                      <button
+                        onClick={handleApproveSubmit}
+                        disabled={approveLoading}
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#18A36C] text-white font-medium rounded-xl hover:bg-[#15905f] transition-colors disabled:opacity-50"
+                      >
+                        {approveLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Check className="w-4 h-4" />
+                        )}
+                        Одобрить
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+
+          {/* Confirm Dialog */}
+          <ConfirmDialog
+            isOpen={confirmDialog.isOpen}
+            onClose={confirmDialog.handleCancel}
+            onConfirm={confirmDialog.handleConfirm}
+            title={confirmDialog.options.title}
+            message={confirmDialog.options.message}
+            confirmText={confirmDialog.options.confirmText}
+            cancelText={confirmDialog.options.cancelText}
+            variant={confirmDialog.options.variant}
+            loading={confirmDialog.loading}
+          />
         </div>
       </div>
     </div>

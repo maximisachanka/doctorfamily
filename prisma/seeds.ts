@@ -87,6 +87,28 @@ async function main() {
     }
   });
 
+  // Partner categories
+  const medicalLabs = await prisma.category.create({
+    data: {
+      name: 'Медицинские лаборатории',
+      slug: 'medical-labs'
+    }
+  });
+
+  const insurance = await prisma.category.create({
+    data: {
+      name: 'Страховые компании',
+      slug: 'insurance'
+    }
+  });
+
+  const dentalLabs = await prisma.category.create({
+    data: {
+      name: 'Зуботехнические лаборатории',
+      slug: 'dental-labs'
+    }
+  });
+
   // Specialists
   const specialistIvanov = await prisma.specialist.create({
     data: {
@@ -99,7 +121,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585598/smartmedical/specialists/young-bearded-man-with-striped-shirt_273609-5677.jpg',
       activity_area: 'Лечение кариеса, реставрация зубов',
       education_details: 'МГМСУ, интернатура по терапевтической стоматологии',
-      conferences: 'StomExpo 2023, DentalTech 2024',
+      conferences: ['StomExpo 2023', 'DentalTech 2024'],
       specializations: [
         'Лечение кариеса',
         'Реставрация зубов',
@@ -134,7 +156,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585602/smartmedical/specialists/smiling-brunette-woman-with-crossed-arms-looking-camera-gray_171337-987.jpg',
       activity_area: 'Диагностика и лечение сердечно-сосудистых заболеваний',
       education_details: 'РНИМУ им. Пирогова, ординатура по кардиологии',
-      conferences: 'CardioForum 2024',
+      conferences: ['CardioForum 2024'],
       specializations: [
         'Диагностика сердечно-сосудистых заболеваний',
         'Эхокардиография',
@@ -161,7 +183,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585603/smartmedical/specialists/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg',
       activity_area: 'Лечение молочных и постоянных зубов у детей',
       education_details: 'БГМУ, интернатура по детской стоматологии',
-      conferences: 'PediatricDent 2023, KidsDental 2024',
+      conferences: ['PediatricDent 2023', 'KidsDental 2024'],
       specializations: [
         'Лечение молочных зубов',
         'Профилактика кариеса у детей',
@@ -187,7 +209,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585600/smartmedical/specialists/portrait-white-man-isolated_53876-40306.jpg',
       activity_area: 'Диагностика и лечение гинекологических заболеваний',
       education_details: 'БГМУ, ординатура по акушерству и гинекологии',
-      conferences: 'GynecForum 2023',
+      conferences: ['GynecForum 2023'],
       specializations: [
         'Лечение воспалительных заболеваний',
         'Гормональные нарушения',
@@ -213,7 +235,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585602/smartmedical/specialists/smiling-brunette-woman-with-crossed-arms-looking-camera-gray_171337-987.jpg',
       activity_area: 'УЗИ всех органов и систем',
       education_details: 'БГМУ, специальность по ультразвуковой диагностике',
-      conferences: 'UltrasoundExpert 2023, USGConference 2024',
+      conferences: ['UltrasoundExpert 2023', 'USGConference 2024'],
       specializations: [
         'УЗИ органов брюшной полости',
         'УЗИ органов малого таза',
@@ -241,7 +263,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585599/smartmedical/specialists/confident-attractive-caucasian-guy-beige-pullon-smiling-broadly-while-standing-against-gray_176420-44508.jpg',
       activity_area: 'Лабораторная диагностика, рентгенология, функциональная диагностика',
       education_details: 'БГМУ, специальность по диагностике',
-      conferences: 'DiagnosticsForum 2023, LabTech 2024',
+      conferences: ['DiagnosticsForum 2023', 'LabTech 2024'],
       specializations: [
         'Лабораторная диагностика',
         'Рентгенология',
@@ -269,7 +291,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585598/smartmedical/specialists/young-bearded-man-with-striped-shirt_273609-5677.jpg',
       activity_area: 'Хирургическое лечение молочных и постоянных зубов у детей',
       education_details: 'БГМУ, интернатура по детской хирургической стоматологии',
-      conferences: 'PediatricDentSurgery 2023, KidsDentalSurgery 2024',
+      conferences: ['PediatricDentSurgery 2023', 'KidsDentalSurgery 2024'],
       specializations: [
         'Удаление молочных зубов',
         'Удаление постоянных зубов у детей',
@@ -295,7 +317,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585603/smartmedical/specialists/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg',
       activity_area: 'Исправление прикуса у детей, установка брекет-систем',
       education_details: 'БГМУ, интернатура по ортодонтии',
-      conferences: 'OrthodontKids 2023, PediatricOrtho 2024',
+      conferences: ['OrthodontKids 2023', 'PediatricOrtho 2024'],
       specializations: [
         'Исправление прикуса у детей',
         'Установка брекет-систем',
@@ -322,7 +344,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585602/smartmedical/specialists/smiling-brunette-woman-with-crossed-arms-looking-camera-gray_171337-987.jpg',
       activity_area: 'Гинекологическое наблюдение девочек и подростков',
       education_details: 'БГМУ, ординатура по детской гинекологии',
-      conferences: 'PediatricGynec 2023, KidsHealth 2024',
+      conferences: ['PediatricGynec 2023', 'KidsHealth 2024'],
       specializations: [
         'Гинекологический осмотр девочек',
         'Лечение воспалительных заболеваний',
@@ -348,7 +370,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585600/smartmedical/specialists/portrait-white-man-isolated_53876-40306.jpg',
       activity_area: 'Диагностика и лечение эндокринных заболеваний',
       education_details: 'БГМУ, ординатура по эндокринологии',
-      conferences: 'EndocrineConf 2023, DiabetesExpo 2024',
+      conferences: ['EndocrineConf 2023', 'DiabetesExpo 2024'],
       specializations: [
         'Сахарный диабет',
         'Заболевания щитовидной железы',
@@ -374,7 +396,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585603/smartmedical/specialists/young-beautiful-woman-pink-warm-sweater-natural-look-smiling-portrait-isolated-long-hair_285396-896.jpg',
       activity_area: 'Диагностика и лечение онкологических заболеваний',
       education_details: 'БГМУ, ординатура по онкологии',
-      conferences: 'OncologyForum 2023, CancerResearch 2024',
+      conferences: ['OncologyForum 2023', 'CancerResearch 2024'],
       specializations: [
         'Диагностика онкозаболеваний',
         'Химиотерапия',
@@ -400,7 +422,7 @@ async function main() {
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585602/smartmedical/specialists/smiling-brunette-woman-with-crossed-arms-looking-camera-gray_171337-987.jpg',
       activity_area: 'Ведение пациентов в дневном стационаре',
       education_details: 'БГМУ, ординатура по терапии',
-      conferences: 'DayClinic 2023, Therapy 2024',
+      conferences: ['DayClinic 2023', 'Therapy 2024'],
       specializations: [
         'Внутривенная терапия',
         'Наблюдение пациентов',
@@ -478,7 +500,9 @@ async function main() {
       video_url: 'https://videos.example.com/dentistry/caries',
       description:
         'Комплексное лечение кариеса с использованием микроскопа и композитных материалов последнего поколения. Индивидуальный подход и безболезненная анестезия.',
-      specialists_id: specialistIvanov.id,
+      specialists: {
+        create: [{ specialist_id: specialistIvanov.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_1.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585606/smartmedical/services/service_2.jpg',
       image_url_2: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&q=80',
@@ -498,7 +522,9 @@ async function main() {
       video_url: 'https://videos.example.com/cardiology/echo',
       description:
         'Эхокардиография на современном аппарате экспертного класса. Расширенная оценка структуры и функции сердца, заключение специалиста.',
-      specialists_id: specialistPetrova.id,
+      specialists: {
+        create: [{ specialist_id: specialistPetrova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585629/smartmedical/services/service_6.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585630/smartmedical/services/service_7.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585631/smartmedical/services/service_8.jpg',
@@ -519,7 +545,9 @@ async function main() {
       video_url: 'https://videos.example.com/pediatric-dentistry/milk-teeth',
       description:
         'Специализированное лечение молочных зубов у детей с использованием современных методик и материалов. Безболезненная анестезия, игровая форма приема. Сохранение молочных зубов важно для правильного формирования постоянного прикуса.',
-      specialists_id: specialistSidorova.id,
+      specialists: {
+        create: [{ specialist_id: specialistSidorova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585606/smartmedical/services/service_2.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585636/smartmedical/services/service_11.jpg',
       image_url_2: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=400&q=80',
@@ -539,7 +567,9 @@ async function main() {
       video_url: 'https://videos.example.com/dentistry/whitening',
       description:
         'Современная система отбеливания Beyond Polus позволяет осветлить зубы на несколько тонов за один визит. Используется холодный свет, что исключает перегрев тканей зуба. Безболезненная процедура, результат сохраняется до 2-3 лет при соблюдении рекомендаций.',
-      specialists_id: specialistIvanov.id,
+      specialists: {
+        create: [{ specialist_id: specialistIvanov.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585628/smartmedical/services/service_5.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_1.jpg',
       image_url_2: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&q=80',
@@ -559,7 +589,9 @@ async function main() {
       video_url: 'https://videos.example.com/dentistry/cleaning',
       description:
         'Профессиональная чистка зубов методом Air Flow эффективно удаляет зубной налет, пигментацию и зубной камень. Процедура безопасна, безболезненна и не повреждает эмаль. После чистки зубы становятся светлее, глаже и здоровее.',
-      specialists_id: specialistIvanov.id,
+      specialists: {
+        create: [{ specialist_id: specialistIvanov.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585634/smartmedical/services/service_10.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585606/smartmedical/services/service_2.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585636/smartmedical/services/service_11.jpg',
@@ -579,7 +611,9 @@ async function main() {
       video_url: 'https://videos.example.com/gynecology/appointment',
       description:
         'Полный гинекологический осмотр, консультация специалиста, взятие анализов. Врач проведет осмотр, ответит на все вопросы, назначит необходимые обследования. Ведение беременности, лечение гинекологических заболеваний, планирование семьи.',
-      specialists_id: specialistKozlov.id,
+      specialists: {
+        create: [{ specialist_id: specialistKozlov.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585637/smartmedical/services/service_12.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_gynecologist_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_gynecologist_2.jpg',
@@ -599,7 +633,9 @@ async function main() {
       video_url: 'https://videos.example.com/ultrasound/pelvic',
       description:
         'Ультразвуковое исследование органов малого таза на современном аппарате экспертного класса. Оценка состояния матки, яичников, мочевого пузыря. Безболезненное и безопасное исследование, не требует специальной подготовки.',
-      specialists_id: specialistVolkova.id,
+      specialists: {
+        create: [{ specialist_id: specialistVolkova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585638/smartmedical/services/service_13.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pelvic_ultrasound_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pelvic_ultrasound_2.jpg',
@@ -619,7 +655,9 @@ async function main() {
       video_url: 'https://videos.example.com/ultrasound/breast',
       description:
         'Ультразвуковое исследование молочных желез для ранней диагностики заболеваний. Безопасный и информативный метод обследования. Рекомендуется женщинам всех возрастов для профилактики и выявления патологий на ранних стадиях.',
-      specialists_id: specialistVolkova.id,
+      specialists: {
+        create: [{ specialist_id: specialistVolkova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585639/smartmedical/services/service_14.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_breast_ultrasound_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_breast_ultrasound_2.jpg',
@@ -639,7 +677,9 @@ async function main() {
       video_url: 'https://videos.example.com/ultrasound/thyroid',
       description:
         'Ультразвуковое исследование щитовидной железы для оценки ее структуры, размеров и выявления патологических изменений. Безболезненное и безопасное исследование, не требует специальной подготовки. Результаты готовы сразу после исследования.',
-      specialists_id: specialistVolkova.id,
+      specialists: {
+        create: [{ specialist_id: specialistVolkova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585640/smartmedical/services/service_15.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_thyroid_ultrasound_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_thyroid_ultrasound_2.jpg',
@@ -659,7 +699,9 @@ async function main() {
       video_url: 'https://videos.example.com/dentistry/pulpitis',
       description:
         'Лечение пульпита (воспаления нерва зуба) с использованием современного микроскопа и новейших методик. Тщательная обработка каналов, качественная пломбировка. Сохранение зуба и восстановление его функции. Безболезненная процедура с современной анестезией.',
-      specialists_id: specialistIvanov.id,
+      specialists: {
+        create: [{ specialist_id: specialistIvanov.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_1.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pulpitis_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pulpitis_2.jpg',
@@ -680,7 +722,9 @@ async function main() {
       video_url: 'https://videos.example.com/pediatric-dentistry/surgeon',
       description:
         'Хирургическое лечение молочных и постоянных зубов у детей. Удаление зубов, пластика уздечек, лечение травм зубов. Безболезненные процедуры с использованием современной детской анестезии. Опытные врачи найдут подход к каждому ребенку.',
-      specialists_id: specialistPediatricSurgeon.id,
+      specialists: {
+        create: [{ specialist_id: specialistPediatricSurgeon.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585634/smartmedical/services/service_10.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pediatric_surgeon_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pediatric_surgeon_2.jpg',
@@ -700,7 +744,9 @@ async function main() {
       video_url: 'https://videos.example.com/pediatric-dentistry/orthodontist',
       description:
         'Исправление прикуса у детей с использованием современных брекет-систем и ортодонтических аппаратов. Лечение скученности зубов, коррекция аномалий прикуса. Индивидуальный подход к каждому ребенку, комфортное лечение.',
-      specialists_id: specialistPediatricOrthodontist.id,
+      specialists: {
+        create: [{ specialist_id: specialistPediatricOrthodontist.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585606/smartmedical/services/service_2.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pediatric_orthodontist_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pediatric_orthodontist_2.jpg',
@@ -720,7 +766,9 @@ async function main() {
       video_url: 'https://videos.example.com/pediatric-dentistry/anesthesia',
       description:
         'Лечение молочных зубов под общим наркозом для детей, которые не могут перенести лечение в обычных условиях. Безопасный медицинский наркоз, полный контроль состояния ребенка. За одно посещение можно вылечить все проблемные зубы.',
-      specialists_id: specialistSidorova.id,
+      specialists: {
+        create: [{ specialist_id: specialistSidorova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585636/smartmedical/services/service_11.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_milk_teeth_anesthesia_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_milk_teeth_anesthesia_2.jpg',
@@ -741,7 +789,9 @@ async function main() {
       video_url: 'https://videos.example.com/gynecology/diagnostic',
       description:
         'Комплексные диагностические исследования в гинекологии: кольпоскопия, биопсия, цитология, анализы на инфекции. Современное оборудование, точная диагностика. Помогаем выявить заболевания на ранних стадиях.',
-      specialists_id: specialistKozlov.id,
+      specialists: {
+        create: [{ specialist_id: specialistKozlov.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585642/smartmedical/services/service_16.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_diagnostic_studies_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_diagnostic_studies_2.jpg',
@@ -762,7 +812,9 @@ async function main() {
       video_url: 'https://videos.example.com/ultrasound/abdominal',
       description:
         'Ультразвуковое исследование органов брюшной полости: печень, желчный пузырь, поджелудочная железа, селезенка, почки. Безболезненное и безопасное исследование. Точная диагностика заболеваний органов брюшной полости.',
-      specialists_id: specialistVolkova.id,
+      specialists: {
+        create: [{ specialist_id: specialistVolkova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585638/smartmedical/services/service_13.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_abdominal_ultrasound_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_abdominal_ultrasound_2.jpg',
@@ -782,7 +834,9 @@ async function main() {
       video_url: 'https://videos.example.com/ultrasound/fetal',
       description:
         'Ультразвуковое исследование плода при беременности. Оценка развития плода, определение пола, выявление патологий. Безопасное исследование для матери и ребенка. Современное оборудование экспертного класса.',
-      specialists_id: specialistVolkova.id,
+      specialists: {
+        create: [{ specialist_id: specialistVolkova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585637/smartmedical/services/service_12.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_fetal_ultrasound_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_fetal_ultrasound_2.jpg',
@@ -803,7 +857,9 @@ async function main() {
       video_url: 'https://videos.example.com/diagnostics/expert-ultrasound',
       description:
         'Экспертное ультразвуковое исследование на аппарате экспертного класса. Высокая точность диагностики, детальная оценка состояния органов. Проводится опытными специалистами с использованием современного оборудования.',
-      specialists_id: specialistDiagnostics.id,
+      specialists: {
+        create: [{ specialist_id: specialistDiagnostics.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585639/smartmedical/services/service_14.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_expert_ultrasound_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_expert_ultrasound_2.jpg',
@@ -823,7 +879,9 @@ async function main() {
       video_url: 'https://videos.example.com/diagnostics/analyses',
       description:
         'Широкий спектр лабораторных анализов: общий анализ крови, биохимия, гормоны, онкомаркеры, инфекции. Современная лаборатория, точные результаты. Быстрое выполнение анализов, удобная система получения результатов.',
-      specialists_id: specialistDiagnostics.id,
+      specialists: {
+        create: [{ specialist_id: specialistDiagnostics.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585643/smartmedical/services/service_17.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_analyses_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_analyses_2.jpg',
@@ -843,7 +901,9 @@ async function main() {
       video_url: 'https://videos.example.com/diagnostics/tooth-xray',
       description:
         'Рентгенологическое исследование зубов для диагностики кариеса, пульпита, периодонтита. Прицельные и панорамные снимки. Низкая доза облучения, безопасно для здоровья. Необходимо для точной диагностики и планирования лечения.',
-      specialists_id: specialistDiagnostics.id,
+      specialists: {
+        create: [{ specialist_id: specialistDiagnostics.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585609/smartmedical/services/service_3.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_tooth_xray_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_tooth_xray_2.jpg',
@@ -863,7 +923,9 @@ async function main() {
       video_url: 'https://videos.example.com/diagnostics/3d-scan',
       description:
         'Трехмерное сканирование зубов с помощью компьютерной томографии. Точная диагностика, планирование имплантации, оценка состояния корней зубов. Высокое качество изображений, минимальная доза облучения.',
-      specialists_id: specialistDiagnostics.id,
+      specialists: {
+        create: [{ specialist_id: specialistDiagnostics.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585614/smartmedical/services/service_4.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_3d_dental_scan_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_3d_dental_scan_2.jpg',
@@ -883,7 +945,9 @@ async function main() {
       video_url: 'https://videos.example.com/diagnostics/panoramic-scan',
       description:
         'Панорамный снимок всех зубов (ортопантомограмма) для оценки состояния зубов, челюстей, височно-нижнечелюстных суставов. Необходим для планирования лечения, имплантации, ортодонтического лечения. Быстрое выполнение, низкая доза облучения.',
-      specialists_id: specialistDiagnostics.id,
+      specialists: {
+        create: [{ specialist_id: specialistDiagnostics.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_1.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_panoramic_scan_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_panoramic_scan_2.jpg',
@@ -904,7 +968,9 @@ async function main() {
       video_url: 'https://videos.example.com/pediatric-gynecology/appointment',
       description:
         'Консультация детского гинеколога для девочек и подростков. Профилактические осмотры, диагностика и лечение гинекологических заболеваний. Деликатный и профессиональный подход к маленьким пациенткам.',
-      specialists_id: specialistPediatricGynecologist.id,
+      specialists: {
+        create: [{ specialist_id: specialistPediatricGynecologist.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585637/smartmedical/services/service_12.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pediatric_gyn_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_pediatric_gyn_2.jpg',
@@ -925,7 +991,9 @@ async function main() {
       video_url: 'https://videos.example.com/endocrinology/appointment',
       description:
         'Консультация эндокринолога с комплексной диагностикой. Лечение сахарного диабета, заболеваний щитовидной железы, ожирения и метаболического синдрома. Индивидуальный подбор терапии.',
-      specialists_id: specialistEndocrinologist.id,
+      specialists: {
+        create: [{ specialist_id: specialistEndocrinologist.id }]
+      },
       image_url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_endocrinology_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_endocrinology_2.jpg',
@@ -946,7 +1014,9 @@ async function main() {
       video_url: 'https://videos.example.com/oncology/appointment',
       description:
         'Консультация онколога с оценкой факторов риска, ранняя диагностика, скрининг. Профессиональная оценка новообразований, назначение обследований. Составление плана наблюдения и лечения при необходимости.',
-      specialists_id: specialistOncologist.id,
+      specialists: {
+        create: [{ specialist_id: specialistOncologist.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585639/smartmedical/services/service_14.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_oncology_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_oncology_2.jpg',
@@ -967,7 +1037,9 @@ async function main() {
       video_url: 'https://videos.example.com/day-hospital/procedure',
       description:
         'Инъекции, капельницы, внутривенные инфузии в комфортных условиях дневного стационара. Квалифицированный медперсонал, современное оборудование, контроль состояния пациента во время процедур.',
-      specialists_id: specialistDayHospital.id,
+      specialists: {
+        create: [{ specialist_id: specialistDayHospital.id }]
+      },
       image_url: 'https://images.unsplash.com/photo-1631217868264-e6641e0e2055?w=800&q=80',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_procedure_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_procedure_2.jpg',
@@ -988,7 +1060,9 @@ async function main() {
       video_url: 'https://videos.example.com/cardiology/appointment',
       description:
         'Консультация кардиолога с оценкой состояния сердечно-сосудистой системы. Анализ жалоб, осмотр, интерпретация результатов исследований. Назначение лечения и рекомендации по профилактике.',
-      specialists_id: specialistPetrova.id,
+      specialists: {
+        create: [{ specialist_id: specialistPetrova.id }]
+      },
       image_url: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585629/smartmedical/services/service_6.jpg',
       image_url_1: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_cardiology_1.jpg',
       image_url_2: 'https://res.cloudinary.com/dkee0i6u7/image/upload/v1763585605/smartmedical/services/service_cardiology_2.jpg',

@@ -14,13 +14,12 @@ datasource db {
 }
 
 model Service {
-  id             Int         @id @default(autoincrement()) @map("service_id")
+  id             Int                   @id @default(autoincrement()) @map("service_id")
   title          String
   subtitle       String
   price          Int
   video_url      String
-  description    String      @db.Text
-  specialists_id Int
+  description    String                @db.Text
   image_url      String
   image_url_1    String
   image_url_2    String
@@ -31,14 +30,25 @@ model Service {
   category_id    Int
 
   // Отношения
-  category       Category    @relation(fields: [category_id], references: [id])
-  specialist     Specialist  @relation(fields: [specialists_id], references: [id])
-  questions      Question[]  // 1:M с вопросами
-  feedbacks      Feedback[]  // 1:M с отзывами
+  category       Category              @relation(fields: [category_id], references: [id])
+  specialists    ServiceSpecialist[]   // M:N со специалистами
+  questions      Question[]            // 1:M с вопросами
+  feedbacks      Feedback[]            // 1:M с отзывами
 
   @@map("services")
   @@index([category_id])
-  @@index([specialists_id])
+}
+
+// Таблица связей many-to-many между услугами и специалистами
+model ServiceSpecialist {
+  service_id     Int
+  specialist_id  Int
+
+  service        Service    @relation(fields: [service_id], references: [id], onDelete: Cascade)
+  specialist     Specialist @relation(fields: [specialist_id], references: [id], onDelete: Cascade)
+
+  @@id([service_id, specialist_id])
+  @@map("service_specialists")
 }
 
 model Category {
@@ -64,27 +74,28 @@ model Specialist {
   image_url          String
   activity_area      String?
   education_details  String?   @db.Text
-  conferences        String?
+  conferences        String[]   @default([])
   // Поля для структуры about
   specializations    String[]   @default([])
   education          String[]   @default([])
   work_examples      Json?      // Для хранения массива { title: string; images: string[] }[]
 
   // relations
-  category           Category   @relation(fields: [category_id], references: [id])
-  services           Service[]
+  category           Category             @relation(fields: [category_id], references: [id])
+  services           ServiceSpecialist[]  // M:N с услугами
 
   @@map("specialists")
   @@index([category_id])
 }
 
 model Question {
-  id         Int      @id @default(autoincrement()) @map("questions_id")
-  question   String
-  answer     String?  @db.Text
-  category   String?  // Категория для общих FAQ (например, 'stomatology', 'ultrasound')
-  service_id Int?     // Теперь необязательный - для общих FAQ
-  service    Service? @relation(fields: [service_id], references: [id])
+  id              Int          @id @default(autoincrement()) @map("questions_id")
+  question        String
+  answer          String?      @db.Text
+  category        String?      // Категория FAQ (slug из захардкоженного списка)
+  service_id      Int?         // Необязательный - для привязки к услуге
+
+  service         Service?     @relation(fields: [service_id], references: [id])
 
   @@map("questions")
   @@index([service_id])
@@ -149,18 +160,22 @@ model Contacts {
 enum Role {
   USER
   ADMIN
+  CHIEF_DOCTOR
 }
 
 model Patient {
-  id                 Int      @id @default(autoincrement()) @map("patient_id")
-  login              String
-  email              String @unique
-  password           String
-  name               String
-  phone              String @unique
-  registration_date  DateTime @db.Date
-  avatar_url         String?  // URL аватарки пользователя (опционально)
-  role               Role     @default(USER)
+  id                   Int      @id @default(autoincrement()) @map("patient_id")
+  login                String
+  email                String   @unique
+  password             String
+  name                 String
+  phone                String   @unique
+  registration_date    DateTime @db.Date
+  avatar_url           String?  // URL аватарки пользователя (опционально)
+  role                 Role     @default(USER)
+  is_messages_blocked  Boolean  @default(false) // Заблокирован ли пользователь от отправки писем
+
+  letters              Letter[] // Письма главному врачу
 
   @@map("patients")
 }
@@ -180,4 +195,43 @@ model Material {
   @@map("materials")
   @@index([year])
   @@index([is_active])
+}
+
+// Письма главному врачу
+model Letter {
+  id             Int             @id @default(autoincrement()) @map("letter_id")
+  patient_id     Int
+  subject        String
+  content        String          @db.Text
+  created_at     DateTime        @default(now())
+  reply          String?         @db.Text  // Ответ главного врача (первый ответ для обратной совместимости)
+  replied_at     DateTime?                 // Дата ответа
+  is_read        Boolean         @default(false)  // Прочитано главным врачом
+  is_reply_read  Boolean         @default(false)  // Ответ прочитан пациентом
+  has_new_patient_message  Boolean @default(false) // Есть новое сообщение от пациента
+
+  patient        Patient         @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  messages       LetterMessage[] // Сообщения в переписке
+
+  @@map("letters")
+  @@index([patient_id])
+  @@index([is_read])
+  @@index([is_reply_read])
+  @@index([has_new_patient_message])
+}
+
+// Сообщения в переписке письма
+model LetterMessage {
+  id             Int       @id @default(autoincrement()) @map("message_id")
+  letter_id      Int
+  sender_type    String    // 'patient' или 'chief_doctor'
+  content        String    @db.Text
+  created_at     DateTime  @default(now())
+  is_read        Boolean   @default(false)
+
+  letter         Letter    @relation(fields: [letter_id], references: [id], onDelete: Cascade)
+
+  @@map("letter_messages")
+  @@index([letter_id])
+  @@index([is_read])
 }

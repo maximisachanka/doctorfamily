@@ -1,6 +1,7 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
+import { AlertProvider } from '@/components/common/SMAlert/AlertProvider';
 
 export default function AdminLayout({
   children,
@@ -9,9 +10,11 @@ export default function AdminLayout({
 }) {
   return (
     <SessionProvider>
-      <div className="min-h-screen bg-gray-50">
-        {children}
-      </div>
+      <AlertProvider>
+        <div className="min-h-screen bg-gray-50">
+          {children}
+        </div>
+      </AlertProvider>
     </SessionProvider>
   );
 }

@@ -19,7 +19,7 @@ async function checkAdmin(request: NextRequest) {
     select: { role: true },
   });
 
-  if (!user || user.role !== "ADMIN") {
+  if (!user || (user.role !== "ADMIN" && user.role !== "CHIEF_DOCTOR")) {
     return { isAdmin: false, error: "Нет прав доступа" };
   }
 

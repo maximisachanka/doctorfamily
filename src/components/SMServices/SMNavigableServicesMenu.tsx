@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { ChevronRight, Menu } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ChevronRight, Stethoscope, Menu } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../common/SMButton/SMButton';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../common/SMTooltip/SMTooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../common/SMTooltip/SMTooltip';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 import { useRouter } from '../SMRouter/SMRouter';
 import { useMenu } from '../SMMenuContext/SMMenuContext';
@@ -52,85 +53,93 @@ function MenuItemComponent({
   const getItemStyles = () => {
     if (level === 0) {
       return isActive
-        ? 'bg-[#18A36C] text-white border-l-4 border-white'
-        : 'text-[#2E2E2E] hover:bg-gray-50 border-l-4 border-transparent hover:border-[#18A36C]';
+        ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm rounded-lg mx-2'
+        : 'text-gray-700 hover:bg-gray-50 rounded-lg mx-2 hover:text-[#18A36C]';
     } else if (level === 1) {
       return isActive
-        ? 'bg-[#18A36C]/10 text-[#18A36C] border-l-2 border-[#18A36C]'
-        : 'text-[#2E2E2E] hover:bg-white border-l-2 border-transparent hover:border-[#E8E6E3]';
+        ? 'bg-[#18A36C]/10 text-[#18A36C] rounded-lg mx-2'
+        : 'text-gray-600 hover:bg-gray-50 rounded-lg mx-2 hover:text-[#18A36C]';
     } else {
       return isActive
-        ? 'bg-[#18A36C]/5 text-[#18A36C]'
-        : 'text-gray-600 hover:bg-white hover:text-[#2E2E2E]';
+        ? 'bg-[#18A36C]/5 text-[#18A36C] rounded-lg mx-2'
+        : 'text-gray-500 hover:bg-gray-50 rounded-lg mx-2 hover:text-[#18A36C]';
     }
   };
 
   const Icon = item.icon ? iconMap[item.icon as IconName] : null;
 
   return (
-    <div className="group">
+    <div className="group overflow-hidden">
       <Button
         variant="ghost"
-        className={`w-full justify-start text-left p-0 h-auto transition-all duration-200 ${getItemStyles()}`}
+        className={`w-full justify-start text-left p-0 h-auto transition-all duration-200 overflow-hidden ${getItemStyles()}`}
         onClick={handleClick}
       >
         <div
-          className="flex items-start justify-between w-full py-3 px-4 gap-3"
-          style={{ paddingLeft: `${level * 16 + 16}px` }}
+          className="flex items-center justify-between w-full py-3 px-3 gap-2 overflow-hidden"
+          style={{ paddingLeft: `${level * 12 + 12}px` }}
         >
-          <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-1 min-w-0 overflow-hidden">
             {level === 0 && Icon && (
-              <div className={`flex-shrink-0 mt-0.5 ${isActive ? 'text-white' : 'text-[#18A36C]'}`}>
+              <div className={`flex-shrink-0 ${isActive ? 'text-[#18A36C]' : 'text-[#18A36C]'}`}>
                 <Icon className="w-4 h-4" />
               </div>
             )}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className={`leading-relaxed transition-all duration-200 break-words-soft text-wrap-balance ${
-                    level === 0 ? 'text-sm' : level === 1 ? 'text-sm' : 'text-xs'
-                  }`}>
-                    {item.title}
-                  </span>
-                </TooltipTrigger>
-                {item.title.length > 50 && (
-                  <TooltipContent side="right" className="max-w-sm">
-                    <p className="text-sm">{item.title}</p>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className={`transition-all duration-200 truncate block ${
+                  level === 0 ? 'text-sm font-medium' : level === 1 ? 'text-sm' : 'text-xs'
+                } ${isActive ? 'text-[#18A36C]' : ''}`}>
+                  {item.title}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="max-w-xs z-[100]">
+                {item.title}
+              </TooltipContent>
+            </Tooltip>
           </div>
           {hasChildren && (
-            <div className={`flex-shrink-0 transition-transform duration-200 mt-0.5 ${
+            <div className={`flex-shrink-0 transition-transform duration-200 ${
               isExpanded ? 'rotate-90' : ''
-            } ${isActive && level === 0 ? 'text-white' : 'text-gray-400'}`}>
+            } ${isActive && level === 0 ? 'text-[#18A36C]' : 'text-gray-400'}`}>
               <ChevronRight className="w-4 h-4" />
             </div>
           )}
         </div>
       </Button>
 
-      {hasChildren && (
-        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-          isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
-        }`}>
-          <div className="bg-white">
-            {item.children!.map((child) => (
-              <MenuItemComponent
-                key={child.id}
-                item={child}
-                level={level + 1}
-                activeItem={activeItem}
-                onItemClick={onItemClick}
-                expandedItems={expandedItems}
-                onToggleExpand={onToggleExpand}
-                currentRoute={currentRoute}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {hasChildren && isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="bg-white">
+              {item.children!.map((child, index) => (
+                <motion.div
+                  key={child.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.2 }}
+                >
+                  <MenuItemComponent
+                    item={child}
+                    level={level + 1}
+                    activeItem={activeItem}
+                    onItemClick={onItemClick}
+                    expandedItems={expandedItems}
+                    onToggleExpand={onToggleExpand}
+                    currentRoute={currentRoute}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -143,6 +152,40 @@ export function NavigableServicesMenu() {
   const { isBurgerMenuOpen } = useMenu();
 
   const menuData = servicesMenuData.menuData;
+
+  // Auto-expand and select based on current route
+  useEffect(() => {
+    const routeParts = currentRoute.split('/').filter(Boolean);
+    if (routeParts[0] === 'services' && routeParts.length >= 3) {
+      const categoryId = routeParts[1];
+      const serviceId = routeParts[2];
+
+      // Set active item
+      setActiveItem(serviceId);
+
+      // Find and expand parents
+      const findParents = (items: MenuItem[], targetId: string, parents: string[] = []): string[] | null => {
+        for (const item of items) {
+          if (item.id === targetId) {
+            return parents;
+          }
+          if (item.children) {
+            const found = findParents(item.children, targetId, [...parents, item.id]);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      const parents = findParents(menuData, serviceId);
+      if (parents) {
+        setExpandedItems(new Set([...parents, categoryId]));
+      } else {
+        // If service not found in nested, just expand the category
+        setExpandedItems(new Set([categoryId]));
+      }
+    }
+  }, [currentRoute, menuData]);
 
   const handleItemClick = (itemId: string, item: MenuItem) => {
     setActiveItem(itemId);
@@ -182,16 +225,23 @@ export function NavigableServicesMenu() {
   };
 
   const MenuContent = ({ onItemClick: onItemClickProp }: { onItemClick?: (itemId: string, item: MenuItem) => void }) => (
-    <div className="bg-white flex flex-col">
-      <div className="bg-[#18A36C] p-4 lg:p-6">
-        <h2 className="text-white text-lg lg:text-xl mb-1 lg:mb-2">
-          {servicesMenuConfig.header.title}
-        </h2>
-        <p className="text-white/80 text-xs lg:text-sm">
-          {servicesMenuConfig.header.subtitle}
-        </p>
+    <div className="bg-white flex flex-col h-full overflow-hidden">
+      <div className="p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <Stethoscope className="w-6 h-6 text-white" />
+          </div>
+          <div className="text-left flex-1 min-w-0">
+            <h2 className="text-lg lg:text-xl font-semibold text-gray-800 truncate">
+              {servicesMenuConfig.header.title}
+            </h2>
+            <p className="text-xs lg:text-sm text-gray-500 mt-0.5 truncate">
+              {servicesMenuConfig.header.subtitle}
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="py-2">
+      <div className="py-2 flex-1 overflow-y-auto overflow-x-hidden">
         {menuData.map((item) => (
           <MenuItemComponent
             key={item.id}
@@ -239,7 +289,7 @@ export function NavigableServicesMenu() {
               <Menu className="w-6 h-6" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-80 p-0">
+          <SheetContent side="left" className="w-[350px] p-0">
             <SheetHeader className="sr-only">
               <SheetTitle>Меню услуг</SheetTitle>
               <SheetDescription>Навигация по медицинским услугам клиники</SheetDescription>

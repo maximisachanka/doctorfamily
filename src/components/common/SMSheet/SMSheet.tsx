@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { cn } from "../SMUtils/SMUtils";
 
@@ -28,21 +29,31 @@ function SheetPortal({
   return <SheetPrimitive.Portal data-slot="sheet-portal" {...props} />;
 }
 
-const SheetOverlay = React.forwardRef<
-  React.ElementRef<typeof SheetPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <SheetPrimitive.Overlay
-    ref={ref}
-    data-slot="sheet-overlay"
-    className={cn(
-      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
-      className,
-    )}
-    {...props}
-  />
-));
-SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
+// Animation variants for overlay
+const overlayVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+// Animation variants for different sides
+const slideVariants = {
+  left: {
+    hidden: { x: "-100%" },
+    visible: { x: 0 },
+  },
+  right: {
+    hidden: { x: "100%" },
+    visible: { x: 0 },
+  },
+  top: {
+    hidden: { y: "-100%" },
+    visible: { y: 0 },
+  },
+  bottom: {
+    hidden: { y: "100%" },
+    visible: { y: 0 },
+  },
+};
 
 function SheetContent({
   className,
@@ -54,28 +65,48 @@ function SheetContent({
 }) {
   return (
     <SheetPortal>
-      <SheetOverlay />
-      <SheetPrimitive.Content
-        data-slot="sheet-content"
-        className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
-          side === "right" &&
-            "data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right inset-y-0 right-0 h-full w-3/4 border-none sm:max-w-sm",
-          side === "left" &&
-            "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left inset-y-0 left-0 h-full w-3/4 border-none sm:max-w-sm",
-          side === "top" &&
-            "data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top inset-x-0 top-0 h-auto border-b",
-          side === "bottom" &&
-            "data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-        <SheetPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
-          <XIcon className="size-4 text-white" />
-          <span className="sr-only">Close</span>
-        </SheetPrimitive.Close>
+      {/* Animated Overlay */}
+      <SheetPrimitive.Overlay asChild>
+        <motion.div
+          data-slot="sheet-overlay"
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={overlayVariants}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        />
+      </SheetPrimitive.Overlay>
+
+      {/* Animated Content */}
+      <SheetPrimitive.Content asChild {...props}>
+        <motion.div
+          data-slot="sheet-content"
+          className={cn(
+            "bg-background fixed z-50 flex flex-col shadow-2xl",
+            side === "right" && "inset-y-0 right-0 h-full w-3/4 border-none sm:max-w-sm",
+            side === "left" && "inset-y-0 left-0 h-full w-3/4 border-none sm:max-w-sm",
+            side === "top" && "inset-x-0 top-0 h-auto border-b",
+            side === "bottom" && "inset-x-0 bottom-0 h-auto border-t",
+            className,
+          )}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={slideVariants[side]}
+          transition={{
+            type: "spring",
+            damping: 30,
+            stiffness: 300,
+            mass: 0.8,
+          }}
+        >
+          {children}
+          <SheetPrimitive.Close className="ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-full w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 transition-all duration-200 hover:scale-110 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none z-10">
+            <XIcon className="size-4 text-gray-600" />
+            <span className="sr-only">Close</span>
+          </SheetPrimitive.Close>
+        </motion.div>
       </SheetPrimitive.Content>
     </SheetPortal>
   );

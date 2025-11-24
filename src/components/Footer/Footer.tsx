@@ -3,7 +3,7 @@
 import { ChevronRight, Phone, Mail, MapPin, Clock } from "lucide-react";
 import { Button } from "../common/SMButton/SMButton";
 import SMLogo from "@/icons/SMLogo";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import footerConfig from "@/config/footer.json";
 import { useContacts } from "@/hooks/useContacts";
 
@@ -14,11 +14,17 @@ function TextSkeleton({ className = '' }: { className?: string }) {
 
 export function Footer() {
   const router = useRouter();
+  const pathname = usePathname();
   const { contacts, loading: contactsLoading } = useContacts();
 
   const handleNavigation = (path: string) => {
     router.push(path);
   };
+
+  // Не показываем футер на страницах админки
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="bg-[#F8F8F8] text-[#2E2E2E]">

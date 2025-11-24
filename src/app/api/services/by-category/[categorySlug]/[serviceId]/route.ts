@@ -36,9 +36,13 @@ export async function GET(
         },
         include: {
           category: true,
-          specialist: {
+          specialists: {
             include: {
-              category: true,
+              specialist: {
+                include: {
+                  category: true,
+                },
+              },
             },
           },
           questions: true,
@@ -49,20 +53,32 @@ export async function GET(
           },
         },
       });
+
+      // Transform data
+      if (service) {
+        service = {
+          ...service,
+          specialists: service.specialists.map(ss => ss.specialist),
+        };
+      }
     } else {
       // Если serviceId - строка, сначала пытаемся получить точное название из маппинга
       const serviceTitle = getServiceTitleByServiceId(categorySlug, serviceId);
-      
+
       // Получаем все услуги категории
-      const services = await prisma.service.findMany({
+      const servicesRaw = await prisma.service.findMany({
         where: {
           category_id: category.id,
         },
         include: {
           category: true,
-          specialist: {
+          specialists: {
             include: {
-              category: true,
+              specialist: {
+                include: {
+                  category: true,
+                },
+              },
             },
           },
           questions: true,
@@ -73,6 +89,12 @@ export async function GET(
           },
         },
       });
+
+      // Transform data
+      const services = servicesRaw.map(s => ({
+        ...s,
+        specialists: s.specialists.map(ss => ss.specialist),
+      }));
 
       // Если есть маппинг, ищем по точному названию (это самый надежный способ)
       if (serviceTitle) {

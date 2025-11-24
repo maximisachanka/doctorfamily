@@ -20,9 +20,13 @@ export async function GET(
       where: { id },
       include: {
         category: true,
-        specialist: {
+        specialists: {
           include: {
-            category: true,
+            specialist: {
+              include: {
+                category: true,
+              },
+            },
           },
         },
         questions: true,
@@ -41,7 +45,13 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(service);
+    // Transform data to match expected format
+    const transformedService = {
+      ...service,
+      specialists: service.specialists.map(ss => ss.specialist),
+    };
+
+    return NextResponse.json(transformedService);
   } catch (error) {
     console.error('Error fetching service:', error);
     return NextResponse.json(
