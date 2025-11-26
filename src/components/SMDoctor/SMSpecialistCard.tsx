@@ -5,6 +5,7 @@ import { Star, ArrowRight } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
+import { useRouter } from 'next/navigation';
 
 interface Specialist {
   id: number;
@@ -34,6 +35,8 @@ export function SpecialistCard({
   onDoctorClick,
   onBookAppointment,
 }: SpecialistCardProps) {
+  const router = useRouter();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -90,10 +93,10 @@ export function SpecialistCard({
             </div>
 
             <Button
-              onClick={() => onBookAppointment?.(specialist.id, specialist.name)}
+              onClick={() => router.push('/contacts')}
               className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
             >
-              Запись онлайн
+              Связаться с нами
               <ArrowRight className="w-5 h-5 ml-[2.5px]" />
             </Button>
           </div>

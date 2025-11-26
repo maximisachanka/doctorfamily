@@ -53,16 +53,18 @@ export function AdminSection({
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
             {/* Search */}
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
+                name="admin-search-query"
                 placeholder="Поиск..."
                 value={searchValue}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-10 pr-4 py-2.5 w-64 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all"
+                autoComplete="off"
+                className="pl-10 pr-4 py-2.5 w-full sm:w-64 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all"
               />
             </div>
 
@@ -70,10 +72,11 @@ export function AdminSection({
             {onAdd && (
               <Button
                 onClick={onAdd}
-                className="bg-gradient-to-r from-[#18A36C] to-[#15905f] hover:from-[#15905f] hover:to-[#128a54] text-white shadow-lg shadow-[#18A36C]/20 rounded-xl px-5 py-2.5 transition-all hover:shadow-xl hover:shadow-[#18A36C]/30"
+                className="bg-gradient-to-r from-[#18A36C] to-[#15905f] hover:from-[#15905f] hover:to-[#128a54] text-white shadow-lg shadow-[#18A36C]/20 rounded-xl px-5 py-2.5 transition-all hover:shadow-xl hover:shadow-[#18A36C]/30 whitespace-nowrap"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                {addButtonText}
+                <span className="hidden sm:inline">{addButtonText}</span>
+                <span className="sm:hidden">Добавить</span>
               </Button>
             )}
           </div>

@@ -68,6 +68,7 @@ export default function AdminServicesPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
+  const [isCheckingRole, setIsCheckingRole] = useState(true);
   const { success, error: showError } = useAlert();
   const confirmDialog = useConfirmDialog();
 
@@ -116,12 +117,15 @@ export default function AdminServicesPage() {
   }, [sessionVerified, hasAdminRole]);
 
   const checkAdminRole = async () => {
+    setIsCheckingRole(true);
     try {
       const res = await fetch('/api/admin/auth');
       const data = await res.json();
       setHasAdminRole(data.isAdmin);
     } catch (error) {
       setHasAdminRole(false);
+    } finally {
+      setIsCheckingRole(false);
     }
   };
 
@@ -287,12 +291,12 @@ export default function AdminServicesPage() {
   };
 
   // Loading state
-  if (status === 'loading' || hasAdminRole === null || sessionLoading) {
+  if (status === 'loading' || hasAdminRole === null || sessionLoading || isCheckingRole) {
     return <AdminAccessSkeleton />;
   }
 
-  // Not admin - show 404
-  if (status === 'unauthenticated' || !hasAdminRole) {
+  // Not admin - show 404 (только после завершения проверки)
+  if (status === 'unauthenticated' || hasAdminRole === false) {
     return <NotFound />;
   }
 

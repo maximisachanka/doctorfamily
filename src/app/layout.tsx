@@ -8,11 +8,22 @@ import { Providers } from "./providers";
 import { AIAssistant } from "@/components/AIAssistant/AIAssistant";
 import { CookieConsent } from "@/components/common/CookieConsent";
 import { LetterNotifications } from "@/components/LetterNotifications/LetterNotifications";
+import { ChatNotifications } from "@/components/ChatNotifications/ChatNotifications";
 import { Onboarding } from "@/components/Onboarding";
 
 export const metadata: Metadata = {
-  title: "Медицинский центр Doctor Family",
-  description: "Профессиональная медицина нового уровня",
+  title: {
+    default: "Doctor Family | Медицинский центр",
+    template: "Doctor Family | %s",
+  },
+  description: "Doctor Family - медицинский центр нового поколения. Профессиональная медицина, квалифицированные врачи, современное оборудование.",
+  keywords: ["Doctor Family", "медицинский центр", "клиника", "врачи", "медицина", "здоровье"],
+  openGraph: {
+    title: "Doctor Family | Медицинский центр",
+    description: "Doctor Family - медицинский центр нового поколения. Профессиональная медицина, квалифицированные врачи, современное оборудование.",
+    type: "website",
+    locale: "ru_RU",
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +43,7 @@ export default function RootLayout({
               <AIAssistant />
               <CookieConsent />
               <LetterNotifications />
+              <ChatNotifications />
               <Onboarding />
             </Router>
           </MenuProvider>

@@ -172,7 +172,9 @@ export async function PUT(
         reply: isFirstReply ? reply : existingLetter.reply,
         replied_at: isFirstReply ? new Date() : existingLetter.replied_at,
         is_read: true,
-        is_reply_read: false, // Сбрасываем флаг, чтобы пациент увидел уведомление
+        // Сбрасываем is_reply_read только для первого ответа
+        // Для последующих ответов оставляем как есть (не изменяем)
+        ...(isFirstReply && { is_reply_read: false }),
         has_new_patient_message: false, // Сбрасываем флаг нового сообщения от пациента
       },
       include: {

@@ -20,6 +20,7 @@ import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
 import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { useAlert } from '@/components/common/SMAlert';
+import { useUnreadCountsContext } from '@/contexts/UnreadCountsContext';
 
 interface LetterMessage {
   id: number;
@@ -57,6 +58,7 @@ export default function AdminLettersPage() {
   const [isChiefDoctor, setIsChiefDoctor] = useState(false);
   const confirmDialog = useConfirmDialog();
   const { success, error: showError } = useAlert();
+  const { refetch: refetchUnreadCounts } = useUnreadCountsContext();
 
   // Data states
   const [letters, setLetters] = useState<Letter[]>([]);
@@ -108,6 +110,14 @@ export default function AdminLettersPage() {
       if (res.ok) {
         const data = await res.json();
         setLetters(data);
+
+        // Помечаем все письма как прочитанные после загрузки
+        await fetch('/api/admin/letters/mark-all-read', {
+          method: 'POST',
+        });
+
+        // Обновляем счетчики непрочитанных
+        await refetchUnreadCounts();
       }
     } catch (error) {
       console.error('Error loading data:', error);

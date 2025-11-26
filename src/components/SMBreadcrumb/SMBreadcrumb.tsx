@@ -3,6 +3,7 @@
 import { ChevronRight, Home, Menu, ChevronDown } from 'lucide-react';
 import { useRouter } from '@/components/SMRouter/SMRouter';
 import { useState, useRef, useEffect } from 'react';
+import { generateBreadcrumbsFromUrl } from '@/utils/breadcrumbConfig';
 
 interface BreadcrumbItem {
   label: string;
@@ -10,13 +11,16 @@ interface BreadcrumbItem {
 }
 
 interface BreadcrumbProps {
-  items: BreadcrumbItem[];
+  items?: BreadcrumbItem[]; // Теперь опциональный
 }
 
-export function Breadcrumb({ items }: BreadcrumbProps) {
-  const { navigate } = useRouter();
+export function Breadcrumb({ items: customItems }: BreadcrumbProps) {
+  const { navigate, currentRoute } = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Генерируем breadcrumbs из URL, если не переданы кастомные
+  const items = customItems || generateBreadcrumbsFromUrl(currentRoute);
 
   // Закрываем dropdown при клике вне его
   useEffect(() => {

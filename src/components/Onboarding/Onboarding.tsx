@@ -35,6 +35,7 @@ interface Slide {
 
 const COOKIE_NAME = onboardingConfig.cookieName;
 const COOKIE_EXPIRE_DAYS = onboardingConfig.cookieExpireDays;
+const COOKIE_CONSENT_KEY = 'cookie-consent-accepted';
 
 // Cookie utilities
 const setCookie = (name: string, value: string, days: number) => {
@@ -256,7 +257,13 @@ const SlideIllustration = ({ slide, isMobile }: { slide: Slide; isMobile: boolea
 export function Onboarding({ forceShow = false, onComplete }: OnboardingProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
   const isMobile = useIsMobile();
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Get slides based on device type
   const slides: Slide[] = isMobile
@@ -264,19 +271,36 @@ export function Onboarding({ forceShow = false, onComplete }: OnboardingProps) {
     : (onboardingConfig.desktop.slides as Slide[]);
 
   useEffect(() => {
+    if (!isMounted) return; // Wait for mount
     if (isMobile === null) return; // Wait for device detection
 
     // Check if user has seen onboarding
     const hasSeenOnboarding = getCookie(COOKIE_NAME);
 
     if (forceShow || !hasSeenOnboarding) {
-      // Small delay for better UX
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-      }, 500);
-      return () => clearTimeout(timer);
+      // Check if cookie consent was handled (accepted or closed)
+      const cookieConsentHandled = localStorage.getItem(COOKIE_CONSENT_KEY);
+
+      if (cookieConsentHandled) {
+        // Cookie consent already handled, show onboarding immediately
+        const timer = setTimeout(() => setIsOpen(true), 500);
+        return () => clearTimeout(timer);
+      } else {
+        // Poll for cookie consent using interval
+        const intervalId = setInterval(() => {
+          const cookieConsentHandledNow = localStorage.getItem(COOKIE_CONSENT_KEY);
+          if (cookieConsentHandledNow) {
+            // Cookie consent handled, clear interval and show onboarding
+            clearInterval(intervalId);
+            setTimeout(() => setIsOpen(true), 500);
+          }
+        }, 1000); // Check every second
+
+        // Cleanup interval on unmount
+        return () => clearInterval(intervalId);
+      }
     }
-  }, [isMobile, forceShow]);
+  }, [isMobile, forceShow, isMounted]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -306,7 +330,8 @@ export function Onboarding({ forceShow = false, onComplete }: OnboardingProps) {
     handleClose();
   };
 
-  if (isMobile === null) return null;
+  // Don't render anything until mounted to avoid hydration mismatch
+  if (!isMounted || isMobile === null) return null;
 
   const isFirstSlide = currentSlide === 0;
   const isLastSlide = currentSlide === slides.length - 1;

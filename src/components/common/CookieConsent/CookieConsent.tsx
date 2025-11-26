@@ -8,16 +8,25 @@ const COOKIE_CONSENT_KEY = 'cookie-consent-accepted';
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     // Check if user has already accepted cookies
     const hasAccepted = localStorage.getItem(COOKIE_CONSENT_KEY);
+
     if (!hasAccepted) {
-      // Delay showing the banner slightly for better UX
-      const timer = setTimeout(() => setIsVisible(true), 1000);
+      // Show cookie consent immediately
+      const timer = setTimeout(() => setIsVisible(true), 500);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isMounted]);
 
   const handleAccept = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
@@ -25,8 +34,13 @@ export function CookieConsent() {
   };
 
   const handleClose = () => {
+    // Mark as handled even if not accepted (so onboarding can show)
+    localStorage.setItem(COOKIE_CONSENT_KEY, 'closed');
     setIsVisible(false);
   };
+
+  // Don't render anything until mounted to avoid hydration mismatch
+  if (!isMounted) return null;
 
   return (
     <AnimatePresence>

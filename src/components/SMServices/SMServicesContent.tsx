@@ -1,19 +1,19 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Stethoscope, Phone, ArrowRight } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
 import servicesContentConfig from '@/config/servicesContent.json';
 import { iconMap, IconName } from '@/utils/iconMapper';
+import { useRouter } from 'next/navigation';
 
 export function ServicesContent() {
+  const router = useRouter();
+
   return (
     <div className="p-4 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="mb-8 lg:mb-12"
         >
           <div className="text-center mb-6 lg:mb-8">
@@ -27,12 +27,9 @@ export function ServicesContent() {
               {servicesContentConfig.header.subtitle}
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+        <div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-8"
         >
           {servicesContentConfig.services.map((service, index) => {
@@ -60,12 +57,9 @@ export function ServicesContent() {
               </Card>
             );
           })}
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        <div
           className="text-center bg-white border border-[#E8E6E3] rounded-lg p-8 lg:p-12"
         >
           <h2 className="text-xl lg:text-2xl text-[#2E2E2E] mb-3 lg:mb-4">
@@ -77,11 +71,15 @@ export function ServicesContent() {
             <span className="lg:hidden inline">выше</span>
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 lg:gap-6">
-            <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto rounded-lg transition-all duration-300">
+            <Button
+              onClick={() => router.push('/contacts')}
+              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto rounded-lg transition-all duration-300"
+            >
               {servicesContentConfig.ctaSection.buttons.online}
               <ArrowRight className="w-5 h-5 ml-[2.5px]" />
             </Button>
             <Button
+              onClick={() => router.push('/contacts')}
               variant="outline"
               className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto rounded-lg transition-all duration-300"
             >
@@ -89,7 +87,7 @@ export function ServicesContent() {
               <Phone className="w-5 h-5 ml-[2.5px]" />
             </Button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

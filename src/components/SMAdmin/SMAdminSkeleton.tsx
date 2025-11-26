@@ -221,10 +221,29 @@ export function AdminContactsSkeleton() {
 // Скелетон для загрузки доступа (начальная загрузка)
 export function AdminAccessSkeleton() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <Skeleton className="w-10 h-10 mx-auto mb-4 rounded-full" />
-        <Skeleton className="h-5 w-48 mx-auto" />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 backdrop-blur-md">
+      {/* Блюр оверлей */}
+      <div className="absolute inset-0 bg-white/50 backdrop-blur-sm" />
+
+      {/* Центральный контент */}
+      <div className="relative z-10 text-center">
+        {/* Анимированный спиннер */}
+        <div className="mb-6">
+          <div className="w-16 h-16 mx-auto border-4 border-gray-200 border-t-[#18A36C] rounded-full animate-spin" />
+        </div>
+
+        {/* Текст загрузки */}
+        <div className="space-y-3">
+          <h2 className="text-xl font-semibold text-gray-800">Проверка доступа...</h2>
+          <p className="text-sm text-gray-500">Пожалуйста, подождите</p>
+        </div>
+
+        {/* Пульсирующие точки */}
+        <div className="flex justify-center gap-2 mt-6">
+          <div className="w-2 h-2 bg-[#18A36C] rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
+          <div className="w-2 h-2 bg-[#18A36C] rounded-full animate-pulse" style={{ animationDelay: '150ms' }} />
+          <div className="w-2 h-2 bg-[#18A36C] rounded-full animate-pulse" style={{ animationDelay: '300ms' }} />
+        </div>
       </div>
     </div>
   );

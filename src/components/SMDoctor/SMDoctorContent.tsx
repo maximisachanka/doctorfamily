@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Users, Star, Calendar, Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
-import { useRouter } from '@/components/SMRouter/SMRouter';
+import { useRouter as useSMRouter } from '@/components/SMRouter/SMRouter';
+import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import { getCategoryIdBySlug } from '@/utils/categoryMapper';
 import { SpecialistCardSkeleton } from './SMDoctorSkeleton';
@@ -36,7 +37,8 @@ interface Category {
 }
 
 export function DoctorsContent() {
-  const { currentRoute, navigate } = useRouter();
+  const { currentRoute, navigate } = useSMRouter();
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -207,7 +209,7 @@ export function DoctorsContent() {
             transition={{ delay: 0.4 }}
             className="bg-[#18A36C] rounded-lg p-6 text-white"
           >
-            <h2 className="text-xl mb-4">Запись на приём</h2>
+            <h2 className="text-xl mb-4">Связаться с нами</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
@@ -327,10 +329,10 @@ export function DoctorsContent() {
                         </div>
 
                         <Button
-                          onClick={() => handleBookAppointment(specialist.id, specialist.name)}
+                          onClick={() => router.push('/contacts')}
                           className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
                         >
-                          Запись онлайн
+                          Связаться с нами
                           <ArrowRight className="w-5 h-5 ml-[2.5px]" />
                         </Button>
                       </div>

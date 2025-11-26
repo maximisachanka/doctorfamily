@@ -137,14 +137,15 @@ export function Header() {
                     <span>{contacts?.phone_number || contactsConfig.phone}</span>
                   )}
                 </div>
-                <button className="text-sm text-gray-500 hover:text-[#18A36C] transition-colors">
+                <span className="text-sm text-gray-500">
                   {contactsConfig.callbackText}
-                </button>
+                </span>
               </div>
 
               <Button
                 size="lg"
                 className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 h-12"
+                onClick={() => handleNavigation("/contacts")}
               >
                 {contactsConfig.onlineBookingText}
               </Button>
@@ -176,8 +177,11 @@ export function Header() {
                 >
                   <Phone className="w-5 h-5" />
                 </Button>
-                <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-4 text-sm h-9">
-                  Запись
+                <Button
+                  onClick={() => handleNavigation("/contacts")}
+                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-4 text-sm h-9"
+                >
+                  Связаться с нами
                 </Button>
               </div>
             </div>

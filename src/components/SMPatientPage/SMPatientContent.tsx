@@ -22,7 +22,8 @@ import {
   ArrowRight
 } from "lucide-react";
 import { Button } from "../common/SMButton/SMButton";
-import { useRouter } from "../SMRouter/SMRouter";
+import { useRouter as useSMRouter } from "../SMRouter/SMRouter";
+import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../common/SMTabs/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../common/SMCard/card";
 import { Alert, AlertDescription } from "../common/SMAlert/alert";
@@ -39,7 +40,8 @@ interface ContactData {
 }
 
 export function SMPatientContent() {
-  const { navigate } = useRouter();
+  const { navigate } = useSMRouter();
+  const router = useRouter();
   const [contacts, setContacts] = useState<ContactData | null>(null);
   const [isLoadingContacts, setIsLoadingContacts] = useState(true);
 
@@ -285,6 +287,7 @@ export function SMPatientContent() {
                     <Phone className="w-5 h-5 ml-[2.5px]" />
                   </Button>
                   <Button
+                    onClick={() => router.push('/contacts')}
                     variant="outline"
                     className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
                   >
@@ -443,6 +446,7 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
+                    onClick={() => window.open('/documents/contract.pdf', '_blank')}
                   >
                     {patientContentConfig.documentsTab.contractButton}
                     <Download className="w-5 h-5 ml-[2.5px]" />
@@ -467,6 +471,7 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
+                    onClick={() => window.open('/documents/privacy-policy.pdf', '_blank')}
                   >
                     {patientContentConfig.documentsTab.privacyPolicyButton}
                     <ExternalLink className="w-5 h-5 ml-[2.5px]" />
@@ -513,6 +518,7 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
+                    onClick={() => window.open('/documents/consent-form.pdf', '_blank')}
                   >
                     {patientContentConfig.documentsTab.consentButton}
                     <Download className="w-5 h-5 ml-[2.5px]" />

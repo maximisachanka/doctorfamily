@@ -19,6 +19,8 @@ import { mapServiceFromDBToServiceData, ServiceFromDB } from '@/utils/serviceMap
 import { ServicePageSkeleton } from '../../components/SMServices/SMServicesSkeleton';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AskQuestionModal } from '@/components/AskQuestionModal/AskQuestionModal';
+import { useAskQuestionModal } from '@/hooks/useAskQuestionModal';
 
 // Функция для конвертации YouTube URL в embed формат
 function getYouTubeEmbedUrl(url: string): string | null {
@@ -178,6 +180,7 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showAllSpecialists, setShowAllSpecialists] = useState(false);
+  const askQuestionModal = useAskQuestionModal();
 
   // Photo modal state
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
@@ -255,7 +258,7 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
     const fallbackData = getServiceData(serviceId || '', categoryId || '');
     return (
       <div className="min-h-screen bg-white">
-        <Breadcrumb items={fallbackData.breadcrumbs} />
+        <Breadcrumb />
         <div className="max-w-6xl mx-auto px-4 py-6 lg:py-8">
           <p className="text-gray-600">Услуга не найдена</p>
         </div>
@@ -272,7 +275,7 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
           </div>
         </div>
       )}
-      <Breadcrumb items={serviceData.breadcrumbs} />
+      <Breadcrumb />
       
       <div className="max-w-6xl mx-auto px-4 py-6 lg:py-8">
         <div className="space-y-6">
@@ -294,12 +297,29 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
                 </p>
               </div>
 
+              {/* Images Section */}
               <div className="mb-6">
-                <ImageWithFallback
-                  src={serviceData.image}
-                  alt={serviceData.title}
-                  className="w-full h-64 lg:h-80 object-cover rounded-lg"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Main Image - always visible */}
+                  <div className="border border-[#E8E6E3] rounded-lg overflow-hidden">
+                    <ImageWithFallback
+                      src={serviceData.image}
+                      alt={serviceData.title}
+                      className="w-full h-64 md:h-80 object-cover"
+                    />
+                  </div>
+
+                  {/* Secondary Image - tablet and desktop, from gallery if available */}
+                  {serviceData.gallery && serviceData.gallery.length > 0 && (
+                    <div className="hidden md:block border border-[#E8E6E3] rounded-lg overflow-hidden">
+                      <ImageWithFallback
+                        src={serviceData.gallery[0]}
+                        alt={`${serviceData.title} - дополнительное изображение`}
+                        className="w-full h-80 object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -533,7 +553,10 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
                 <p className="text-sm text-gray-600 mb-4">
                   Свяжитесь с нами, и мы предоставим необходимую информацию.
                 </p>
-                <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto">
+                <Button
+                  onClick={askQuestionModal.open}
+                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto"
+                >
                   Задать вопрос
                   <MessageSquare className="w-4 h-4 ml-[2.5px]" />
                 </Button>
@@ -554,6 +577,16 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
           title={serviceData.title}
         />
       )}
+
+      {/* Ask Question Modal */}
+      <AskQuestionModal
+        isOpen={askQuestionModal.isOpen}
+        onClose={askQuestionModal.close}
+        onComplete={() => {
+          // Здесь можно добавить логику для открытия чата или другого действия
+          console.log('AI помощник готов к работе');
+        }}
+      />
     </div>
   );
 }

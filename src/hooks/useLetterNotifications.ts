@@ -143,18 +143,7 @@ export function useLetterNotifications() {
     };
   }, [status, checkForUnreadReplies]);
 
-  // Clean up notified letters when they've been read
-  const clearNotifiedLetter = useCallback((letterId: number) => {
-    const notifiedLetters = JSON.parse(
-      localStorage.getItem(NOTIFIED_LETTERS_KEY) || '[]'
-    ) as number[];
-    // Remove both first reply notification and thread message notifications
-    const updated = notifiedLetters.filter((id) => id !== letterId && id !== letterId + 10000);
-    localStorage.setItem(NOTIFIED_LETTERS_KEY, JSON.stringify(updated));
-  }, []);
-
   return {
     checkForUnreadReplies,
-    clearNotifiedLetter,
   };
 }

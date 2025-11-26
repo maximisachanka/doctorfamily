@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { UserCog, Loader2, Calendar, Shield, User, X, Eye, EyeOff, Lock, CheckCircle, AlertCircle } from 'lucide-react';
+import { UserCog, Loader2, Calendar, Shield, User, X, Eye, EyeOff, Lock, CheckCircle, AlertCircle, Headphones } from 'lucide-react';
 import { Pagination } from '@/components/common/SMPagination/SMPagination';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
 import {
@@ -26,15 +26,17 @@ interface UserData {
   email: string | null;
   phone: string | null;
   login: string;
-  role: 'USER' | 'ADMIN';
+  role: 'USER' | 'OPERATOR' | 'ADMIN';
   avatar_url: string | null;
   registration_date: string;
+  is_messages_blocked: boolean;
 }
 
 export default function AdminUsersPage() {
   const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
   const [isChiefDoctor, setIsChiefDoctor] = useState<boolean | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const confirmDialog = useConfirmDialog();
   const { success, error: showError } = useAlert();
 
@@ -43,7 +45,7 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterRole, setFilterRole] = useState<'all' | 'admin' | 'user'>('all');
+  const [filterRole, setFilterRole] = useState<'all' | 'admin' | 'operator'>('all');
   const ITEMS_PER_PAGE = 12;
 
   // Password confirmation modal
@@ -65,18 +67,20 @@ export default function AdminUsersPage() {
 
   // Load data when session is verified
   useEffect(() => {
-    if (sessionVerified && isChiefDoctor) {
+    if (sessionVerified && (isChiefDoctor || isAdmin)) {
       loadData();
     }
-  }, [sessionVerified, isChiefDoctor]);
+  }, [sessionVerified, isChiefDoctor, isAdmin]);
 
   const checkAdminRole = async () => {
     try {
       const res = await fetch('/api/admin/auth');
       const data = await res.json();
       setIsChiefDoctor(data.isChiefDoctor === true);
+      setIsAdmin(data.isAdmin === true);
     } catch (error) {
       setIsChiefDoctor(false);
+      setIsAdmin(false);
     }
   };
 
@@ -106,8 +110,8 @@ export default function AdminUsersPage() {
     // Filter by role
     if (filterRole === 'admin') {
       result = result.filter(u => u.role === 'ADMIN');
-    } else if (filterRole === 'user') {
-      result = result.filter(u => u.role === 'USER');
+    } else if (filterRole === 'operator') {
+      result = result.filter(u => u.role === 'OPERATOR');
     }
 
     // Filter by search query
@@ -125,9 +129,13 @@ export default function AdminUsersPage() {
     return result;
   }, [users, searchQuery, filterRole]);
 
-  // Count admins
+  // Count roles
   const adminsCount = useMemo(() => {
     return users.filter(u => u.role === 'ADMIN').length;
+  }, [users]);
+
+  const operatorsCount = useMemo(() => {
+    return users.filter(u => u.role === 'OPERATOR').length;
   }, [users]);
 
   // Reset page when search or filter changes
@@ -143,9 +151,13 @@ export default function AdminUsersPage() {
   }, [filteredUsers, currentPage]);
 
   // Handle role change
-  const handleChangeRole = async (user: UserData, newRole: 'USER' | 'ADMIN') => {
-    // If promoting to admin - show password confirmation modal
+  const handleChangeRole = async (user: UserData, newRole: 'USER' | 'OPERATOR' | 'ADMIN') => {
+    // If promoting to admin - show password confirmation modal (only chief doctor can do this)
     if (newRole === 'ADMIN') {
+      if (!isChiefDoctor) {
+        showError('Только главный врач может назначать администраторов');
+        return;
+      }
       setPasswordModalUser(user);
       setAdminPassword('');
       setPasswordError(null);
@@ -153,21 +165,56 @@ export default function AdminUsersPage() {
       return;
     }
 
-    // If demoting from admin - show confirm dialog
-    const confirmed = await confirmDialog.confirm({
-      title: 'Снять права администратора',
-      message: `Вы уверены, что хотите снять права администратора с пользователя "${getFullName(user)}"?`,
-      confirmText: 'Подтвердить',
-      cancelText: 'Отмена',
-      variant: 'danger',
-    });
+    // If promoting to operator - show confirm dialog
+    if (newRole === 'OPERATOR') {
+      const confirmed = await confirmDialog.confirm({
+        title: 'Назначить оператором',
+        message: `Вы уверены, что хотите назначить пользователя "${getFullName(user)}" оператором?`,
+        confirmText: 'Назначить',
+        cancelText: 'Отмена',
+      });
 
-    if (!confirmed) return;
+      if (!confirmed) return;
+      await updateUserRole(user.id, newRole);
+      return;
+    }
 
-    await updateUserRole(user.id, newRole);
+    // If demoting from admin - show confirm dialog (only chief doctor can do this)
+    if (user.role === 'ADMIN') {
+      if (!isChiefDoctor) {
+        showError('Только главный врач может снимать права администратора');
+        return;
+      }
+      const confirmed = await confirmDialog.confirm({
+        title: 'Снять права администратора',
+        message: `Вы уверены, что хотите снять права администратора с пользователя "${getFullName(user)}"?`,
+        confirmText: 'Подтвердить',
+        cancelText: 'Отмена',
+        variant: 'danger',
+      });
+
+      if (!confirmed) return;
+      await updateUserRole(user.id, newRole);
+      return;
+    }
+
+    // If demoting from operator - show confirm dialog
+    if (user.role === 'OPERATOR') {
+      const confirmed = await confirmDialog.confirm({
+        title: 'Снять права оператора',
+        message: `Вы уверены, что хотите снять права оператора с пользователя "${getFullName(user)}"?`,
+        confirmText: 'Подтвердить',
+        cancelText: 'Отмена',
+        variant: 'warning',
+      });
+
+      if (!confirmed) return;
+      await updateUserRole(user.id, newRole);
+      return;
+    }
   };
 
-  const updateUserRole = async (userId: number, newRole: 'USER' | 'ADMIN', password?: string) => {
+  const updateUserRole = async (userId: number, newRole: 'USER' | 'OPERATOR' | 'ADMIN', password?: string) => {
     try {
       const res = await fetch('/api/admin/users', {
         method: 'PUT',
@@ -181,7 +228,12 @@ export default function AdminUsersPage() {
 
       if (res.ok) {
         await loadData();
-        success(newRole === 'ADMIN' ? 'Администратор назначен' : 'Права администратора сняты');
+        const messages = {
+          ADMIN: 'Администратор назначен',
+          OPERATOR: 'Оператор назначен',
+          USER: 'Роль изменена на пользователя',
+        };
+        success(messages[newRole] || 'Роль изменена');
         return true;
       } else {
         const error = await res.json();
@@ -242,12 +294,12 @@ export default function AdminUsersPage() {
   };
 
   // Loading state
-  if (status === 'loading' || isChiefDoctor === null || sessionLoading) {
+  if (status === 'loading' || isChiefDoctor === null || isAdmin === null || sessionLoading) {
     return <AdminAccessSkeleton />;
   }
 
-  // Not chief doctor - show 404
-  if (status === 'unauthenticated' || !isChiefDoctor) {
+  // Not chief doctor or admin - show 404
+  if (status === 'unauthenticated' || (!isChiefDoctor && !isAdmin)) {
     return <NotFound />;
   }
 
@@ -271,7 +323,7 @@ export default function AdminUsersPage() {
             onSearchChange={setSearchQuery}
           >
             {/* Filter Tabs */}
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-6 flex-wrap">
               <button
                 onClick={() => setFilterRole('all')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filterRole === 'all'
@@ -285,7 +337,7 @@ export default function AdminUsersPage() {
               <button
                 onClick={() => setFilterRole('admin')}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filterRole === 'admin'
-                    ? 'bg-[#18A36C] text-white shadow-md'
+                    ? 'bg-emerald-500 text-white shadow-md'
                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                   }`}
               >
@@ -294,21 +346,29 @@ export default function AdminUsersPage() {
                 {adminsCount > 0 && (
                   <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${filterRole === 'admin'
                       ? 'bg-white/20 text-white'
-                      : 'bg-[#18A36C]/10 text-[#18A36C]'
+                      : 'bg-emerald-500/10 text-emerald-600'
                     }`}>
                     {adminsCount}
                   </span>
                 )}
               </button>
               <button
-                onClick={() => setFilterRole('user')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filterRole === 'user'
+                onClick={() => setFilterRole('operator')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${filterRole === 'operator'
                     ? 'bg-blue-500 text-white shadow-md'
                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                   }`}
               >
-                <User className="w-4 h-4" />
-                Пользователи
+                <Headphones className="w-4 h-4" />
+                Операторы
+                {operatorsCount > 0 && (
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${filterRole === 'operator'
+                      ? 'bg-white/20 text-white'
+                      : 'bg-blue-500/10 text-blue-600'
+                    }`}>
+                    {operatorsCount}
+                  </span>
+                )}
               </button>
             </div>
 
@@ -326,7 +386,9 @@ export default function AdminUsersPage() {
                       <ItemCard key={user.id}>
                         <div className="flex gap-4">
                           {/* Avatar */}
-                          <div className={`w-12 h-12 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center ${user.role === 'ADMIN' ? 'bg-[#18A36C]' : 'bg-blue-500'}`}>
+                          <div className={`w-12 h-12 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center ${
+                            user.role === 'ADMIN' ? 'bg-emerald-500' : user.role === 'OPERATOR' ? 'bg-blue-500' : 'bg-gray-500'
+                          }`}>
                             {user.avatar_url ? (
                               <img
                                 src={user.avatar_url}
@@ -363,6 +425,8 @@ export default function AdminUsersPage() {
                           </p>
                           {user.role === 'ADMIN' ? (
                             <Badge variant="success">Администратор</Badge>
+                          ) : user.role === 'OPERATOR' ? (
+                            <Badge variant="primary">Оператор</Badge>
                           ) : (
                             <Badge variant="secondary">Пользователь</Badge>
                           )}
@@ -371,22 +435,41 @@ export default function AdminUsersPage() {
                         {/* Actions */}
                         <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100">
                           {user.role === 'USER' ? (
-                            <button
-                              onClick={() => handleChangeRole(user, 'ADMIN')}
-                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-[#18A36C] text-white text-sm font-medium rounded-lg hover:bg-[#15905f] transition-colors"
-                            >
-                              <Shield className="w-4 h-4" />
-                              Назначить админом
-                            </button>
-                          ) : (
+                            <>
+                              <button
+                                onClick={() => handleChangeRole(user, 'OPERATOR')}
+                                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-blue-500 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                              >
+                                <Headphones className="w-4 h-4 flex-shrink-0" />
+                                <span className="truncate">Оператор</span>
+                              </button>
+                              {isChiefDoctor && (
+                                <button
+                                  onClick={() => handleChangeRole(user, 'ADMIN')}
+                                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-500 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-emerald-600 transition-colors"
+                                >
+                                  <Shield className="w-4 h-4 flex-shrink-0" />
+                                  <span className="truncate">Админ</span>
+                                </button>
+                              )}
+                            </>
+                          ) : user.role === 'OPERATOR' ? (
                             <button
                               onClick={() => handleChangeRole(user, 'USER')}
-                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-gray-500 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors"
                             >
-                              <X className="w-4 h-4" />
-                              Снять права
+                              <X className="w-4 h-4 flex-shrink-0" />
+                              <span className="truncate">Снять оператора</span>
                             </button>
-                          )}
+                          ) : user.role === 'ADMIN' && isChiefDoctor ? (
+                            <button
+                              onClick={() => handleChangeRole(user, 'USER')}
+                              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-red-500 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                            >
+                              <X className="w-4 h-4 flex-shrink-0" />
+                              <span className="truncate">Снять админа</span>
+                            </button>
+                          ) : null}
                         </div>
                       </ItemCard>
                     ))}
@@ -472,24 +555,28 @@ export default function AdminUsersPage() {
                       </div>
                     )}
 
-                    <div className="relative">
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={adminPassword}
-                        onChange={(e) => setAdminPassword(e.target.value)}
-                        placeholder="Введите ваш пароль"
-                        className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all"
-                        disabled={passwordLoading}
-                        onKeyDown={(e) => e.key === 'Enter' && handlePasswordConfirm()}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                      </button>
-                    </div>
+                    <form autoComplete="off" onSubmit={(e) => { e.preventDefault(); handlePasswordConfirm(); }}>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          name="admin-confirmation-password"
+                          value={adminPassword}
+                          onChange={(e) => setAdminPassword(e.target.value)}
+                          placeholder="Введите ваш пароль"
+                          autoComplete="off"
+                          className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all"
+                          disabled={passwordLoading}
+                          onKeyDown={(e) => e.key === 'Enter' && handlePasswordConfirm()}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
+                        >
+                          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </form>
                   </div>
 
                   {/* Actions */}

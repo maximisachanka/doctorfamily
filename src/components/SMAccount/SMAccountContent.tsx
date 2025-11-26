@@ -223,6 +223,10 @@ export function AccountContent() {
       setLetters(prev => prev.map(l =>
         l.id === letterId ? { ...l, is_reply_read: true } : l
       ));
+
+      // Очищаем уведомление из localStorage после прочтения
+      const { clearLetterNotification } = await import('@/utils/letterNotifications');
+      clearLetterNotification(letterId);
     } catch (error) {
       console.error('Error marking reply as read:', error);
     }

@@ -3,9 +3,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare, ShoppingBag, Phone, Mail, UserCog } from 'lucide-react';
+import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare, ShoppingBag, Phone, Mail, UserCog, MessagesSquare } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
+import { useUnreadCountsContext } from '@/contexts/UnreadCountsContext';
 
 interface MenuItem {
   id: string;
@@ -13,9 +14,17 @@ interface MenuItem {
   icon: React.ReactNode;
   href: string;
   chiefDoctorOnly?: boolean; // Only visible to CHIEF_DOCTOR
+  operatorAccess?: boolean;  // Visible to OPERATOR, ADMIN, CHIEF_DOCTOR
 }
 
 const allMenuItems: MenuItem[] = [
+  {
+    id: 'chat',
+    title: 'Чат',
+    icon: <MessagesSquare className="w-4 h-4" />,
+    href: '/admin/chat',
+    operatorAccess: true,
+  },
   {
     id: 'specialists',
     title: 'Специалисты',
@@ -76,7 +85,7 @@ const allMenuItems: MenuItem[] = [
     title: 'Пользователи',
     icon: <UserCog className="w-4 h-4" />,
     href: '/admin/users',
-    chiefDoctorOnly: true,
+    // Доступно для ADMIN и CHIEF_DOCTOR
   },
 ];
 
@@ -88,17 +97,18 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isChiefDoctor, setIsChiefDoctor] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const { counts } = useUnreadCountsContext();
 
-  // Check if user is chief doctor
+  // Check user role
   useEffect(() => {
     const checkRole = async () => {
       try {
         const res = await fetch('/api/admin/auth');
         const data = await res.json();
-        setIsChiefDoctor(data.isChiefDoctor === true);
+        setUserRole(data.role || null);
       } catch (error) {
-        setIsChiefDoctor(false);
+        setUserRole(null);
       }
     };
     checkRole();
@@ -106,13 +116,27 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
 
   // Filter menu items based on role
   const menuItems = useMemo(() => {
+    if (!userRole) return [];
+
     return allMenuItems.filter(item => {
-      if (item.chiefDoctorOnly) {
-        return isChiefDoctor;
+      // Для OPERATOR доступен только "Чат"
+      if (userRole === 'OPERATOR') {
+        return item.operatorAccess === true;
       }
-      return true;
+
+      // Для CHIEF_DOCTOR доступны все, включая chiefDoctorOnly
+      if (userRole === 'CHIEF_DOCTOR') {
+        return true;
+      }
+
+      // Для ADMIN доступны все кроме chiefDoctorOnly
+      if (userRole === 'ADMIN') {
+        return !item.chiefDoctorOnly;
+      }
+
+      return false;
     });
-  }, [isChiefDoctor]);
+  }, [userRole]);
 
   const handleItemClick = (item: MenuItem) => {
     if (onNavigate) {
@@ -135,6 +159,20 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
     return pathname === href || pathname?.startsWith(href + '/');
   };
 
+  // Получаем количество непрочитанных для конкретного пункта меню
+  const getUnreadCount = (itemId: string) => {
+    if (itemId === 'feedbacks') {
+      return counts.feedbacks;
+    }
+    if (itemId === 'letters') {
+      return counts.letters;
+    }
+    if (itemId === 'chat') {
+      return counts.chats || 0;
+    }
+    return 0;
+  };
+
   const MenuContent = () => (
     <div className="bg-white h-full flex flex-col">
       {/* Header */}
@@ -155,36 +193,45 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto">
         <nav className="py-4 px-2">
-          {menuItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => handleItemClick(item)}
-              className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group rounded-lg mx-1 mb-1 ${
-                isActive(item.href)
-                  ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
-                  : 'hover:bg-gray-50'
-              }`}
-              style={{ width: 'calc(100% - 8px)' }}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`flex-shrink-0 transition-all duration-300 ${
+          {menuItems.map((item) => {
+            const unreadCount = getUnreadCount(item.id);
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleItemClick(item)}
+                className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group rounded-lg mx-1 mb-1 ${
                   isActive(item.href)
-                    ? 'text-[#18A36C] scale-110'
-                    : 'text-gray-500 group-hover:text-[#18A36C] group-hover:scale-110'
-                }`}>
-                  {item.icon}
+                    ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
+                    : 'hover:bg-gray-50'
+                }`}
+                style={{ width: 'calc(100% - 8px)' }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`flex-shrink-0 transition-all duration-300 relative ${
+                    isActive(item.href)
+                      ? 'text-[#18A36C] scale-110'
+                      : 'text-gray-500 group-hover:text-[#18A36C] group-hover:scale-110'
+                  }`}>
+                    {item.icon}
+                    {/* Красный индикатор для непрочитанных */}
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full px-1">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  <span className={`font-medium transition-colors duration-300 ${
+                    isActive(item.href) ? 'text-[#18A36C]' : 'text-gray-700 group-hover:text-[#18A36C]'
+                  }`}>
+                    {item.title}
+                  </span>
                 </div>
-                <span className={`font-medium transition-colors duration-300 ${
-                  isActive(item.href) ? 'text-[#18A36C]' : 'text-gray-700 group-hover:text-[#18A36C]'
-                }`}>
-                  {item.title}
-                </span>
-              </div>
-              {isActive(item.href) && (
-                <ChevronRight className="w-4 h-4 text-[#18A36C]" />
-              )}
-            </button>
-          ))}
+                {isActive(item.href) && (
+                  <ChevronRight className="w-4 h-4 text-[#18A36C]" />
+                )}
+              </button>
+            );
+          })}
         </nav>
       </div>
 

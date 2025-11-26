@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Star, FileText, MessageSquare, HelpCircle, ExternalLink, Phone, Globe, MapPin, Mail, Calendar, Building2, Users, DollarSign, Clock, Briefcase, ArrowLeft } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
@@ -14,6 +13,8 @@ import { PartnerModal } from './SMPartnerModal';
 import { VacancyModal } from './SMVacancyModal';
 import { LeaveReviewModal } from './LeaveReviewModal';
 import { useContacts } from '@/hooks/useContacts';
+import { AskQuestionModal } from '../AskQuestionModal/AskQuestionModal';
+import { useAskQuestionModal } from '@/hooks/useAskQuestionModal';
 import {
   PartnersListSkeleton,
   SinglePartnerSkeleton,
@@ -93,6 +94,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   const [singleVacancy, setSingleVacancy] = useState<Vacancy | null>(null);
   const [clinicReviewsData, setClinicReviewsData] = useState<ClinicReview[]>([]);
   const [clinicFaqsData, setClinicFaqsData] = useState<ClinicFaq[]>([]);
+  const askQuestionModal = useAskQuestionModal();
   const [reviewsTotal, setReviewsTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [faqLoading, setFaqLoading] = useState(false);
@@ -224,16 +226,14 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
         <Breadcrumb items={breadcrumbItems} />
         <div className="p-4 lg:p-8">
           <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <div
               className="mb-8"
             >
               <h1 className="text-2xl lg:text-3xl text-[#212121] mb-4">{clinicItem.title}</h1>
               <p className="text-[#212121] leading-relaxed text-sm lg:text-base">
                 {clinicItem.fullDescription}
               </p>
-            </motion.div>
+            </div>
 
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -312,7 +312,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
               <p className="text-sm text-gray-600 mb-4">
                 Свяжитесь с нами, и мы предоставим необходимую информацию.
               </p>
-              <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
+              <Button
+                onClick={askQuestionModal.open}
+                className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+              >
                 <MessageSquare className="w-4 h-4 mr-[2.5px]" />
                 Задать вопрос
               </Button>
@@ -407,7 +410,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 <p className="text-sm text-gray-600 mb-4">
                   Свяжитесь с нами, и мы предоставим необходимую информацию.
                 </p>
-                <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
+                <Button
+                  onClick={askQuestionModal.open}
+                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+                >
                   <MessageSquare className="w-4 h-4 mr-[2.5px]" />
                   Задать вопрос
                 </Button>
@@ -429,9 +435,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
 
         <div className="p-4 lg:p-8">
           <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <div
               className="mb-6"
             >
               <Button
@@ -449,7 +453,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                   {clinicItem.fullDescription}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             <Card className="p-6 border-gray-200">
               <div className="mb-6">
@@ -574,9 +578,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
 
         <div className="p-4 lg:p-8">
           <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <div
               className="mb-6"
             >
               <Button
@@ -594,7 +596,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                   {clinicItem.fullDescription}
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {loading ? (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -672,7 +674,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 <p className="text-sm text-gray-600 mb-4">
                   Свяжитесь с нами, и мы предоставим необходимую информацию.
                 </p>
-                <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
+                <Button
+                  onClick={askQuestionModal.open}
+                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+                >
                   <MessageSquare className="w-4 h-4 mr-[2.5px]" />
                   Задать вопрос
                 </Button>
@@ -721,9 +726,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
 
         <div className="p-4 lg:p-8">
           <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+            <div
               className="mb-6"
             >
               <Button
@@ -734,7 +737,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 <ArrowLeft className="w-4 h-4 mr-[2.5px]" />
                 Вернуться к вакансиям
               </Button>
-            </motion.div>
+            </div>
 
             <div className="max-w-4xl mx-auto">
               <Card className="p-6 lg:p-8">
@@ -793,7 +796,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 <p className="text-sm text-gray-600 mb-4">
                   Свяжитесь с нами, и мы предоставим необходимую информацию.
                 </p>
-                <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
+                <Button
+                  onClick={askQuestionModal.open}
+                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+                >
                   <MessageSquare className="w-4 h-4 mr-[2.5px]" />
                   Задать вопрос
                 </Button>
@@ -812,9 +818,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
 
       <div className="p-4 lg:p-8">
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          <div
             className="mb-8"
           >
             <h1 className="text-2xl lg:text-3xl text-[#212121] mb-4">{clinicItem.title}</h1>
@@ -823,7 +827,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 {clinicItem.description}
               </p>
             )}
-          </motion.div>
+          </div>
 
           {/* Content based on item type */}
           {itemId === 'licenses' && (
@@ -1031,7 +1035,10 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
               <p className="text-sm text-gray-600 mb-4">
                 Свяжитесь с нами, и мы предоставим необходимую информацию.
               </p>
-              <Button className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
+              <Button
+                onClick={askQuestionModal.open}
+                className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+              >
                 <MessageSquare className="w-4 h-4 mr-[2.5px]" />
                 Задать вопрос
               </Button>
@@ -1052,6 +1059,16 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
         vacancy={selectedVacancy}
         open={isVacancyModalOpen}
         onOpenChange={setIsVacancyModalOpen}
+      />
+
+      {/* Ask Question Modal */}
+      <AskQuestionModal
+        isOpen={askQuestionModal.isOpen}
+        onClose={askQuestionModal.close}
+        onComplete={() => {
+          // Здесь можно добавить логику для открытия чата или другого действия
+          console.log('AI помощник готов к работе');
+        }}
       />
     </>
   );

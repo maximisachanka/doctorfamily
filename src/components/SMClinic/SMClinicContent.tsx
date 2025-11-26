@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { Building2, FileText, Users, Star, HelpCircle, Briefcase, ArrowRight } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
@@ -25,9 +24,7 @@ export function ClinicContent() {
   return (
     <div className="p-4 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
           className="mb-8 lg:mb-12"
         >
           <div className="text-center mb-6 lg:mb-8">
@@ -39,12 +36,9 @@ export function ClinicContent() {
               {clinicContentConfig.header.subtitle}
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+        <div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-8"
         >
           {clinicMenuData.map((section, index) => (
@@ -99,12 +93,9 @@ export function ClinicContent() {
               </div>
             </Card>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        <div
           className="bg-[#18A36C] rounded-lg p-6 lg:p-8 text-center"
         >
           <div className="max-w-2xl mx-auto">
@@ -122,12 +113,9 @@ export function ClinicContent() {
               <ArrowRight className="w-5 h-5 ml-[2.5px]" />
             </Button>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+        <div
           className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-8"
         >
           {clinicContentConfig.stats.map((stat, index) => (
@@ -136,7 +124,7 @@ export function ClinicContent() {
               <div className="text-sm text-gray-600">{stat.label}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

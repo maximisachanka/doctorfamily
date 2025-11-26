@@ -32,13 +32,23 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (!user || (user.role !== "ADMIN" && user.role !== "CHIEF_DOCTOR")) {
+    if (!user || !["ADMIN", "CHIEF_DOCTOR", "OPERATOR"].includes(user.role)) {
       return NextResponse.json(
         { error: "Нет прав доступа" },
         { status: 403 }
       );
     }
 
+    // Операторы не требуют проверки пароля - у них доступ только к чату
+    if (user.role === "OPERATOR") {
+      return NextResponse.json({
+        success: true,
+        user,
+        message: "Вход выполнен успешно"
+      });
+    }
+
+    // Для ADMIN и CHIEF_DOCTOR требуется пароль
     const { password } = await request.json();
 
     if (password !== ADMIN_PASSWORD) {
@@ -95,8 +105,9 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({
-      isAdmin: user.role === "ADMIN" || user.role === "CHIEF_DOCTOR",
+      isAdmin: ["ADMIN", "CHIEF_DOCTOR", "OPERATOR"].includes(user.role),
       isChiefDoctor: user.role === "CHIEF_DOCTOR",
+      isOperator: user.role === "OPERATOR",
       role: user.role
     });
   } catch (error) {

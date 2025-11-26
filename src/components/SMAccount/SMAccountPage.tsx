@@ -306,8 +306,11 @@ export function SMAccountPage() {
                 </CardContent>
               </Card>
             ))}
-            <Button className="w-full bg-[#18A36C] hover:bg-[#18A36C]/90 text-white">
-              Записаться на прием
+            <Button
+              onClick={() => router.push('/contacts')}
+              className="w-full bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+            >
+              Связаться с нами
             </Button>
           </motion.div>
         </TabsContent>

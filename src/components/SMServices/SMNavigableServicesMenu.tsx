@@ -108,7 +108,7 @@ function MenuItemComponent({
         </div>
       </Button>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {hasChildren && isExpanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
@@ -118,13 +118,8 @@ function MenuItemComponent({
             className="overflow-hidden"
           >
             <div className="bg-white">
-              {item.children!.map((child, index) => (
-                <motion.div
-                  key={child.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.2 }}
-                >
+              {item.children!.map((child) => (
+                <div key={child.id}>
                   <MenuItemComponent
                     item={child}
                     level={level + 1}
@@ -134,7 +129,7 @@ function MenuItemComponent({
                     onToggleExpand={onToggleExpand}
                     currentRoute={currentRoute}
                   />
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
@@ -188,7 +183,10 @@ export function NavigableServicesMenu() {
   }, [currentRoute, menuData]);
 
   const handleItemClick = (itemId: string, item: MenuItem) => {
-    setActiveItem(itemId);
+    // Обновляем activeItem только если он изменился
+    if (activeItem !== itemId) {
+      setActiveItem(itemId);
+    }
 
     let categoryId = '';
     let foundItem: MenuItem | null = null;

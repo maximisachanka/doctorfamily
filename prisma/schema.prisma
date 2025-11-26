@@ -161,6 +161,7 @@ enum Role {
   USER
   ADMIN
   CHIEF_DOCTOR
+  OPERATOR
 }
 
 model Patient {
@@ -175,7 +176,10 @@ model Patient {
   role                 Role     @default(USER)
   is_messages_blocked  Boolean  @default(false) // Заблокирован ли пользователь от отправки писем
 
-  letters              Letter[] // Письма главному врачу
+  letters              Letter[]                // Письма главному врачу
+  operator_chats       OperatorChat[]          // Чаты с операторами (как пациент)
+  assigned_chats       OperatorChat[]          @relation("OperatorChats") // Чаты где этот пользователь - оператор
+  chat_messages        OperatorChatMessage[]   // Сообщения в чатах
 
   @@map("patients")
 }
@@ -234,4 +238,53 @@ model LetterMessage {
   @@map("letter_messages")
   @@index([letter_id])
   @@index([is_read])
+}
+
+// Чаты с операторами
+model OperatorChat {
+  id                    Int                    @id @default(autoincrement()) @map("chat_id")
+  patient_id            Int
+  operator_id           Int?                    // ID оператора, который взял чат (может быть null если никто не взял)
+  status                ChatStatus              @default(WAITING)
+  created_at            DateTime                @default(now())
+  updated_at            DateTime                @updatedAt
+  last_message_at       DateTime?               // Время последнего сообщения
+  has_unread_operator   Boolean                 @default(true)  // Есть непрочитанные сообщения для оператора
+  has_unread_patient    Boolean                 @default(false) // Есть непрочитанные сообщения для пациента
+
+  patient               Patient                 @relation(fields: [patient_id], references: [id], onDelete: Cascade)
+  operator              Patient?                @relation("OperatorChats", fields: [operator_id], references: [id], onDelete: SetNull)
+  messages              OperatorChatMessage[]
+
+  @@map("operator_chats")
+  @@index([patient_id])
+  @@index([operator_id])
+  @@index([status])
+  @@index([has_unread_operator])
+}
+
+enum ChatStatus {
+  WAITING   // Ожидает ответа оператора
+  ACTIVE    // Активный чат
+  CLOSED    // Закрытый чат
+}
+
+// Сообщения в чате с оператором
+model OperatorChatMessage {
+  id             Int       @id @default(autoincrement()) @map("message_id")
+  chat_id        Int
+  sender_id      Int       // ID отправителя (patient_id)
+  sender_type    String    // 'patient' или 'operator'
+  content        String    @db.Text
+  created_at     DateTime  @default(now())
+  is_read        Boolean   @default(false)
+
+  chat           OperatorChat @relation(fields: [chat_id], references: [id], onDelete: Cascade)
+  sender         Patient      @relation(fields: [sender_id], references: [id], onDelete: Cascade)
+
+  @@map("operator_chat_messages")
+  @@index([chat_id])
+  @@index([sender_id])
+  @@index([is_read])
+  @@index([created_at])
 }

@@ -34,9 +34,9 @@
     }
   },
   "appointmentSection": {
-    "title": "Записаться на приём",
+    "title": "Связаться с нами",
     "callButton": "Позвонить",
-    "onlineButton": "Онлайн запись"
+    "onlineButton": "Написать нам"
   },
   "map": {
     "title": "Как нас найти",

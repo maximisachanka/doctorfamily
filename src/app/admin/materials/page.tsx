@@ -288,9 +288,6 @@ export default function AdminMaterialsPage() {
                       {/* Info */}
                       <div>
                         <div className="flex items-center gap-2 mb-2">
-                          <Badge variant={material.is_active ? 'success' : 'secondary'}>
-                            {material.is_active ? 'Активен' : 'Скрыт'}
-                          </Badge>
                           <Badge variant="secondary">{material.year}</Badge>
                         </div>
                         <h3 className="font-semibold text-gray-800 line-clamp-2 mb-2">{material.title}</h3>

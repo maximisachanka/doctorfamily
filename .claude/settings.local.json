@@ -5,7 +5,8 @@
       "Bash(npm run build:*)",
       "Bash(del \"C:\\Study\\commercial-projects\\smartmedical\\prisma\\prismaClient.ts\")",
       "Bash(del \"C:\\Study\\commercial-projects\\smartmedical\\prismaClient.ts\")",
-      "Bash(npm run build:dev:*)"
+      "Bash(npm run build:dev:*)",
+      "Bash(npx prisma generate:*)"
     ],
     "deny": [],
     "ask": []

@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { Star, Calendar, Award, GraduationCap, Users, Image as ImageIcon } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
-import { useRouter } from '../SMRouter/SMRouter';
+import { useRouter as useSMRouter } from '../SMRouter/SMRouter';
+import { useRouter } from 'next/navigation';
 import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import commonConfig from '@/config/common.json';
@@ -36,7 +37,8 @@ interface Specialist {
 }
 
 export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
-  const { navigate } = useRouter();
+  const { navigate } = useSMRouter();
+  const router = useRouter();
   const [doctor, setDoctor] = useState<Specialist | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -114,16 +116,9 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
   // conferences уже массив из БД
   const conferencesList = doctor.conferences?.filter(Boolean) || [];
 
-  const breadcrumbItems = [
-    { label: 'Главная', href: '/' },
-    { label: 'Специалисты', href: '/doctors' },
-    { label: doctor.category.name, href: `/doctors/${categorySlug}` },
-    { label: doctor.name }
-  ];
-
   return (
     <>
-      <Breadcrumb items={breadcrumbItems} />
+      <Breadcrumb />
       
       <div className="p-4 lg:p-8">
         <div className="max-w-6xl mx-auto">
@@ -174,7 +169,7 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
                   {commonConfig.messages.booking.title}
                 </h3>
                 <Button
-                  onClick={handleBookAppointment}
+                  onClick={() => router.push('/contacts')}
                   className="w-full lg:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
                 >
                   {commonConfig.messages.booking.buttonText}

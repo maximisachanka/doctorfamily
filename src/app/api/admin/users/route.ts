@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getToken } from "next-auth/jwt";
 import bcrypt from "bcryptjs";
 
-// GET - Получить всех пользователей (только для главного врача)
+// GET - Получить всех пользователей (для главного врача и администраторов)
 export async function GET(request: NextRequest) {
   try {
     const token = await getToken({
@@ -20,13 +20,13 @@ export async function GET(request: NextRequest) {
 
     const userId = parseInt(token.id as string);
 
-    // Проверяем роль - только главный врач
+    // Проверяем роль - главный врач или администратор
     const currentUser = await prisma.patient.findUnique({
       where: { id: userId },
       select: { role: true },
     });
 
-    if (!currentUser || currentUser.role !== "CHIEF_DOCTOR") {
+    if (!currentUser || !["CHIEF_DOCTOR", "ADMIN"].includes(currentUser.role)) {
       return NextResponse.json(
         { error: "Нет доступа" },
         { status: 403 }
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// PUT - Изменить роль пользователя (только для главного врача)
+// PUT - Изменить роль пользователя (для главного врача и администраторов)
 export async function PUT(request: NextRequest) {
   try {
     const token = await getToken({
@@ -79,15 +79,15 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const chiefDoctorId = parseInt(token.id as string);
+    const currentUserId = parseInt(token.id as string);
 
-    // Проверяем роль - только главный врач
-    const chiefDoctor = await prisma.patient.findUnique({
-      where: { id: chiefDoctorId },
+    // Проверяем роль - главный врач или администратор
+    const currentUser = await prisma.patient.findUnique({
+      where: { id: currentUserId },
       select: { role: true, password: true },
     });
 
-    if (!chiefDoctor || chiefDoctor.role !== "CHIEF_DOCTOR") {
+    if (!currentUser || !["CHIEF_DOCTOR", "ADMIN"].includes(currentUser.role)) {
       return NextResponse.json(
         { error: "Нет доступа" },
         { status: 403 }
@@ -105,15 +105,30 @@ export async function PUT(request: NextRequest) {
     }
 
     // Проверяем что роль допустимая
-    if (!["USER", "ADMIN"].includes(newRole)) {
+    if (!["USER", "OPERATOR", "ADMIN"].includes(newRole)) {
       return NextResponse.json(
         { error: "Недопустимая роль" },
         { status: 400 }
       );
     }
 
-    // Если назначаем ADMIN - требуем подтверждение пароля
+    // ADMIN может назначать только OPERATOR (не ADMIN)
+    if (currentUser.role === "ADMIN" && newRole === "ADMIN") {
+      return NextResponse.json(
+        { error: "Администратор не может назначать других администраторов" },
+        { status: 403 }
+      );
+    }
+
+    // Если назначаем ADMIN - требуем подтверждение пароля (только CHIEF_DOCTOR может)
     if (newRole === "ADMIN") {
+      if (currentUser.role !== "CHIEF_DOCTOR") {
+        return NextResponse.json(
+          { error: "Только главный врач может назначать администраторов" },
+          { status: 403 }
+        );
+      }
+
       if (!adminPassword) {
         return NextResponse.json(
           { error: "Для назначения администратора требуется подтверждение пароля" },
@@ -122,7 +137,7 @@ export async function PUT(request: NextRequest) {
       }
 
       // Проверяем пароль главного врача
-      const isPasswordValid = await bcrypt.compare(adminPassword, chiefDoctor.password);
+      const isPasswordValid = await bcrypt.compare(adminPassword, currentUser.password);
       if (!isPasswordValid) {
         return NextResponse.json(
           { error: "Неверный пароль" },
@@ -148,6 +163,14 @@ export async function PUT(request: NextRequest) {
     if (targetUser.role === "CHIEF_DOCTOR") {
       return NextResponse.json(
         { error: "Нельзя изменить роль главного врача" },
+        { status: 403 }
+      );
+    }
+
+    // ADMIN не может снимать права с ADMIN
+    if (currentUser.role === "ADMIN" && targetUser.role === "ADMIN") {
+      return NextResponse.json(
+        { error: "Администратор не может изменять роль другого администратора" },
         { status: 403 }
       );
     }
