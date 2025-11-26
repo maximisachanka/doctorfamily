@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Study/commercial-projects/smartmedical/src/app/admin/AdminProviders.tsx"],"sourcesContent":["'use client';\r\n\r\nimport { SessionProvider } from 'next-auth/react';\r\nimport { AlertProvider } from '@/components/common/SMAlert/AlertProvider';\r\n\r\nexport function AdminProviders({\r\n  children,\r\n}: {\r\n  children: React.ReactNode;\r\n}) {\r\n  return (\r\n    <SessionProvider>\r\n      <AlertProvider>\r\n        <div className=\"min-h-screen bg-gray-50\">\r\n          {children}\r\n        </div>\r\n      </AlertProvider>\r\n    </SessionProvider>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;AAEA;AACA;AAHA;;;;AAKO,SAAS,eAAe,EAC7B,QAAQ,EAGT;IACC,qBACE,6LAAC,oKAAe;kBACd,cAAA,6LAAC,4KAAa;sBACZ,cAAA,6LAAC;gBAAI,WAAU;0BACZ;;;;;;;;;;;;;;;;AAKX;KAdgB","debugId":null}}]
+}

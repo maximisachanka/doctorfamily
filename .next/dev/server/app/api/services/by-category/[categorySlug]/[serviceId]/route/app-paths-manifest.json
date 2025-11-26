@@ -1,0 +1,3 @@
+{
+  "/api/services/by-category/[categorySlug]/[serviceId]/route": "app/api/services/by-category/[categorySlug]/[serviceId]/route.js"
+}
