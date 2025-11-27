@@ -45,11 +45,11 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+
     const fetchDoctor = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const id = parseInt(doctorId);
         if (isNaN(id)) {
@@ -71,7 +71,7 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
 
         const data = await response.json();
         setDoctor(data);
-        
+
         // Обновляем title страницы
         if (data) {
           document.title = `${data.name} - ${data.category.name} | Медицинский центр Doctor Family`;
@@ -119,7 +119,7 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
   return (
     <>
       <Breadcrumb />
-      
+
       <div className="p-4 lg:p-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -129,65 +129,65 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
           >
             <div className="bg-white rounded-lg border border-[#E8E6E3] p-6 lg:p-8">
               <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            <div className="flex-shrink-0 mx-auto lg:mx-0">
-              <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-lg overflow-hidden">
-                <ImageWithFallback
-                  src={doctor.image_url}
-                  alt={doctor.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-
-            <div className="flex-1 text-center lg:text-left">
-              <div className="mb-4">
-                <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-2">
-                  {doctor.name}
-                </h1>
-                <p className="text-lg text-gray-600 mb-3">{doctor.specialization}</p>
-                
-                <div className="text-gray-600 mb-4 flex flex-col gap-1 items-center lg:items-start">
-                  <span>{doctor.qualification}</span>
-                  <span>Стаж: {doctor.experience} {doctor.experience === 1 ? 'год' : doctor.experience < 5 ? 'года' : 'лет'}</span>
+                <div className="flex-shrink-0 mx-auto lg:mx-0">
+                  <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-lg overflow-hidden">
+                    <ImageWithFallback
+                      src={doctor.image_url}
+                      alt={doctor.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-1 justify-center lg:justify-start mb-6">
-                  {[...Array(doctor.grade)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-[#18A36C] text-[#18A36C]" />
-                  ))}
-                  {[...Array(5 - doctor.grade)].map((_, i) => (
-                    <Star key={i + doctor.grade} className="w-5 h-5 fill-gray-200 text-gray-200" />
-                  ))}
-                  <span className="text-gray-600 ml-2">
-                    {doctor.grade}/5
-                  </span>
+                <div className="flex-1 text-center lg:text-left">
+                  <div className="mb-4">
+                    <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-2">
+                      {doctor.name}
+                    </h1>
+                    <p className="text-lg text-gray-600 mb-3">{doctor.specialization}</p>
+
+                    <div className="text-gray-600 mb-4 flex flex-col gap-1 items-center lg:items-start">
+                      <span>{doctor.qualification}</span>
+                      <span>Стаж: {doctor.experience} {doctor.experience === 1 ? 'год' : doctor.experience < 5 ? 'года' : 'лет'}</span>
+                    </div>
+
+                    <div className="flex items-center gap-1 justify-center lg:justify-start mb-6">
+                      {[...Array(doctor.grade)].map((_, i) => (
+                        <Star key={i} className="w-5 h-5 fill-[#18A36C] text-[#18A36C]" />
+                      ))}
+                      {[...Array(5 - doctor.grade)].map((_, i) => (
+                        <Star key={i + doctor.grade} className="w-5 h-5 fill-gray-200 text-gray-200" />
+                      ))}
+                      <span className="text-gray-600 ml-2">
+                        {doctor.grade}/5
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-100 rounded-lg p-6">
+                    <h3 className="text-lg text-[#2E2E2E] mb-3">
+                      {commonConfig.messages.booking.title}
+                    </h3>
+                    <Button
+                      onClick={() => router.push('/contacts')}
+                      className="w-full lg:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+                    >
+                      {commonConfig.messages.booking.buttonText}
+                      <Calendar className="w-5 h-5 ml-[2.5px]" />
+                    </Button>
+                  </div>
                 </div>
               </div>
-
-              <div className="bg-gray-100 rounded-lg p-6">
-                <h3 className="text-lg text-[#2E2E2E] mb-3">
-                  {commonConfig.messages.booking.title}
-                </h3>
-                <Button
-                  onClick={() => router.push('/contacts')}
-                  className="w-full lg:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
-                >
-                  {commonConfig.messages.booking.buttonText}
-                  <Calendar className="w-5 h-5 ml-[2.5px]" />
-                </Button>
-              </div>
             </div>
-          </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="space-y-6">
-              <Card className="p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="space-y-6">
+              <Card className="p-6 border-gray-200 hover:border-[#18A36C] transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
                     <Award className="w-5 h-5 text-[#18A36C]" />
@@ -208,7 +208,7 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
                 </ul>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 border-gray-200 hover:border-[#18A36C] transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
                     <GraduationCap className="w-5 h-5 text-[#18A36C]" />
@@ -234,7 +234,8 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
                 </ul>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 border-gray-200 hover:border-[#18A36C] transition-all duration-300
+              ">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-[#18A36C]/10 rounded-full flex items-center justify-center">
                     <Users className="w-5 h-5 text-[#18A36C]" />
@@ -282,8 +283,8 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
                   </div>
                 </Card>
               )}
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </>

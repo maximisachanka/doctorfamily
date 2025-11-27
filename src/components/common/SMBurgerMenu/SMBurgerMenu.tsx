@@ -5,23 +5,60 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../SMButton/SMButton";
 import { useRouter } from "next/navigation";
 import { useMenu } from "@/components/SMMenuContext/SMMenuContext";
-import { Phone, X, User, MapPin, Mail } from "lucide-react";
+import { Phone, X, Mail, User, Shield } from "lucide-react";
 import navigationConfig from "@/config/navigation.json";
 import contactsConfig from "@/config/contacts.json";
 import { iconMap, IconName } from "@/utils/iconMapper";
 import { useContacts } from "@/hooks/useContacts";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 
-const SMBurgerMenu = () => {
+interface SMBurgerMenuProps {
+  onAuthModalOpen?: () => void;
+}
+
+const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
   const { isBurgerMenuOpen, setIsBurgerMenuOpen } = useMenu();
-  const { data: session } = useSession();
-  const isAuthenticated = !!session?.user;
   const router = useRouter();
   const { contacts } = useContacts();
+  const { data: session } = useSession();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Check if user is admin
+  useEffect(() => {
+    if (session) {
+      fetch('/api/admin/auth')
+        .then(res => res.json())
+        .then(data => setIsAdmin(data.isAdmin))
+        .catch(() => setIsAdmin(false));
+    } else {
+      setIsAdmin(false);
+    }
+  }, [session]);
 
   const handleNavigation = (path: string) => {
     router.push(path);
     setIsBurgerMenuOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    if (!session) {
+      setIsBurgerMenuOpen(false);
+      if (onAuthModalOpen) {
+        onAuthModalOpen();
+      } else {
+        signIn('google', {
+          callbackUrl: '/account',
+          redirect: true,
+        });
+      }
+    } else {
+      handleNavigation('/account');
+    }
+  };
+
+  const handleAdminClick = () => {
+    handleNavigation('/admin');
   };
 
   return (
@@ -111,27 +148,31 @@ const SMBurgerMenu = () => {
               >
                 <Button
                   className="w-full bg-[#18A36C] hover:bg-[#18A36C]/90 text-white py-3 h-auto"
-                  onClick={() => setIsBurgerMenuOpen(false)}
+                  onClick={() => handleNavigation("/contacts")}
                 >
                   {contactsConfig.onlineBookingText}
                 </Button>
 
-                <div className="mt-4 flex items-center justify-center gap-2 text-[#18A36C]">
-                  <User className="w-4 h-4" />
-                  {isAuthenticated ? (
-                    <button
-                      onClick={() => handleNavigation("/account")}
-                      className="text-sm hover:text-[#18A36C]/80 transition-colors"
+                {/* Profile and Admin Buttons */}
+                <div className="mt-4 space-y-2">
+                  <Button
+                    onClick={handleProfileClick}
+                    variant="outline"
+                    className="w-full border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white py-3 h-auto flex items-center justify-center gap-2"
+                  >
+                    <User className="w-5 h-5" />
+                    <span>{session ? 'Мой кабинет' : 'Войти'}</span>
+                  </Button>
+
+                  {isAdmin && (
+                    <Button
+                      onClick={handleAdminClick}
+                      variant="outline"
+                      className="w-full border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white py-3 h-auto flex items-center justify-center gap-2"
                     >
-                      Мой кабинет
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleNavigation("/account")}
-                      className="text-sm hover:text-[#18A36C]/80 transition-colors"
-                    >
-                      Войти
-                    </button>
+                      <Shield className="w-5 h-5" />
+                      <span>Админ-панель</span>
+                    </Button>
                   )}
                 </div>
               </motion.div>
@@ -143,10 +184,6 @@ const SMBurgerMenu = () => {
                 transition={{ delay: 1.0 }}
                 className="mt-6 pt-6 border-t border-[#E8E6E3] text-center text-sm text-[#2E2E2E]"
               >
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <MapPin className="w-4 h-4 text-[#18A36C]" />
-                  <span>{contacts?.address || contactsConfig.address}</span>
-                </div>
                 <div className="flex items-center justify-center gap-2">
                   <Mail className="w-4 h-4 text-[#18A36C]" />
                   <span>{contacts?.email || contactsConfig.email}</span>

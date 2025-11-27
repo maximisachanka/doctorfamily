@@ -19,7 +19,8 @@ import {
   TestTube,
   Activity,
   Zap,
-  ArrowRight
+  ArrowRight,
+  Eye
 } from "lucide-react";
 import { Button } from "../common/SMButton/SMButton";
 import { useRouter as useSMRouter } from "../SMRouter/SMRouter";
@@ -28,6 +29,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../common/SMTabs/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../common/SMCard/card";
 import { Alert, AlertDescription } from "../common/SMAlert/alert";
 import patientContentConfig from "@/config/patientContent.json";
+import { DocumentModal } from "./SMDocumentModal";
 
 interface ContactData {
   phone_number: string;
@@ -44,6 +46,10 @@ export function SMPatientContent() {
   const router = useRouter();
   const [contacts, setContacts] = useState<ContactData | null>(null);
   const [isLoadingContacts, setIsLoadingContacts] = useState(true);
+  const [documentModal, setDocumentModal] = useState<{
+    isOpen: boolean;
+    type: 'contract' | 'privacy' | 'consent' | null;
+  }>({ isOpen: false, type: null });
 
   // Load contacts from API
   useEffect(() => {
@@ -446,10 +452,10 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
-                    onClick={() => window.open('/documents/contract.pdf', '_blank')}
+                    onClick={() => setDocumentModal({ isOpen: true, type: 'contract' })}
                   >
                     {patientContentConfig.documentsTab.contractButton}
-                    <Download className="w-5 h-5 ml-[2.5px]" />
+                    <Eye className="w-5 h-5 ml-[2.5px]" />
                   </Button>
                 </CardContent>
               </Card>
@@ -471,10 +477,10 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
-                    onClick={() => window.open('/documents/privacy-policy.pdf', '_blank')}
+                    onClick={() => setDocumentModal({ isOpen: true, type: 'privacy' })}
                   >
                     {patientContentConfig.documentsTab.privacyPolicyButton}
-                    <ExternalLink className="w-5 h-5 ml-[2.5px]" />
+                    <Eye className="w-5 h-5 ml-[2.5px]" />
                   </Button>
                 </CardContent>
               </Card>
@@ -518,10 +524,10 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
-                    onClick={() => window.open('/documents/consent-form.pdf', '_blank')}
+                    onClick={() => setDocumentModal({ isOpen: true, type: 'consent' })}
                   >
                     {patientContentConfig.documentsTab.consentButton}
-                    <Download className="w-5 h-5 ml-[2.5px]" />
+                    <Eye className="w-5 h-5 ml-[2.5px]" />
                   </Button>
                 </CardContent>
               </Card>
@@ -583,7 +589,7 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
-                    onClick={() => navigate('/prices')}
+                    onClick={() => router.push('/services')}
                   >
                     {patientContentConfig.payment.pricesButton}
                     <ArrowRight className="w-5 h-5 ml-[2.5px]" />
@@ -608,7 +614,7 @@ export function SMPatientContent() {
                   <Button
                     variant="outline"
                     className="w-full border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 mt-auto"
-                    onClick={() => navigate('/clinic/partners/insurance')}
+                    onClick={() => router.push('/clinic/partners/insurance')}
                   >
                     {patientContentConfig.payment.insuranceButton}
                     <ArrowRight className="w-5 h-5 ml-[2.5px]" />
@@ -619,6 +625,15 @@ export function SMPatientContent() {
           </motion.div>
         </TabsContent>
       </Tabs>
+
+      {/* Document Modal */}
+      {documentModal.type && (
+        <DocumentModal
+          isOpen={documentModal.isOpen}
+          onClose={() => setDocumentModal({ isOpen: false, type: null })}
+          documentType={documentModal.type}
+        />
+      )}
     </div>
   );
 }

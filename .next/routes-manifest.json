@@ -468,6 +468,12 @@
       "namedRegex": "^/api/contacts(?:/)?$"
     },
     {
+      "page": "/api/geocode",
+      "regex": "^/api/geocode(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/geocode(?:/)?$"
+    },
+    {
       "page": "/api/letters",
       "regex": "^/api/letters(?:/)?$",
       "routeKeys": {},

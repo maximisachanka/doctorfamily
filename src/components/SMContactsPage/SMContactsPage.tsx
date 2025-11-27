@@ -170,6 +170,9 @@ export function SMContactsPage() {
               <Button
                 variant="outline"
                 className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 flex-1"
+                onClick={() =>
+                  window.location.href = `mailto:${contacts?.email || contactsPageConfig.contactInfo.email.address}`
+                }
               >
                 {contactsPageConfig.appointmentSection.onlineButton}
                 <ArrowRight className="w-5 h-5 ml-[2.5px]" />

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getToken } from "next-auth/jwt";
 
-const ADMIN_PASSWORD = "adminsmartmedical";
+const ADMIN_PASSWORD = "admindoctorfamily";
 
 // POST - Проверка пароля для входа в админ-панель (только для существующих админов)
 export async function POST(request: NextRequest) {

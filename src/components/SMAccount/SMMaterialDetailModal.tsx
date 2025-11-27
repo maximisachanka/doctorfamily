@@ -33,13 +33,11 @@ export function isNewMaterial(dateRaw?: string): boolean {
 }
 
 export function MaterialDetailModal({ isOpen, onClose, material }: MaterialDetailModalProps) {
-  if (!material) return null;
-
-  const isNew = isNewMaterial(material.dateRaw);
+  const isNew = material ? isNewMaterial(material.dateRaw) : false;
 
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isOpen && material && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Backdrop */}
           <motion.div
@@ -73,15 +71,14 @@ export function MaterialDetailModal({ isOpen, onClose, material }: MaterialDetai
                   <h2 className="text-2xl font-bold text-[#2E2E2E] mb-2">
                     {material.title}
                   </h2>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-600">Специальное предложение</span>
-                    {isNew && (
+                  {isNew && (
+                    <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-[#18A36C] to-[#15905f] text-white text-xs font-medium rounded-full">
                         <Sparkles className="w-3 h-3" />
                         Новое
                       </span>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

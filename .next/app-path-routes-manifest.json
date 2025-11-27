@@ -52,6 +52,7 @@
   "/api/clinic-faqs/route": "/api/clinic-faqs",
   "/api/clinic-reviews/route": "/api/clinic-reviews",
   "/api/contacts/route": "/api/contacts",
+  "/api/geocode/route": "/api/geocode",
   "/api/letters/[id]/route": "/api/letters/[id]",
   "/api/letters/route": "/api/letters",
   "/api/letters/unread/route": "/api/letters/unread",

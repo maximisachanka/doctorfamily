@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import { getCategoryIdBySlug } from '@/utils/categoryMapper';
 import { SpecialistCardSkeleton } from './SMDoctorSkeleton';
+import { useContacts } from '@/hooks/useContacts';
 
 interface Specialist {
   id: number;
@@ -39,6 +40,7 @@ interface Category {
 export function DoctorsContent() {
   const { currentRoute, navigate } = useSMRouter();
   const router = useRouter();
+  const { contacts } = useContacts();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -213,15 +215,15 @@ export function DoctorsContent() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <span>+375 29 161-01-01</span>
+                <span>{contacts?.phone_number || '+375 29 161-01-01'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>smartmedical.by@gmail.com</span>
+                <span>{contacts?.email || 'smartmedical.by@gmail.com'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>г. Минск, пр. Победителей, д. 119, пом. 504</span>
+                <span>{contacts?.address || 'г. Минск, пр. Победителей, д. 119, пом. 504'}</span>
               </div>
             </div>
           </motion.div>

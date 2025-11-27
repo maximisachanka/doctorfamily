@@ -114,17 +114,6 @@ export function ClinicContent() {
             </Button>
           </div>
         </div>
-
-        <div
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-8"
-        >
-          {clinicContentConfig.stats.map((stat, index) => (
-            <div key={index} className="text-center p-4 bg-white border border-[#E8E6E3] rounded-lg">
-              <div className="text-2xl lg:text-3xl text-[#18A36C] mb-2">{stat.value}</div>
-              <div className="text-sm text-gray-600">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

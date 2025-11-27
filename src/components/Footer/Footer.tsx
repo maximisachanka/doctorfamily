@@ -107,9 +107,6 @@ export function Footer() {
                       contacts?.phone_number || footerConfig.contactInfo.phone.number
                     )}
                   </div>
-                  <div className="text-gray-500 text-xs lg:text-sm">
-                    {footerConfig.contactInfo.phone.workingHours}
-                  </div>
                 </div>
               </div>
 
@@ -139,9 +136,6 @@ export function Footer() {
                       contacts?.address || footerConfig.contactInfo.address.full
                     )}
                   </div>
-                  <div className="text-gray-500 text-xs lg:text-sm">
-                    {footerConfig.contactInfo.address.note}
-                  </div>
                 </div>
               </div>
 
@@ -156,6 +150,13 @@ export function Footer() {
                       <TextSkeleton className="w-24 h-4" />
                     ) : (
                       contacts?.work_hours_main || footerConfig.contactInfo.schedule.hours
+                    )}
+                  </div>
+                  <div className="text-gray-500 text-xs lg:text-sm">
+                    {contactsLoading ? (
+                      <TextSkeleton className="w-24 h-4" />
+                    ) : (
+                      contacts?.work_hours_sunday || footerConfig.contactInfo.schedule.hours2
                     )}
                   </div>
                 </div>

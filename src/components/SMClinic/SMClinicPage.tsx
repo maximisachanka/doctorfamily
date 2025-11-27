@@ -329,6 +329,15 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           open={isPartnerModalOpen}
           onOpenChange={setIsPartnerModalOpen}
         />
+
+        {/* Ask Question Modal */}
+        <AskQuestionModal
+          isOpen={askQuestionModal.isOpen}
+          onClose={askQuestionModal.close}
+          onComplete={() => {
+            console.log('AI помощник готов к работе');
+          }}
+        />
       </>
     );
   }
@@ -421,6 +430,15 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             </div>
           </div>
         </div>
+
+        {/* Ask Question Modal */}
+        <AskQuestionModal
+          isOpen={askQuestionModal.isOpen}
+          onClose={askQuestionModal.close}
+          onComplete={() => {
+            console.log('AI помощник готов к работе');
+          }}
+        />
       </>
     );
   }
@@ -860,15 +878,15 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                   <div className="space-y-3">
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600 mb-1">Полное наименование</span>
-                      <span className="text-[#212121]">Общество с ограниченной ответственностью «Смарт Медикал»</span>
+                      <span className="text-[#212121]">Общество с ограниченной ответственностью "Доктор Фемели"</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600 mb-1">Сокращенное наименование</span>
-                      <span className="text-[#212121]">ООО «Смарт Медикал»</span>
+                      <span className="text-[#212121]">ООО "Доктор Фемели"</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600 mb-1">УНП</span>
-                      <span className="text-[#212121]">193215226</span>
+                      <span className="text-[#212121]">391788009</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600 mb-1">Юридический адрес</span>
@@ -891,14 +909,12 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                       </span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-sm text-gray-600 mb-1">Телефон</span>
-                      <span className="text-[#212121]">
-                        {contactsLoading ? (
-                          <TextSkeleton className="w-36 h-5" />
-                        ) : (
-                          contacts?.phone_number || '+375-29-161-01-01'
-                        )}
-                      </span>
+                      <span className="text-sm text-gray-600 mb-1">Расчётный счёт</span>
+                      <span className="text-[#212121]">BY67 BPSB 3012 3410 2901 4933 0000</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-600 mb-1">Банк</span>
+                      <span className="text-[#212121]">ОАО "Сбер Банк"</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-600 mb-1">Электронная почта</span>
@@ -933,14 +949,24 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                     <div className="flex items-start gap-3">
                       <Phone className="w-5 h-5 text-[#18A36C] mt-0.5" />
                       <div>
-                        <p className="text-sm text-gray-600">Телефон</p>
-                        <p className="text-[#212121]">
-                          {contactsLoading ? (
+                        <p className="text-sm text-gray-600">Телефоны</p>
+                        {contactsLoading ? (
+                          <div className="space-y-1">
                             <TextSkeleton className="w-36 h-5" />
-                          ) : (
-                            contacts?.phone_number || '+375-29-161-01-01'
-                          )}
-                        </p>
+                            <TextSkeleton className="w-36 h-5" />
+                          </div>
+                        ) : (
+                          <div className="space-y-1">
+                            <p className="text-[#212121]">
+                              {contacts?.phone_number || '+375296320707'}
+                            </p>
+                            {contacts?.phone_number_sec && (
+                              <p className="text-[#212121]">
+                                {contacts.phone_number_sec}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -955,14 +981,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                             contacts?.email || 'smartmedical.by@gmail.com'
                           )}
                         </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <Globe className="w-5 h-5 text-[#18A36C] mt-0.5" />
-                      <div>
-                        <p className="text-sm text-gray-600">Сайт</p>
-                        <p className="text-[#212121]">smartmedical.by</p>
                       </div>
                     </div>
                   </div>

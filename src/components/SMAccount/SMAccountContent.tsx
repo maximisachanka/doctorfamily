@@ -642,8 +642,7 @@ export function AccountContent() {
               Материалы
             </h2>
             <p className="text-sm sm:text-base text-gray-600">
-              Специальные предложения и материалы для
-              подписчиков
+              Полезные материалы и информация для пациентов
             </p>
           </div>
         </div>
@@ -688,16 +687,13 @@ export function AccountContent() {
                       alt={item.title}
                       className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex flex-wrap gap-1 sm:gap-2">
-                      <Badge className="bg-[#18A36C] text-white text-xs">
-                        Специальное предложение
-                      </Badge>
-                      {isNewMaterial(item.dateRaw) && (
+                    {isNewMaterial(item.dateRaw) && (
+                      <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex flex-wrap gap-1 sm:gap-2">
                         <Badge className="bg-orange-500 text-white text-xs">
                           Новое
                         </Badge>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                   <CardContent className="p-4 sm:p-6">
                     <h3 className="text-base sm:text-lg text-gray-800 mb-2 group-hover:text-[#18A36C] transition-colors">

@@ -157,7 +157,7 @@ export function SMHomePage() {
                     <div className="flex justify-center">
                       <Building className="w-6 h-6 text-[#18A36C]" />
                     </div>
-                    <h3 className="text-xl text-[#2E2E2E]">Современные помещения</h3>
+                    <h3 className="text-xl text-[#2E2E2E]">Технологические помещения</h3>
                   </div>
                   <p className="text-gray-600">Просторные кабинеты с новейшим медицинским оборудованием экспертного класса</p>
                 </div>
@@ -179,7 +179,7 @@ export function SMHomePage() {
                     </div>
                     <h3 className="text-xl text-[#2E2E2E]">Удобный график</h3>
                   </div>
-                  <p className="text-gray-600">Работаем ежедневно с 9:00 до 21:00 для вашего удобства</p>
+                  <p className="text-gray-600">Работаем для вас в будние дни с 08:00 до 21:00, в выходные с 09:00 до 18:00</p>
                 </div>
               </div>
             </div>
@@ -233,8 +233,8 @@ export function SMHomePage() {
               <div className="flex justify-center mb-4">
                 <Calendar className="w-8 h-8 text-[#18A36C]" />
               </div>
-              <h3 className="text-lg text-[#2E2E2E] mb-3">Онлайн запись</h3>
-              <p className="text-gray-600 text-sm">Удобная система записи на приём в любое время</p>
+              <h3 className="text-lg text-[#2E2E2E] mb-3">Услуги</h3>
+              <p className="text-gray-600 text-sm">Широкий спектр медицинских услуг</p>
             </div>
 
             <div className="bg-white border border-[#E8E6E3] rounded-lg p-6 text-center hover:border-[#18A36C] transition-all duration-300">
@@ -249,8 +249,8 @@ export function SMHomePage() {
               <div className="flex justify-center mb-4">
                 <Phone className="w-8 h-8 text-[#18A36C]" />
               </div>
-              <h3 className="text-lg text-[#2E2E2E] mb-3">Круглосуточная поддержка</h3>
-              <p className="text-gray-600 text-sm">Консультации и экстренная помощь 24/7</p>
+              <h3 className="text-lg text-[#2E2E2E] mb-3">Постоянная поддержка</h3>
+              <p className="text-gray-600 text-sm">Консультации и своевременная помощь</p>
             </div>
           </div>
 
@@ -285,7 +285,7 @@ export function SMHomePage() {
               </div>
               <h3 className="text-2xl text-[#2E2E2E] mb-2">15+</h3>
               <p className="text-gray-600 mb-4">Опытных врачей</p>
-              <p className="text-sm text-gray-600">Специалисты высшей категории с международными сертификатами</p>
+              <p className="text-sm text-gray-600">Высококвалифицированные специалисты с международными сертификатами</p>
             </div>
 
             <div className="bg-white border border-[#E8E6E3] rounded-lg p-8 text-center hover:border-[#18A36C] transition-all duration-300">
@@ -372,8 +372,8 @@ export function SMHomePage() {
                           <Star
                             key={i}
                             className={`w-4 h-4 ${i < feedback.grade
-                                ? 'fill-[#18A36C] text-[#18A36C]'
-                                : 'text-gray-300'
+                              ? 'fill-[#18A36C] text-[#18A36C]'
+                              : 'text-gray-300'
                               }`}
                           />
                         ))}
@@ -436,6 +436,11 @@ export function SMHomePage() {
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.phone.description}
                   </p>
+                  {homePageConfig.contactSection.contactInfo.phone.description2 && (
+                    <p className="text-sm text-gray-600">
+                      {homePageConfig.contactSection.contactInfo.phone.description2}
+                    </p>
+                  )}
                 </div>
 
                 {/* Address */}
@@ -454,6 +459,11 @@ export function SMHomePage() {
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.address.description}
                   </p>
+                  {homePageConfig.contactSection.contactInfo.address.description2 && (
+                    <p className="text-sm text-gray-600">
+                      {homePageConfig.contactSection.contactInfo.address.description2}
+                    </p>
+                  )}
                 </div>
 
                 {/* Email */}
