@@ -48,7 +48,7 @@ export async function PUT(
         image_url: data.image_url || '',
         website_url: data.website_url || '',
         number: parseInt(data.number) || 1,
-        // category_id не меняем - оставляем существующую
+        category_id: data.category_id ? parseInt(data.category_id) : undefined,
       },
       include: {
         category: true,

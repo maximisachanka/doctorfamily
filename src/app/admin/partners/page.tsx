@@ -55,6 +55,7 @@ export default function AdminPartnersPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState<{ id: number; name: string; slug: string }[]>([]);
   // Pagination hook
   const { currentPage, setPage, buildApiUrl } = useServerPagination(12);
 
@@ -68,6 +69,7 @@ export default function AdminPartnersPage() {
     image_url: '',
     website_url: '',
     number: '1',
+    category_id: '',
   });
 
   // Check admin role
@@ -93,6 +95,22 @@ export default function AdminPartnersPage() {
     verifySession();
   };
 
+  const loadCategories = async () => {
+    try {
+      const res = await fetch('/api/categories');
+      if (res.ok) {
+        const data = await res.json();
+        // Фильтруем только категории партнёров
+        const partnerCategories = data.filter((cat: { slug: string }) =>
+          ['medical-labs', 'insurance', 'dental-labs'].includes(cat.slug)
+        );
+        setCategories(partnerCategories);
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error);
+    }
+  };
+
   const loadData = async () => {
     setLoading(true);
     try {
@@ -112,6 +130,13 @@ export default function AdminPartnersPage() {
       setLoading(false);
     }
   };
+
+  // Load categories once when session is verified
+  useEffect(() => {
+    if (sessionVerified && hasAdminRole) {
+      loadCategories();
+    }
+  }, [sessionVerified, hasAdminRole]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load data when session is verified or page/search changes
   useEffect(() => {
@@ -133,6 +158,7 @@ export default function AdminPartnersPage() {
       image_url: '',
       website_url: '',
       number: '1',
+      category_id: '',
     });
     setEditingPartner(null);
     setIsModalOpen(false);
@@ -151,6 +177,7 @@ export default function AdminPartnersPage() {
       image_url: partner.image_url,
       website_url: partner.website_url,
       number: partner.number.toString(),
+      category_id: partner.category_id.toString(),
     });
     setIsModalOpen(true);
   };
@@ -283,6 +310,9 @@ export default function AdminPartnersPage() {
 
                       {/* Tags */}
                       <div className="flex items-center gap-2 mt-3">
+                        <Badge variant="default" className="bg-[#18A36C]/10 text-[#18A36C] border-[#18A36C]/20">
+                          {partner.category.name}
+                        </Badge>
                         <Badge variant="secondary">
                           <Hash className="w-3 h-3 mr-1" />
                           {partner.number}
@@ -331,7 +361,7 @@ export default function AdminPartnersPage() {
             title={editingPartner ? 'Редактирование партнёра' : 'Новый партнёр'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.name || !formData.description}
+            disabled={!formData.name || !formData.description || !formData.category_id}
           >
             <div className="space-y-6">
               <FormField label="Название" required>
@@ -369,6 +399,21 @@ export default function AdminPartnersPage() {
                   onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
                   placeholder="https://example.com"
                 />
+              </FormField>
+
+              <FormField label="Категория" required>
+                <select
+                  value={formData.category_id}
+                  onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all"
+                >
+                  <option value="">Выберите категорию</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </FormField>
 
               <FormField label="Порядковый номер">

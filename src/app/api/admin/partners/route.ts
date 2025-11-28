@@ -78,9 +78,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Захардкоженный slug категории для партнёров
-const PARTNERS_CATEGORY_SLUG = 'partners';
-
 // POST - Создать нового партнёра
 export async function POST(request: NextRequest) {
   try {
@@ -91,18 +88,12 @@ export async function POST(request: NextRequest) {
 
     const data = await request.json();
 
-    // Получаем или создаём категорию партнёров
-    let category = await prisma.category.findUnique({
-      where: { slug: PARTNERS_CATEGORY_SLUG },
-    });
-
-    if (!category) {
-      category = await prisma.category.create({
-        data: {
-          name: 'Партнёры',
-          slug: PARTNERS_CATEGORY_SLUG,
-        },
-      });
+    // Проверяем, что category_id предоставлен
+    if (!data.category_id) {
+      return NextResponse.json(
+        { error: "Категория обязательна" },
+        { status: 400 }
+      );
     }
 
     const partner = await prisma.partner.create({
@@ -112,7 +103,7 @@ export async function POST(request: NextRequest) {
         image_url: data.image_url || '',
         website_url: data.website_url || '',
         number: parseInt(data.number) || 1,
-        category_id: category.id,
+        category_id: parseInt(data.category_id),
       },
       include: {
         category: true,
