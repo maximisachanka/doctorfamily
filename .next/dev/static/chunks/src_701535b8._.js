@@ -1255,14 +1255,25 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var _s = __turbopack_context__.k.signature();
 ;
 ;
+// Safe wrapper для useSearchParams
+function useSafeSearchParams() {
+    try {
+        // Динамический импорт useSearchParams
+        const { useSearchParams } = __turbopack_context__.r("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
+        return useSearchParams();
+    } catch  {
+        return null;
+    }
+}
 function useServerPagination(itemsPerPage = 12) {
     _s();
-    const searchParams = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"])();
+    const searchParams = useSafeSearchParams();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
     // Получаем текущую страницу из URL (по умолчанию 1)
     const currentPage = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "useServerPagination.useMemo[currentPage]": ()=>{
+            if (!searchParams) return 1;
             const page = searchParams.get('p');
             const pageNum = page ? parseInt(page, 10) : 1;
             return pageNum > 0 ? pageNum : 1;
@@ -1273,7 +1284,7 @@ function useServerPagination(itemsPerPage = 12) {
     // Функция для изменения страницы
     const setPage = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "useServerPagination.useCallback[setPage]": (page)=>{
-            const params = new URLSearchParams(searchParams.toString());
+            const params = new URLSearchParams(searchParams?.toString() || '');
             if (page === 1) {
                 params.delete('p');
             } else {
@@ -1312,9 +1323,9 @@ function useServerPagination(itemsPerPage = 12) {
         itemsPerPage
     };
 }
-_s(useServerPagination, "8DxE+ogxr2pr8t7EUgdJKxe7ZW0=", false, function() {
+_s(useServerPagination, "dewGB9QEqg9aINKbNpTd+311138=", false, function() {
     return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"],
+        useSafeSearchParams,
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"]
     ];

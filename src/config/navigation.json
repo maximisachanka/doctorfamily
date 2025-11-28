@@ -85,23 +85,23 @@
         },
         {
           "name": "Стоматологи",
-          "path": "/doctors?specialty=stomatology"
+          "path": "/doctors/dentistry"
         },
         {
           "name": "Гинекологи",
-          "path": "/doctors?specialty=gynecology"
+          "path": "/doctors/gynecology"
         },
         {
           "name": "Детские врачи",
-          "path": "/doctors?specialty=pediatrics"
+          "path": "/doctors/pediatrics"
         },
         {
           "name": "Хирурги",
-          "path": "/doctors?specialty=surgery"
+          "path": "/doctors/surgery"
         },
         {
           "name": "УЗИ-специалисты",
-          "path": "/doctors?specialty=ultrasound"
+          "path": "/doctors/ultrasound"
         }
       ]
     },
@@ -113,21 +113,7 @@
     {
       "name": "Пациенту",
       "path": "/patient",
-      "icon": "UserCheck",
-      "subPages": [
-        {
-          "name": "Информация для пациентов",
-          "path": "/patient"
-        },
-        {
-          "name": "Правила посещения",
-          "path": "/patient/rules"
-        },
-        {
-          "name": "Подготовка к процедурам",
-          "path": "/patient/preparation"
-        }
-      ]
+      "icon": "UserCheck"
     }
   ]
 }

@@ -8,8 +8,7 @@ import { Badge } from '../../components/common/SMBadge/SMBadge';
 import { ImageWithFallback } from '../../components/SMImage/ImageWithFallback';
 import { NavigableServicesMenu } from '../../components/SMServices/SMNavigableServicesMenu';
 import { ServicesContent } from '../../components/SMServices/SMServicesContent';
-import { useRouter } from "@/components/SMRouter/SMRouter";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { SpecialistCard } from '../../components/SMDoctor/SMSpecialistCard';
 
 import { Star, Play, FileText, HelpCircle, MessageSquare, Users, ArrowRight, X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -175,7 +174,7 @@ interface ServicePageProps {
 }
 
 export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
-  const { navigate } = useRouter();
+  const router = useRouter();
   const [serviceData, setServiceData] = useState<ServiceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [showAllSpecialists, setShowAllSpecialists] = useState(false);
@@ -517,7 +516,7 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
                 )}
 
                 <Button
-                  onClick={() => navigate('/doctors')}
+                  onClick={() => router.push('/doctors')}
                   className="bg-[#18A36C] hover:bg-[#15905f] text-white px-8 py-4 h-auto rounded-xl transition-all duration-300 cursor-pointer"
                 >
                   <Users className="w-5 h-5 mr-2" />
@@ -573,17 +572,9 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
 }
 
 export default function SMServicesPage() {
-  const { currentRoute, navigate } = useRouter();
   const pathname = usePathname();
 
-  // Синхронизируем Next.js pathname с SMRouter при изменении pathname
-  useEffect(() => {
-    if (pathname && pathname !== currentRoute) {
-      navigate(pathname);
-    }
-  }, [pathname]);
-
-  const pathParts = currentRoute.replace(/^\/+|\/+$/g, '').split('/');
+  const pathParts = pathname.replace(/^\/+|\/+$/g, '').split('/');
 
   let categoryId = '';
   let serviceId = '';
