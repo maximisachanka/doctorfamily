@@ -213,18 +213,29 @@ export function DoctorsContent() {
           >
             <h2 className="text-xl mb-4">Связаться с нами</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center gap-2">
+              <a
+                href={`tel:${(contacts?.phone_number || '+375 29 161-01-01').replace(/[\s\-()]/g, '')}`}
+                className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform duration-200 inline-block"
+              >
                 <Phone className="w-4 h-4" />
                 <span>{contacts?.phone_number || '+375 29 161-01-01'}</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </a>
+              <a
+                href={`mailto:${contacts?.email || 'smartmedical.by@gmail.com'}`}
+                className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform duration-200 inline-block"
+              >
                 <Mail className="w-4 h-4" />
                 <span>{contacts?.email || 'smartmedical.by@gmail.com'}</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </a>
+              <a
+                href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || 'г. Минск, пр. Победителей, д. 119, пом. 504')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 cursor-pointer hover:scale-105 transition-transform duration-200 inline-block"
+              >
                 <MapPin className="w-4 h-4" />
                 <span>{contacts?.address || 'г. Минск, пр. Победителей, д. 119, пом. 504'}</span>
-              </div>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -281,13 +292,10 @@ export function DoctorsContent() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg">
+                  <Card className="p-6 hover:shadow-lg transition-all duration-300 group border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg">
                     <div className="flex flex-col sm:flex-row gap-4">
                       <div className="flex-shrink-0 mx-auto sm:mx-0">
-                        <div 
-                          className="w-24 h-24 rounded-lg overflow-hidden transition-all duration-300"
-                          onClick={() => handleDoctorClick(specialist.id)}
-                        >
+                        <div className="w-24 h-24 rounded-lg overflow-hidden transition-all duration-300">
                           <ImageWithFallback
                             src={specialist.image_url}
                             alt={specialist.name}
@@ -297,15 +305,12 @@ export function DoctorsContent() {
                       </div>
 
                       <div className="flex-1 text-center sm:text-left">
-                        <div 
-                          className="cursor-pointer"
-                          onClick={() => handleDoctorClick(specialist.id)}
-                        >
+                        <div>
                           <h3 className="text-lg text-[#2E2E2E] mb-1 group-hover:text-[#18A36C] transition-colors">
                             {specialist.name}
                           </h3>
                           <p className="text-sm text-gray-600 mb-2">{specialist.specialization}</p>
-                          
+
                           <div className="text-sm text-gray-600 mb-3 flex flex-col gap-1 items-center sm:items-start">
                             <span>{specialist.qualification}</span>
                             <span>Стаж: {specialist.experience} {specialist.experience === 1 ? 'год' : specialist.experience < 5 ? 'года' : 'лет'}</span>
@@ -313,15 +318,15 @@ export function DoctorsContent() {
 
                           <div className="flex items-center gap-1 justify-center sm:justify-start mb-4">
                             {[...Array(specialist.grade)].map((_, i) => (
-                              <Star 
-                                key={i} 
-                                className="w-4 h-4 fill-[#18A36C] text-[#18A36C]" 
+                              <Star
+                                key={i}
+                                className="w-4 h-4 fill-yellow-400 text-yellow-400"
                               />
                             ))}
                             {[...Array(5 - specialist.grade)].map((_, i) => (
-                              <Star 
-                                key={i + specialist.grade} 
-                                className="w-4 h-4 fill-gray-200 text-gray-200" 
+                              <Star
+                                key={i + specialist.grade}
+                                className="w-4 h-4 fill-gray-200 text-gray-200"
                               />
                             ))}
                             <span className="text-sm text-gray-600 ml-1">
@@ -331,10 +336,10 @@ export function DoctorsContent() {
                         </div>
 
                         <Button
-                          onClick={() => router.push('/contacts')}
-                          className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+                          onClick={() => handleDoctorClick(specialist.id)}
+                          className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 cursor-pointer"
                         >
-                          Связаться с нами
+                          Подробнее
                           <ArrowRight className="w-5 h-5 ml-[2.5px]" />
                         </Button>
                       </div>

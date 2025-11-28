@@ -106,8 +106,6 @@ export function InfoSectionSkeleton() {
 export function DoctorPageSkeleton() {
   return (
     <>
-      <BreadcrumbSkeleton />
-
       <div className="p-4 lg:p-8">
         <div className="max-w-6xl mx-auto">
           {/* Main card */}

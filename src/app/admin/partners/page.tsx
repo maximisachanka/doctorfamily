@@ -25,6 +25,7 @@ import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
 import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { useAlert } from '@/components/common/SMAlert';
+import { useServerPagination } from '@/hooks/useServerPagination';
 
 interface Partner {
   id: number;
@@ -50,10 +51,12 @@ export default function AdminPartnersPage() {
 
   // Data states
   const [partners, setPartners] = useState<Partner[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 12;
+  // Pagination hook
+  const { currentPage, setPage, buildApiUrl } = useServerPagination(12);
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,13 +79,6 @@ export default function AdminPartnersPage() {
     }
   }, [status]);
 
-  // Load data when session is verified
-  useEffect(() => {
-    if (sessionVerified && hasAdminRole) {
-      loadData();
-    }
-  }, [sessionVerified, hasAdminRole]);
-
   const checkAdminRole = async () => {
     try {
       const res = await fetch('/api/admin/auth');
@@ -100,40 +96,34 @@ export default function AdminPartnersPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/partners');
+      const apiUrl = buildApiUrl('/api/admin/partners', searchQuery);
+
+      const res = await fetch(apiUrl);
       if (res.ok) {
-        const data = await res.json();
-        setPartners(data);
+        const response = await res.json();
+        setPartners(response.data || []);
+        setTotalPages(response.totalPages || 1);
+        setTotalCount(response.totalCount || 0);
       }
     } catch (error) {
       console.error('Error loading data:', error);
+      showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);
     }
   };
 
-  // Filtered partners
-  const filteredPartners = useMemo(() => {
-    if (!searchQuery) return partners;
-    const query = searchQuery.toLowerCase();
-    return partners.filter(
-      (p) =>
-        p.name.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query)
-    );
-  }, [partners, searchQuery]);
+  // Load data when session is verified or page/search changes
+  useEffect(() => {
+    if (sessionVerified && hasAdminRole) {
+      loadData();
+    }
+  }, [sessionVerified, hasAdminRole, currentPage, searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reset page when search changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
-
-  // Pagination
-  const totalPages = Math.ceil(filteredPartners.length / ITEMS_PER_PAGE);
-  const paginatedPartners = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredPartners.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredPartners, currentPage]);
+    setPage(1);
+  }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Form handlers
   const resetForm = () => {
@@ -247,14 +237,14 @@ export default function AdminPartnersPage() {
           <AdminSection
             title="Партнёры"
             icon={Handshake}
-            count={partners.length}
+            count={totalCount}
             loading={loading}
             searchValue={searchQuery}
             onSearchChange={setSearchQuery}
             onAdd={handleAdd}
             addButtonText="Добавить партнёра"
           >
-            {filteredPartners.length === 0 ? (
+            {partners.length === 0 ? (
               <EmptyState
                 icon={Handshake}
                 title="Партнёры не найдены"
@@ -266,7 +256,7 @@ export default function AdminPartnersPage() {
               <>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 <AnimatePresence>
-                  {paginatedPartners.map((partner) => (
+                  {partners.map((partner) => (
                     <ItemCard key={partner.id}>
                       <div className="flex gap-4">
                         {/* Logo */}
@@ -326,7 +316,7 @@ export default function AdminPartnersPage() {
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
-                  onPageChange={setCurrentPage}
+                  onPageChange={setPage}
                   className="mt-6"
                 />
               )}

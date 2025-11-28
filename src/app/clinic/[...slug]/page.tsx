@@ -21,7 +21,11 @@ export default function ClinicSubPage() {
             <NavigableClinicMenu />
             <div className="flex-1">
                 {categoryId || itemId ? (
-                    <ClinicPage itemId={itemId} categoryId={categoryId || itemId} />
+                    <ClinicPage
+                        key={`${categoryId}-${itemId}`}
+                        itemId={itemId}
+                        categoryId={categoryId || itemId}
+                    />
                 ) : (
                     <ClinicContent />
                 )}

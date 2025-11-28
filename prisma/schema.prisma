@@ -14,29 +14,32 @@ datasource db {
 }
 
 model Service {
-  id             Int                   @id @default(autoincrement()) @map("service_id")
-  title          String
-  subtitle       String
-  price          Int
-  video_url      String
-  description    String                @db.Text
-  image_url      String
-  image_url_1    String
-  image_url_2    String
-  image_url_3    String
-  image_url_4    String?
-  questions_id   Int
-  reviews_id     Int
-  category_id    Int
+  id                   Int                   @id @default(autoincrement()) @map("service_id")
+  title                String
+  subtitle             String
+  price                Int
+  video_url            String
+  description          String                @db.Text
+  image_url            String
+  image_url_1          String
+  image_url_2          String
+  image_url_3          String
+  image_url_4          String?
+  questions_id         Int
+  reviews_id           Int
+  category_id          Int
+  service_category_id  Int?                  // Связь с ServiceCategory (новая структура)
 
   // Отношения
-  category       Category              @relation(fields: [category_id], references: [id])
-  specialists    ServiceSpecialist[]   // M:N со специалистами
-  questions      Question[]            // 1:M с вопросами
-  feedbacks      Feedback[]            // 1:M с отзывами
+  category             Category              @relation(fields: [category_id], references: [id])
+  serviceCategory      ServiceCategory?      @relation(fields: [service_category_id], references: [id])
+  specialists          ServiceSpecialist[]   // M:N со специалистами
+  questions            Question[]            // 1:M с вопросами
+  feedbacks            Feedback[]            // 1:M с отзывами
 
   @@map("services")
   @@index([category_id])
+  @@index([service_category_id])
 }
 
 // Таблица связей many-to-many между услугами и специалистами
@@ -61,6 +64,31 @@ model Category {
 
   @@map("categories")
   @@index([slug])
+}
+
+// Древовидная структура меню услуг (для навигации)
+model ServiceCategory {
+  id          Int                @id @default(autoincrement()) @map("service_category_id")
+  name        String             // Название категории
+  slug        String             @unique // URL-friendly ID
+  icon        String?            // Название иконки (например "Baby", "Smile")
+  description String?            @db.Text // Описание категории
+  parent_id   Int?               // ID родительской категории (null для корневых)
+  order       Int                @default(0) // Порядок сортировки
+  is_active   Boolean            @default(true) // Активна ли категория
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
+
+  // Самоссылка для древовидной структуры
+  parent      ServiceCategory?   @relation("ServiceCategoryTree", fields: [parent_id], references: [id], onDelete: Cascade)
+  children    ServiceCategory[]  @relation("ServiceCategoryTree")
+  services    Service[]          // Услуги в этой категории
+
+  @@map("service_categories")
+  @@index([parent_id])
+  @@index([slug])
+  @@index([is_active])
+  @@index([order])
 }
 
 model Specialist {

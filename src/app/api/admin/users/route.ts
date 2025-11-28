@@ -33,13 +33,42 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Получаем всех пользователей кроме CHIEF_DOCTOR
+    // Получаем параметры пагинации и поиска
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '12');
+    const search = searchParams.get('search') || '';
+    const roleFilter = searchParams.get('role') || 'all';
+
+    // Формируем условия поиска
+    const whereCondition: any = {
+      role: { not: "CHIEF_DOCTOR" }
+    };
+
+    if (search) {
+      whereCondition.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { login: { contains: search, mode: 'insensitive' } },
+        { phone: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Фильтр по роли
+    if (roleFilter === 'admin') {
+      whereCondition.role = 'ADMIN';
+    } else if (roleFilter === 'operator') {
+      whereCondition.role = 'OPERATOR';
+    }
+
+    // Подсчитываем общее количество
+    const totalCount = await prisma.patient.count({
+      where: whereCondition,
+    });
+
+    // Получаем пользователей для текущей страницы
     const users = await prisma.patient.findMany({
-      where: {
-        role: {
-          not: "CHIEF_DOCTOR"
-        }
-      },
+      where: whereCondition,
       select: {
         id: true,
         name: true,
@@ -52,9 +81,17 @@ export async function GET(request: NextRequest) {
         is_messages_blocked: true,
       },
       orderBy: { registration_date: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json({
+      data: users,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit),
+    });
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(

@@ -265,7 +265,7 @@ export function EditProfileModal({ isOpen, onClose, user, onProfileUpdate }: Edi
                   size="sm"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isUploadingAvatar}
-                  className="border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white"
+                  className="border-[#18A36C] text-[#18A36C]"
                 >
                   <Camera className="w-4 h-4 mr-2" />
                   Загрузить фото

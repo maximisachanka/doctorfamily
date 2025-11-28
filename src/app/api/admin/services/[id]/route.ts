@@ -44,6 +44,7 @@ export async function GET(
       where: { id: serviceId },
       include: {
         category: true,
+        serviceCategory: true,
         specialists: {
           include: {
             specialist: true,
@@ -90,20 +91,29 @@ export async function PUT(
       price,
       video_url,
       description,
-      specialist_ids, // Changed from specialists_id to specialist_ids (array)
+      specialist_ids,
       image_url,
       image_url_1,
       image_url_2,
       image_url_3,
       image_url_4,
-      category_id,
+      service_category_id,
     } = body;
 
     // Валидация обязательных полей
-    if (!title || !subtitle || !price || !category_id || !specialist_ids || specialist_ids.length === 0) {
+    if (!title || !subtitle || !price || !service_category_id || !specialist_ids || specialist_ids.length === 0) {
       return NextResponse.json(
         { error: 'Название, подзаголовок, цена, категория и хотя бы один специалист обязательны' },
         { status: 400 }
+      );
+    }
+
+    // Получаем первую категорию для совместимости (category_id not nullable в БД)
+    const firstCategory = await prisma.category.findFirst();
+    if (!firstCategory) {
+      return NextResponse.json(
+        { error: 'Не найдена категория по умолчанию' },
+        { status: 500 }
       );
     }
 
@@ -121,7 +131,8 @@ export async function PUT(
         image_url_2: image_url_2 || '',
         image_url_3: image_url_3 || '',
         image_url_4: image_url_4 || null,
-        category_id: parseInt(category_id),
+        category_id: firstCategory.id, // Используем первую категорию для совместимости
+        service_category_id: parseInt(service_category_id),
         specialists: {
           // Delete existing relations and create new ones
           deleteMany: {},
@@ -132,6 +143,7 @@ export async function PUT(
       },
       include: {
         category: true,
+        serviceCategory: true,
         specialists: {
           include: {
             specialist: true,

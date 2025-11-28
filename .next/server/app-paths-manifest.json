@@ -11,6 +11,7 @@
   "/admin/page": "app/admin/page.js",
   "/admin/partners/page": "app/admin/partners/page.js",
   "/admin/questions/page": "app/admin/questions/page.js",
+  "/admin/service-categories/page": "app/admin/service-categories/page.js",
   "/admin/services/page": "app/admin/services/page.js",
   "/admin/users/page": "app/admin/users/page.js",
   "/admin/vacancies/page": "app/admin/vacancies/page.js",
@@ -29,6 +30,8 @@
   "/api/admin/partners/route": "app/api/admin/partners/route.js",
   "/api/admin/questions/[id]/route": "app/api/admin/questions/[id]/route.js",
   "/api/admin/questions/route": "app/api/admin/questions/route.js",
+  "/api/admin/service-categories/[id]/route": "app/api/admin/service-categories/[id]/route.js",
+  "/api/admin/service-categories/route": "app/api/admin/service-categories/route.js",
   "/api/admin/services/[id]/route": "app/api/admin/services/[id]/route.js",
   "/api/admin/services/route": "app/api/admin/services/route.js",
   "/api/admin/specialists/[id]/route": "app/api/admin/specialists/[id]/route.js",
@@ -68,6 +71,8 @@
   "/api/patients/route": "app/api/patients/route.js",
   "/api/reviews/submit/route": "app/api/reviews/submit/route.js",
   "/api/search/route": "app/api/search/route.js",
+  "/api/service-categories/[slug]/route": "app/api/service-categories/[slug]/route.js",
+  "/api/service-categories/route": "app/api/service-categories/route.js",
   "/api/services/[id]/route": "app/api/services/[id]/route.js",
   "/api/services/by-category/[categorySlug]/[serviceId]/route": "app/api/services/by-category/[categorySlug]/[serviceId]/route.js",
   "/api/services/route": "app/api/services/route.js",
@@ -86,5 +91,6 @@
   "/page": "app/page.js",
   "/patient/page": "app/patient/page.js",
   "/services/[categorySlug]/[serviceId]/page": "app/services/[categorySlug]/[serviceId]/page.js",
+  "/services/[categorySlug]/page": "app/services/[categorySlug]/page.js",
   "/services/page": "app/services/page.js"
 }

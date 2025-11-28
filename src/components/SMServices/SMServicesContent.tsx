@@ -37,7 +37,7 @@ export function ServicesContent() {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-lg transition-all duration-300 cursor-pointer border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg"
+                className="group hover:shadow-lg transition-all duration-300 border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg"
               >
                 <div className="p-6">
                   <div className="flex items-start gap-4">
@@ -73,7 +73,7 @@ export function ServicesContent() {
           <div className="flex flex-col sm:flex-row justify-center gap-4 lg:gap-6">
             <Button
               onClick={() => router.push('/contacts')}
-              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto rounded-lg transition-all duration-300"
+              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto rounded-lg transition-all duration-300 cursor-pointer"
             >
               {servicesContentConfig.ctaSection.buttons.online}
               <ArrowRight className="w-5 h-5 ml-[2.5px]" />
@@ -81,7 +81,7 @@ export function ServicesContent() {
             <Button
               onClick={() => router.push('/contacts')}
               variant="outline"
-              className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto rounded-lg transition-all duration-300"
+              className="border-[#18A36C] text-[#18A36C] px-8 py-4 h-auto rounded-lg hover:shadow-xl hover:shadow-[#18A36C]/20 cursor-pointer"
             >
               {servicesContentConfig.ctaSection.buttons.call}
               <Phone className="w-5 h-5 ml-[2.5px]" />

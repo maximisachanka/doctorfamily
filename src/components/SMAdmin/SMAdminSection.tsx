@@ -72,7 +72,7 @@ export function AdminSection({
             {onAdd && (
               <Button
                 onClick={onAdd}
-                className="bg-gradient-to-r from-[#18A36C] to-[#15905f] hover:from-[#15905f] hover:to-[#128a54] text-white shadow-lg shadow-[#18A36C]/20 rounded-xl px-5 py-2.5 transition-all hover:shadow-xl hover:shadow-[#18A36C]/30 whitespace-nowrap"
+                className="bg-gradient-to-r from-[#18A36C] to-[#15905f] hover:from-[#15905f] hover:to-[#128a54] text-white shadow-lg shadow-[#18A36C]/20 rounded-xl px-5 py-2.5 transition-all hover:shadow-xl hover:shadow-[#18A36C]/30 whitespace-nowrap cursor-pointer"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">{addButtonText}</span>
@@ -115,7 +115,7 @@ export function EmptyState({ icon: Icon, title, description, actionText, onActio
       {actionText && onAction && (
         <Button
           onClick={onAction}
-          className="bg-[#18A36C] hover:bg-[#15905f] text-white rounded-xl"
+          className="bg-[#18A36C] hover:bg-[#15905f] text-white rounded-xl cursor-pointer"
         >
           <Plus className="w-4 h-4 mr-2" />
           {actionText}
@@ -161,7 +161,7 @@ export function CardActions({ onEdit, onDelete }: CardActionsProps) {
           e.stopPropagation();
           onEdit();
         }}
-        className="p-2 text-gray-400 hover:text-[#18A36C] hover:bg-[#18A36C]/10 rounded-lg transition-all"
+        className="p-2 text-gray-400 hover:text-[#18A36C] hover:bg-[#18A36C]/10 rounded-lg transition-all duration-200 transform hover:scale-110 active:scale-95 cursor-pointer"
         title="Редактировать"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,7 +173,7 @@ export function CardActions({ onEdit, onDelete }: CardActionsProps) {
           e.stopPropagation();
           onDelete();
         }}
-        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-200 transform hover:scale-110 active:scale-95 cursor-pointer"
         title="Удалить"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,7 +231,7 @@ export function FormModal({
           <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200 transform hover:scale-110 active:scale-95 cursor-pointer"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -249,14 +249,14 @@ export function FormModal({
           <Button
             variant="outline"
             onClick={onClose}
-            className="rounded-xl"
+            className="rounded-xl cursor-pointer"
           >
             Отмена
           </Button>
           <Button
             onClick={onSubmit}
             disabled={loading || disabled}
-            className="bg-gradient-to-r from-[#18A36C] to-[#15905f] text-white rounded-xl min-w-[120px]"
+            className="bg-gradient-to-r from-[#18A36C] to-[#15905f] text-white rounded-xl min-w-[120px] cursor-pointer"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -482,7 +482,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-4 py-2.5 pr-10 border rounded-xl text-sm text-left transition-all bg-white ${
+        className={`w-full px-4 py-2.5 pr-10 border rounded-xl text-sm text-left transition-all bg-white cursor-pointer ${
           isOpen
             ? 'border-[#18A36C] ring-2 ring-[#18A36C]/20'
             : 'border-gray-200 hover:border-gray-300'
@@ -506,7 +506,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
               <button
                 type="button"
                 onClick={view === 'days' ? handlePrevMonth : view === 'months' ? handlePrevYear : handlePrevDecade}
-                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-5 h-5 text-white" />
               </button>
@@ -514,7 +514,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
               <button
                 type="button"
                 onClick={() => setView(view === 'days' ? 'months' : view === 'months' ? 'years' : 'years')}
-                className="px-3 py-1 hover:bg-white/20 rounded-lg transition-colors"
+                className="px-3 py-1 hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
               >
                 <span className="font-semibold text-white">
                   {view === 'days' && `${MONTHS_RU[viewDate.getMonth()]} ${viewDate.getFullYear()}`}
@@ -526,7 +526,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
               <button
                 type="button"
                 onClick={view === 'days' ? handleNextMonth : view === 'months' ? handleNextYear : handleNextDecade}
-                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
               >
                 <ChevronRight className="w-5 h-5 text-white" />
               </button>
@@ -557,7 +557,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
                         <button
                           type="button"
                           onClick={() => handleSelectDay(day)}
-                          className={`w-full h-full flex items-center justify-center text-sm rounded-xl transition-all font-medium ${
+                          className={`w-full h-full flex items-center justify-center text-sm rounded-xl transition-all font-medium cursor-pointer ${
                             isSelectedDay(day)
                               ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white shadow-lg shadow-[#18A36C]/30'
                               : isToday(day)
@@ -582,7 +582,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
                     key={month}
                     type="button"
                     onClick={() => handleSelectMonth(index)}
-                    className={`py-3 px-2 rounded-xl text-sm font-medium transition-all ${
+                    className={`py-3 px-2 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                       isSelectedMonth(index)
                         ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white shadow-lg shadow-[#18A36C]/30'
                         : isCurrentMonth(index)
@@ -604,7 +604,7 @@ export function FormDateInput({ value, onChange, placeholder }: FormDateInputPro
                     key={year}
                     type="button"
                     onClick={() => handleSelectYear(year)}
-                    className={`py-3 px-2 rounded-xl text-sm font-medium transition-all ${
+                    className={`py-3 px-2 rounded-xl text-sm font-medium transition-all cursor-pointer ${
                       isSelectedYear(year)
                         ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white shadow-lg shadow-[#18A36C]/30'
                         : isCurrentYear(year)

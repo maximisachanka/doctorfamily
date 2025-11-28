@@ -36,9 +36,11 @@ interface Chat {
 
 interface OperatorChatContentProps {
   onError?: (message: string) => void;
+  onOpenLoginModal?: () => void;
+  onOpenRegisterModal?: () => void;
 }
 
-export function OperatorChatContent({ onError }: OperatorChatContentProps) {
+export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterModal }: OperatorChatContentProps) {
   const { data: session, status } = useSession();
   const [chat, setChat] = useState<Chat | null>(null);
   const [loading, setLoading] = useState(true);
@@ -156,20 +158,52 @@ export function OperatorChatContent({ onError }: OperatorChatContentProps) {
 
   if (status === 'unauthenticated' || status === 'loading') {
     return (
-      <div className="flex flex-col items-center justify-center h-full text-center px-6">
-        <AlertCircle className="w-16 h-16 text-yellow-500 mb-4" />
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          Требуется авторизация
+      <div className="flex flex-col items-center justify-center h-full text-center px-6 py-8">
+        <div className="w-20 h-20 bg-[#18A36C]/10 rounded-full flex items-center justify-center mb-6">
+          <Headphones className="w-10 h-10 text-[#18A36C]" />
+        </div>
+
+        <h3 className="text-xl font-bold text-gray-800 mb-2">
+          Чат с оператором
         </h3>
-        <p className="text-sm text-gray-600 mb-4">
-          Чтобы связаться с оператором, необходимо войти в систему
+        <p className="text-sm text-gray-600 mb-8 max-w-xs">
+          Для общения с оператором необходимо авторизоваться в системе
         </p>
-        <a
-          href="/account?section=login"
-          className="px-6 py-2 bg-[#18A36C] text-white rounded-lg hover:bg-[#15905f] transition-colors"
-        >
-          Войти
-        </a>
+
+        {/* Login Section */}
+        <div className="w-full max-w-sm space-y-3">
+          <button
+            onClick={onOpenLoginModal}
+            className="w-full px-6 py-3 bg-[#18A36C] text-white cursor-pointer rounded-xl hover:bg-[#15905f] transition-all duration-200 font-medium shadow-lg shadow-[#18A36C]/20 hover:shadow-xl hover:shadow-[#18A36C]/30 transform hover:scale-[1.02]"
+          >
+            Войти
+          </button>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 py-2">
+            <div className="flex-1 h-px bg-gray-200"></div>
+            <span className="text-xs text-gray-400 font-medium">ИЛИ</span>
+            <div className="flex-1 h-px bg-gray-200"></div>
+          </div>
+
+          {/* Register Section */}
+          <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+            <p className="text-sm text-gray-600 mb-3">
+              Нет аккаунта?
+            </p>
+            <button
+              onClick={onOpenRegisterModal}
+              className="w-full px-6 py-3 bg-white cursor-pointer text-[#18A36C] rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium border-2 border-[#18A36C] hover:shadow-md transform hover:scale-[1.02]"
+            >
+              Зарегистрироваться
+            </button>
+          </div>
+        </div>
+
+        {/* Info */}
+        <p className="text-xs text-gray-500 mt-6 max-w-xs">
+          После авторизации вы сможете связаться с нашим оператором в режиме реального времени
+        </p>
       </div>
     );
   }
@@ -287,11 +321,10 @@ export function OperatorChatContent({ onError }: OperatorChatContentProps) {
               />
             ) : (
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  msg.sender_type === 'operator'
-                    ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f]'
-                    : 'bg-gray-400'
-                }`}
+                className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${msg.sender_type === 'operator'
+                  ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f]'
+                  : 'bg-gray-400'
+                  }`}
               >
                 {msg.sender_type === 'operator' ? (
                   <Bot className="w-4 h-4 text-white" />
@@ -302,11 +335,10 @@ export function OperatorChatContent({ onError }: OperatorChatContentProps) {
             )}
             <div className={`max-w-[70%] ${msg.sender_type === 'patient' ? 'items-end' : 'items-start'} flex flex-col`}>
               <div
-                className={`rounded-2xl p-3 ${
-                  msg.sender_type === 'patient'
-                    ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white'
-                    : 'bg-white text-gray-800 shadow-sm border border-gray-200'
-                }`}
+                className={`rounded-2xl p-3 ${msg.sender_type === 'patient'
+                  ? 'bg-gradient-to-br from-[#18A36C] to-[#15905f] text-white'
+                  : 'bg-white text-gray-800 shadow-sm border border-gray-200'
+                  }`}
               >
                 <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
               </div>

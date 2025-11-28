@@ -34,11 +34,39 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: adminCheck.error }, { status: 403 });
     }
 
+    // Получаем параметры пагинации и поиска
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '12');
+    const search = searchParams.get('search') || '';
+
+    // Формируем условия поиска
+    const whereCondition: any = {};
+    if (search) {
+      whereCondition.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { content: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Подсчитываем общее количество
+    const totalCount = await prisma.material.count({ where: whereCondition });
+
+    // Получаем материалы для текущей страницы
     const materials = await prisma.material.findMany({
+      where: whereCondition,
       orderBy: { date: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
     });
 
-    return NextResponse.json(materials);
+    return NextResponse.json({
+      data: materials,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit),
+    });
   } catch (error) {
     console.error("Get materials error:", error);
     return NextResponse.json(

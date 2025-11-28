@@ -53,7 +53,7 @@ export function SMHomePage() {
 
               <Button
                 variant="outline"
-                className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+                className="border-[#18A36C] text-[#18A36C] px-8 py-4 h-auto text-lg rounded-lg hover:shadow-xl hover:shadow-[#18A36C]/20"
                 onClick={() => router.push("/services")}
               >
                 {homePageConfig.hero.buttons.services}
@@ -196,7 +196,7 @@ export function SMHomePage() {
               <div className="text-center mt-6">
                 <Button
                   variant="outline"
-                  className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+                  className="border-[#18A36C] text-[#18A36C] px-8 py-4 h-auto text-lg rounded-lg hover:shadow-xl hover:shadow-[#18A36C]/20"
                   onClick={() => router.push("/clinic")}
                 >
                   Подробнее о клинике
@@ -372,7 +372,7 @@ export function SMHomePage() {
                           <Star
                             key={i}
                             className={`w-4 h-4 ${i < feedback.grade
-                              ? 'fill-[#18A36C] text-[#18A36C]'
+                              ? 'fill-yellow-400 text-yellow-400'
                               : 'text-gray-300'
                               }`}
                           />
@@ -395,7 +395,7 @@ export function SMHomePage() {
           <div className="text-center">
             <Button
               variant="outline"
-              className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+              className="border-[#18A36C] text-[#18A36C] px-8 py-4 h-auto text-lg rounded-lg hover:shadow-xl hover:shadow-[#18A36C]/20"
               onClick={() => router.push("/clinic/reviews")}
             >
               Все отзывы
@@ -426,13 +426,18 @@ export function SMHomePage() {
                     {React.createElement(iconMap.Phone, { className: "w-5 h-5 text-[#18A36C]" })}
                     {homePageConfig.contactSection.contactInfo.phone.title}
                   </h3>
-                  <p className="text-[#2E2E2E] mb-2">
-                    {contactsLoading ? (
+                  {contactsLoading ? (
+                    <p className="text-[#2E2E2E] mb-2">
                       <TextSkeleton className="w-36 h-6" />
-                    ) : (
-                      contacts?.phone_number || homePageConfig.contactSection.contactInfo.phone.number
-                    )}
-                  </p>
+                    </p>
+                  ) : (
+                    <a
+                      href={`tel:${(contacts?.phone_number || homePageConfig.contactSection.contactInfo.phone.number).replace(/[\s\-]/g, '')}`}
+                      className="text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2"
+                    >
+                      {contacts?.phone_number || homePageConfig.contactSection.contactInfo.phone.number}
+                    </a>
+                  )}
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.phone.description}
                   </p>
@@ -449,13 +454,20 @@ export function SMHomePage() {
                     {React.createElement(iconMap.MapPin, { className: "w-5 h-5 text-[#18A36C]" })}
                     {homePageConfig.contactSection.contactInfo.address.title}
                   </h3>
-                  <p className="text-[#2E2E2E] mb-2">
-                    {contactsLoading ? (
+                  {contactsLoading ? (
+                    <p className="text-[#2E2E2E] mb-2">
                       <TextSkeleton className="w-64 h-6" />
-                    ) : (
-                      contacts?.address || homePageConfig.contactSection.contactInfo.address.full
-                    )}
-                  </p>
+                    </p>
+                  ) : (
+                    <a
+                      href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || homePageConfig.contactSection.contactInfo.address.full)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2"
+                    >
+                      {contacts?.address || homePageConfig.contactSection.contactInfo.address.full}
+                    </a>
+                  )}
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.address.description}
                   </p>
@@ -472,13 +484,18 @@ export function SMHomePage() {
                     {React.createElement(iconMap.Mail, { className: "w-5 h-5 text-[#18A36C]" })}
                     {homePageConfig.contactSection.contactInfo.email.title}
                   </h3>
-                  <p className="text-[#2E2E2E] mb-2">
-                    {contactsLoading ? (
+                  {contactsLoading ? (
+                    <p className="text-[#2E2E2E] mb-2">
                       <TextSkeleton className="w-48 h-6" />
-                    ) : (
-                      contacts?.email || homePageConfig.contactSection.contactInfo.email.address
-                    )}
-                  </p>
+                    </p>
+                  ) : (
+                    <a
+                      href={`mailto:${contacts?.email || homePageConfig.contactSection.contactInfo.email.address}`}
+                      className="text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2"
+                    >
+                      {contacts?.email || homePageConfig.contactSection.contactInfo.email.address}
+                    </a>
+                  )}
                   <p className="text-sm text-gray-600">
                     {homePageConfig.contactSection.contactInfo.email.description}
                   </p>
@@ -518,7 +535,7 @@ export function SMHomePage() {
                 </p>
                 <Button
                   variant="outline"
-                  className="border-2 border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+                  className="border-[#18A36C] text-[#18A36C] px-8 py-4 h-auto text-lg rounded-lg hover:shadow-xl hover:shadow-[#18A36C]/20 cursor-pointer"
                   onClick={() => window.open("https://maps.google.com", "_blank")}
                 >
                   {homePageConfig.contactSection.location.mapButtonText}

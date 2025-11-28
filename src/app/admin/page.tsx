@@ -26,6 +26,7 @@ import { AdminAccessSkeleton, AdminSectionSkeleton } from '@/components/SMAdmin/
 import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { useAlert } from '@/components/common/SMAlert';
+import { useUrlPagination } from '@/hooks/useUrlPagination';
 import NotFound from '../not-found';
 
 // Types
@@ -70,8 +71,8 @@ export default function AdminPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 12;
+  // Pagination hook
+  const { currentPage, setPage, paginateData } = useUrlPagination(12);
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,6 +99,7 @@ export default function AdminPage() {
       checkAdminRole();
     } else if (status === 'unauthenticated') {
       setHasAdminRole(false);
+      setIsCheckingRole(false);
     }
   }, [status]);
 
@@ -163,15 +165,14 @@ export default function AdminPage() {
 
   // Reset page when search changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
+    setPage(1);
+  }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Pagination
-  const totalPages = Math.ceil(filteredSpecialists.length / ITEMS_PER_PAGE);
-  const paginatedSpecialists = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredSpecialists.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredSpecialists, currentPage]);
+  const { paginatedData: paginatedSpecialists, totalPages } = useMemo(
+    () => paginateData(filteredSpecialists),
+    [paginateData, filteredSpecialists]
+  );
 
   // Form handlers
   const resetForm = () => {
@@ -367,7 +368,7 @@ export default function AdminPage() {
                   <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    onPageChange={setCurrentPage}
+                    onPageChange={setPage}
                     className="mt-6"
                   />
                 )}

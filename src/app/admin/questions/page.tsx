@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { HelpCircle, Loader2 } from 'lucide-react';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
+import { Pagination } from '@/components/common/SMPagination/SMPagination';
 import {
   AdminSection,
   EmptyState,
@@ -24,6 +25,7 @@ import { AdminAccessSkeleton, AdminQuestionsGridSkeleton } from '@/components/SM
 import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { useAlert } from '@/components/common/SMAlert';
+import { useServerPagination } from '@/hooks/useServerPagination';
 
 interface Question {
   id: number;
@@ -69,8 +71,13 @@ export default function AdminQuestionsPage() {
   const confirmDialog = useConfirmDialog();
   const { success, error: showError } = useAlert();
 
+  // Pagination hook
+  const { currentPage, setPage, buildApiUrl } = useServerPagination(12);
+
   // Data states
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -95,13 +102,6 @@ export default function AdminQuestionsPage() {
     }
   }, [status]);
 
-  // Load data when session is verified
-  useEffect(() => {
-    if (sessionVerified && hasAdminRole) {
-      loadData();
-    }
-  }, [sessionVerified, hasAdminRole]);
-
   const checkAdminRole = async () => {
     try {
       const res = await fetch('/api/admin/auth');
@@ -119,14 +119,18 @@ export default function AdminQuestionsPage() {
   const loadData = async () => {
     setLoading(true);
     try {
+      const apiUrl = buildApiUrl('/api/admin/questions', searchQuery);
+
       const [questionsRes, servicesRes] = await Promise.all([
-        fetch('/api/admin/questions'),
+        fetch(apiUrl),
         fetch('/api/services'),
       ]);
 
       if (questionsRes.ok) {
-        const data = await questionsRes.json();
-        setQuestions(data);
+        const response = await questionsRes.json();
+        setQuestions(response.data || []);
+        setTotalPages(response.totalPages || 1);
+        setTotalCount(response.totalCount || 0);
       }
 
       if (servicesRes.ok) {
@@ -135,22 +139,23 @@ export default function AdminQuestionsPage() {
       }
     } catch (error) {
       console.error('Error loading data:', error);
+      showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);
     }
   };
 
-  // Filtered questions
-  const filteredQuestions = useMemo(() => {
-    if (!searchQuery) return questions;
-    const query = searchQuery.toLowerCase();
-    return questions.filter(
-      (q) =>
-        q.question.toLowerCase().includes(query) ||
-        q.answer?.toLowerCase().includes(query) ||
-        getCategoryLabel(q.category).toLowerCase().includes(query)
-    );
-  }, [questions, searchQuery]);
+  // Load data when session is verified or page/search changes
+  useEffect(() => {
+    if (sessionVerified && hasAdminRole) {
+      loadData();
+    }
+  }, [sessionVerified, hasAdminRole, currentPage, searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Reset page when search changes
+  useEffect(() => {
+    setPage(1);
+  }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Form handlers
   const resetForm = () => {
@@ -262,7 +267,7 @@ export default function AdminQuestionsPage() {
           <AdminSection
             title="Вопросы (FAQ)"
             icon={HelpCircle}
-            count={questions.length}
+            count={totalCount}
             loading={loading}
             searchValue={searchQuery}
             onSearchChange={setSearchQuery}
@@ -270,7 +275,7 @@ export default function AdminQuestionsPage() {
             addButtonText="Добавить вопрос"
             loadingSkeleton={<AdminQuestionsGridSkeleton count={12} />}
           >
-            {filteredQuestions.length === 0 ? (
+            {questions.length === 0 ? (
               <EmptyState
                 icon={HelpCircle}
                 title="Вопросы не найдены"
@@ -279,43 +284,55 @@ export default function AdminQuestionsPage() {
                 onAction={!searchQuery ? handleAdd : undefined}
               />
             ) : (
-              <div className="space-y-4">
-                <AnimatePresence>
-                  {filteredQuestions.map((question) => (
-                    <ItemCard key={question.id}>
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1">
-                          {/* Question */}
-                          <h3 className="font-semibold text-gray-800 mb-2">{question.question}</h3>
+              <>
+                <div className="space-y-4">
+                  <AnimatePresence>
+                    {questions.map((question) => (
+                      <ItemCard key={question.id}>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            {/* Question */}
+                            <h3 className="font-semibold text-gray-800 mb-2">{question.question}</h3>
 
-                          {/* Answer */}
-                          {question.answer && (
-                            <p className="text-sm text-gray-500 line-clamp-2 mb-3">{question.answer}</p>
-                          )}
+                            {/* Answer */}
+                            {question.answer && (
+                              <p className="text-sm text-gray-500 line-clamp-2 mb-3">{question.answer}</p>
+                            )}
 
-                          {/* Tags */}
-                          <div className="flex items-center gap-2 flex-wrap">
-                            {question.category && (
-                              <Badge variant="primary">{getCategoryLabel(question.category)}</Badge>
-                            )}
-                            {question.service && (
-                              <Badge variant="secondary">{question.service.title}</Badge>
-                            )}
-                            {!question.answer && (
-                              <Badge variant="warning">Без ответа</Badge>
-                            )}
+                            {/* Tags */}
+                            <div className="flex items-center gap-2 flex-wrap">
+                              {question.category && (
+                                <Badge variant="primary">{getCategoryLabel(question.category)}</Badge>
+                              )}
+                              {question.service && (
+                                <Badge variant="secondary">{question.service.title}</Badge>
+                              )}
+                              {!question.answer && (
+                                <Badge variant="warning">Без ответа</Badge>
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        <CardActions
-                          onEdit={() => handleEdit(question)}
-                          onDelete={() => handleDelete(question.id, question.question)}
-                        />
-                      </div>
-                    </ItemCard>
-                  ))}
-                </AnimatePresence>
-              </div>
+                          <CardActions
+                            onEdit={() => handleEdit(question)}
+                            onDelete={() => handleDelete(question.id, question.question)}
+                          />
+                        </div>
+                      </ItemCard>
+                    ))}
+                  </AnimatePresence>
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    className="mt-6"
+                  />
+                )}
+              </>
             )}
           </AdminSection>
 

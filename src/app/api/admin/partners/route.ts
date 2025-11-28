@@ -33,16 +33,42 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: adminCheck.error }, { status: 403 });
     }
 
+    // Получаем параметры пагинации и поиска
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '12');
+    const search = searchParams.get('search') || '';
+
+    // Формируем условия поиска
+    const whereCondition: any = {};
+    if (search) {
+      whereCondition.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Подсчитываем общее количество
+    const totalCount = await prisma.partner.count({ where: whereCondition });
+
+    // Получаем партнёров для текущей страницы
     const partners = await prisma.partner.findMany({
+      where: whereCondition,
       include: {
-        category: {
-          select: { id: true, name: true, slug: true },
-        },
+        category: true,
       },
-      orderBy: { number: "asc" },
+      orderBy: { name: 'asc' },
+      skip: (page - 1) * limit,
+      take: limit,
     });
 
-    return NextResponse.json(partners);
+    return NextResponse.json({
+      data: partners,
+      totalCount,
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit),
+    });
   } catch (error) {
     console.error("Get partners error:", error);
     return NextResponse.json(

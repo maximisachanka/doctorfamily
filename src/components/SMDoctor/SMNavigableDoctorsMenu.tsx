@@ -181,6 +181,9 @@ export function NavigableDoctorsMenu() {
     const routeParts = currentRoute.split('/').filter(Boolean);
     if (routeParts[0] === 'doctors' && routeParts[1]) {
       setActiveItem(routeParts[1]);
+    } else if (routeParts[0] === 'doctors' && routeParts.length === 1) {
+      // На главной странице специалистов - сбрасываем активный пункт
+      setActiveItem(null);
     }
   }, [currentRoute]);
 
@@ -251,9 +254,10 @@ export function NavigableDoctorsMenu() {
       <div className="p-3 lg:p-4 mt-2 lg:mt-4 border-t border-[#E8E6E3] bg-white">
         <div className="text-center">
           <p className="text-xs text-gray-600 mb-2 lg:mb-3">Не нашли нужного специалиста?</p>
-          <Button 
-            size="sm" 
-            className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white w-full text-xs rounded-lg"
+          <Button
+            size="sm"
+            onClick={() => navigate('/contacts')}
+            className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white w-full text-xs rounded-lg cursor-pointer"
           >
             Связаться с нами
           </Button>

@@ -5,7 +5,6 @@ import { Button } from '../common/SMButton/SMButton';
 import { Card } from '../common/SMCard/SMCard';
 import { useRouter as useSMRouter } from '../SMRouter/SMRouter';
 import { useRouter } from 'next/navigation';
-import { Breadcrumb } from '../SMBreadcrumb/SMBreadcrumb';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
 import commonConfig from '@/config/common.json';
 import { DoctorPageSkeleton } from './SMDoctorSkeleton';
@@ -118,8 +117,6 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
 
   return (
     <>
-      <Breadcrumb />
-
       <div className="p-4 lg:p-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -128,7 +125,7 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
             className="mb-8"
           >
             <div className="bg-white rounded-lg border border-[#E8E6E3] p-6 lg:p-8">
-              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+              <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 mb-6">
                 <div className="flex-shrink-0 mx-auto lg:mx-0">
                   <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-lg overflow-hidden">
                     <ImageWithFallback
@@ -140,42 +137,39 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
                 </div>
 
                 <div className="flex-1 text-center lg:text-left">
-                  <div className="mb-4">
-                    <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-2">
-                      {doctor.name}
-                    </h1>
-                    <p className="text-lg text-gray-600 mb-3">{doctor.specialization}</p>
+                  <h1 className="text-2xl lg:text-3xl text-[#2E2E2E] mb-2">
+                    {doctor.name}
+                  </h1>
+                  <p className="text-lg text-gray-600 mb-3">{doctor.specialization}</p>
 
-                    <div className="text-gray-600 mb-4 flex flex-col gap-1 items-center lg:items-start">
-                      <span>{doctor.qualification}</span>
-                      <span>Стаж: {doctor.experience} {doctor.experience === 1 ? 'год' : doctor.experience < 5 ? 'года' : 'лет'}</span>
-                    </div>
-
-                    <div className="flex items-center gap-1 justify-center lg:justify-start mb-6">
-                      {[...Array(doctor.grade)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 fill-[#18A36C] text-[#18A36C]" />
-                      ))}
-                      {[...Array(5 - doctor.grade)].map((_, i) => (
-                        <Star key={i + doctor.grade} className="w-5 h-5 fill-gray-200 text-gray-200" />
-                      ))}
-                      <span className="text-gray-600 ml-2">
-                        {doctor.grade}/5
-                      </span>
-                    </div>
+                  <div className="text-gray-600 mb-4 flex flex-col gap-1 items-center lg:items-start">
+                    <span>{doctor.qualification}</span>
+                    <span>Стаж: {doctor.experience} {doctor.experience === 1 ? 'год' : doctor.experience < 5 ? 'года' : 'лет'}</span>
                   </div>
 
-                  <div className="bg-gray-100 rounded-lg p-6">
-                    <h3 className="text-lg text-[#2E2E2E] mb-3">
-                      {commonConfig.messages.booking.title}
-                    </h3>
-                    <Button
-                      onClick={() => router.push('/contacts')}
-                      className="w-full lg:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
-                    >
-                      {commonConfig.messages.booking.buttonText}
-                      <Calendar className="w-5 h-5 ml-[2.5px]" />
-                    </Button>
+                  <div className="flex items-center gap-1 justify-center lg:justify-start">
+                    {[...Array(doctor.grade)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                    {[...Array(5 - doctor.grade)].map((_, i) => (
+                      <Star key={i + doctor.grade} className="w-5 h-5 fill-gray-200 text-gray-200" />
+                    ))}
                   </div>
+                </div>
+              </div>
+
+              <div className="w-full rounded-xl p-8 border border-gray-200">
+                <div className="text-center">
+                  <h3 className="text-lg text-gray-700 mb-4">
+                    Чтобы попасть к этому специалисту на запись, свяжитесь с нами
+                  </h3>
+                  <Button
+                    onClick={() => router.push('/contacts')}
+                    className="bg-[#18A36C] hover:bg-[#15905f] text-white px-8 py-4 h-auto text-lg rounded-xl transition-all duration-300 cursor-pointer"
+                  >
+                    Связаться с нами
+                    <Calendar className="w-5 h-5 ml-2" />
+                  </Button>
                 </div>
               </div>
             </div>

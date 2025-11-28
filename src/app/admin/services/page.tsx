@@ -8,6 +8,7 @@ import { Pagination } from '@/components/common/SMPagination/SMPagination';
 import { ImageUploader } from '@/components/ImageUploader';
 import { MultiImageUploader } from '@/components/ImageUploader/MultiImageUploader';
 import { AdminMenu } from '@/components/SMAdmin/SMAdminMenu';
+import { useServerPagination } from '@/hooks/useServerPagination';
 import {
   AdminSection,
   EmptyState,
@@ -28,6 +29,7 @@ import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
 import { ImageWithFallback } from '@/components/SMImage/ImageWithFallback';
 import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
+import { CategoryListSelector } from '@/components/common/SMCategoryListSelector/SMCategoryListSelector';
 
 interface Service {
   id: number;
@@ -41,8 +43,14 @@ interface Service {
   image_url_2: string;
   image_url_3: string;
   image_url_4: string | null;
-  category_id: number;
-  category: {
+  category_id?: number; // Опциональная для обратной совместимости
+  service_category_id: number | null;
+  category?: {
+    id: number;
+    name: string;
+    slug: string;
+  };
+  serviceCategory?: {
     id: number;
     name: string;
     slug: string;
@@ -53,15 +61,17 @@ interface Service {
   }[];
 }
 
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-}
-
 interface Specialist {
   id: number;
   name: string;
+}
+
+interface ServiceCategory {
+  id: number;
+  name: string;
+  slug: string;
+  parent_id: number | null;
+  children?: ServiceCategory[];
 }
 
 export default function AdminServicesPage() {
@@ -72,14 +82,17 @@ export default function AdminServicesPage() {
   const { success, error: showError } = useAlert();
   const confirmDialog = useConfirmDialog();
 
+  // Pagination hook
+  const { currentPage, setPage, buildApiUrl } = useServerPagination(12);
+
   // Data states
   const [services, setServices] = useState<Service[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>([]);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const ITEMS_PER_PAGE = 12;
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,8 +109,8 @@ export default function AdminServicesPage() {
     image_url_2: '',
     image_url_3: '',
     image_url_4: '',
-    specialist_ids: [] as string[], // Changed to array
-    category_id: '',
+    specialist_ids: [] as string[],
+    service_category_id: '',
   });
 
   // Check admin role
@@ -109,12 +122,12 @@ export default function AdminServicesPage() {
     }
   }, [status]);
 
-  // Load data when session is verified
+  // Load data when session is verified or page/search changes
   useEffect(() => {
     if (sessionVerified && hasAdminRole) {
       loadData();
     }
-  }, [sessionVerified, hasAdminRole]);
+  }, [sessionVerified, hasAdminRole, currentPage, searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const checkAdminRole = async () => {
     setIsCheckingRole(true);
@@ -136,20 +149,24 @@ export default function AdminServicesPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [servicesRes, categoriesRes, specialistsRes] = await Promise.all([
-        fetch('/api/admin/services'),
-        fetch('/api/categories'),
+      const apiUrl = buildApiUrl('/api/admin/services', searchQuery);
+
+      const [servicesRes, serviceCategoriesRes, specialistsRes] = await Promise.all([
+        fetch(apiUrl),
+        fetch('/api/service-categories'),
         fetch('/api/specialists'),
       ]);
 
       if (servicesRes.ok) {
-        const data = await servicesRes.json();
-        setServices(data);
+        const response = await servicesRes.json();
+        setServices(response.data || []);
+        setTotalPages(response.totalPages || 1);
+        setTotalCount(response.totalCount || 0);
       }
 
-      if (categoriesRes.ok) {
-        const data = await categoriesRes.json();
-        setCategories(data);
+      if (serviceCategoriesRes.ok) {
+        const data = await serviceCategoriesRes.json();
+        setServiceCategories(data);
       }
 
       if (specialistsRes.ok) {
@@ -164,29 +181,47 @@ export default function AdminServicesPage() {
     }
   };
 
-  // Filtered services
-  const filteredServices = useMemo(() => {
-    if (!searchQuery) return services;
-    const query = searchQuery.toLowerCase();
-    return services.filter(
-      (s) =>
-        s.title.toLowerCase().includes(query) ||
-        s.subtitle.toLowerCase().includes(query) ||
-        s.category.name.toLowerCase().includes(query)
-    );
-  }, [services, searchQuery]);
-
   // Reset page when search changes
   useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
+    setPage(1);
+  }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Pagination
-  const totalPages = Math.ceil(filteredServices.length / ITEMS_PER_PAGE);
-  const paginatedServices = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredServices.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredServices, currentPage]);
+  // Flatten service categories tree for dropdown with disabled logic
+  const flattenedServiceCategories = useMemo(() => {
+    // Получаем ID категорий, которые уже заняты другими услугами
+    const usedCategoryIds = new Set(
+      services
+        .filter(s => s.service_category_id && (!editingService || s.id !== editingService.id))
+        .map(s => s.service_category_id)
+    );
+
+    const flatten = (cats: ServiceCategory[], level = 0): Array<ServiceCategory & { level: number; disabled: boolean; disabledReason?: string }> => {
+      const result: Array<ServiceCategory & { level: number; disabled: boolean; disabledReason?: string }> = [];
+      for (const cat of cats) {
+        const hasChildren = cat.children && cat.children.length > 0;
+        const isUsed = usedCategoryIds.has(cat.id);
+
+        let disabled = false;
+        let disabledReason = '';
+
+        if (hasChildren) {
+          disabled = true;
+          disabledReason = 'имеет подкатегории';
+        } else if (isUsed) {
+          disabled = true;
+          disabledReason = 'уже занята';
+        }
+
+        result.push({ ...cat, level, disabled, disabledReason });
+
+        if (cat.children && cat.children.length > 0) {
+          result.push(...flatten(cat.children, level + 1));
+        }
+      }
+      return result;
+    };
+    return flatten(serviceCategories);
+  }, [serviceCategories, services, editingService]);
 
   // Form handlers
   const resetForm = () => {
@@ -202,7 +237,7 @@ export default function AdminServicesPage() {
       image_url_3: '',
       image_url_4: '',
       specialist_ids: [],
-      category_id: '',
+      service_category_id: '',
     });
     setEditingService(null);
     setIsModalOpen(false);
@@ -227,7 +262,7 @@ export default function AdminServicesPage() {
       image_url_3: service.image_url_3,
       image_url_4: service.image_url_4 || '',
       specialist_ids: service.specialists.map(s => s.id.toString()),
-      category_id: service.category_id.toString(),
+      service_category_id: service.service_category_id?.toString() || '',
     });
     setIsModalOpen(true);
   };
@@ -314,14 +349,14 @@ export default function AdminServicesPage() {
           <AdminSection
             title="Услуги"
             icon={ShoppingBag}
-            count={services.length}
+            count={totalCount}
             loading={loading}
             searchValue={searchQuery}
             onSearchChange={setSearchQuery}
             onAdd={handleAdd}
             addButtonText="Добавить услугу"
           >
-            {filteredServices.length === 0 ? (
+            {services.length === 0 ? (
               <EmptyState
                 icon={ShoppingBag}
                 title="Услуги не найдены"
@@ -333,7 +368,7 @@ export default function AdminServicesPage() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   <AnimatePresence>
-                    {paginatedServices.map((service) => (
+                    {services.map((service) => (
                     <ItemCard key={service.id}>
                       {/* Image */}
                       <div className="w-full h-32 rounded-xl overflow-hidden bg-gray-100 mb-3">
@@ -352,7 +387,9 @@ export default function AdminServicesPage() {
 
                       {/* Tags */}
                       <div className="flex items-center gap-2 mt-3 flex-wrap">
-                        <Badge variant="primary">{service.category.name}</Badge>
+                        {service.serviceCategory && (
+                          <Badge variant="primary">{service.serviceCategory.name}</Badge>
+                        )}
                         <Badge variant="success">{service.price} BYN</Badge>
                       </div>
 
@@ -382,7 +419,7 @@ export default function AdminServicesPage() {
                   <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    onPageChange={setCurrentPage}
+                    onPageChange={setPage}
                     className="mt-6"
                   />
                 )}
@@ -397,7 +434,7 @@ export default function AdminServicesPage() {
             title={editingService ? 'Редактирование услуги' : 'Новая услуга'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.title || !formData.subtitle || !formData.price || !formData.category_id || formData.specialist_ids.length === 0}
+            disabled={!formData.title || !formData.subtitle || !formData.price || !formData.service_category_id || formData.specialist_ids.length === 0}
           >
             <div className="space-y-6">
               {/* Basic Info */}
@@ -430,21 +467,16 @@ export default function AdminServicesPage() {
                 />
               </FormField>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField label="Категория" required>
-                  <FormSelect
-                    value={formData.category_id}
-                    onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-                  >
-                    <option value="">Выберите категорию</option>
-                    {categories.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </FormSelect>
-                </FormField>
+              <FormField label="Категория услуги" required>
+                <CategoryListSelector
+                  categories={flattenedServiceCategories}
+                  value={formData.service_category_id}
+                  onChange={(value) => setFormData({ ...formData, service_category_id: value })}
+                  placeholder="Выберите категорию"
+                />
+              </FormField>
 
+              <div className="grid grid-cols-1 gap-4">
                 <FormField label="Специалисты" required>
                   <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-xl p-3 bg-gray-50">
                     {specialists.map((spec) => (

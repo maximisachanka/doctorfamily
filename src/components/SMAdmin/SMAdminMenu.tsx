@@ -199,7 +199,7 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
               <button
                 key={item.id}
                 onClick={() => handleItemClick(item)}
-                className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group rounded-lg mx-1 mb-1 ${
+                className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-300 group rounded-lg mx-1 mb-1 cursor-pointer ${
                   isActive(item.href)
                     ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
                     : 'hover:bg-gray-50'
@@ -239,7 +239,7 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
       <div className="p-4 border-t border-gray-100 space-y-3">
         <button
           onClick={handleExitAdmin}
-          className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-300 group rounded-lg hover:bg-gray-50"
+          className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-300 group rounded-lg hover:bg-gray-50 cursor-pointer"
         >
           <Home className="w-4 h-4 text-gray-500 group-hover:text-[#18A36C] transition-colors" />
           <span className="font-medium text-gray-700 group-hover:text-[#18A36C] transition-colors">
@@ -266,7 +266,7 @@ export function AdminMenu({ onNavigate }: AdminMenuProps) {
           <SheetTrigger asChild>
             <Button
               size="sm"
-              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white shadow-xl rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110 active:scale-95"
+              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white shadow-xl rounded-full w-14 h-14 p-0 transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer"
             >
               <Shield className="w-6 h-6" />
             </Button>

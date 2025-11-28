@@ -43,7 +43,7 @@ export function SpecialistCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
     >
-      <Card className="p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg">
+      <Card className="p-6 hover:shadow-lg transition-all duration-300 group border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-shrink-0 mx-auto sm:mx-0">
             <div
@@ -60,7 +60,6 @@ export function SpecialistCard({
 
           <div className="flex-1 text-center sm:text-left">
             <div
-              className="cursor-pointer"
               onClick={() => onDoctorClick?.(specialist.id)}
             >
               <h3 className="text-lg text-[#2E2E2E] mb-1 group-hover:text-[#18A36C] transition-colors">
@@ -77,7 +76,7 @@ export function SpecialistCard({
                 {[...Array(specialist.grade)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-4 h-4 fill-[#18A36C] text-[#18A36C]"
+                    className="w-4 h-4 fill-yellow-400 text-yellow-400"
                   />
                 ))}
                 {[...Array(5 - specialist.grade)].map((_, i) => (
@@ -93,10 +92,13 @@ export function SpecialistCard({
             </div>
 
             <Button
-              onClick={() => router.push('/contacts')}
-              className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300"
+              onClick={() => {
+                const categorySlug = specialist.category?.slug || 'other';
+                router.push(`/doctors/${categorySlug}/${specialist.id}`);
+              }}
+              className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 cursor-pointer"
             >
-              Связаться с нами
+              Подробнее
               <ArrowRight className="w-5 h-5 ml-[2.5px]" />
             </Button>
           </div>

@@ -89,51 +89,61 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
 
   const paddingLeft = level === 0 ? 'pl-4' : level === 1 ? 'pl-8' : 'pl-12';
 
+  const handleTitleClick = () => {
+    // Клик на название всегда переходит на страницу
+    onItemClick(item.id, item);
+  };
+
+  const handleArrowClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Клик на стрелочку только раскрывает/закрывает
+    if (hasChildren) {
+      onToggleExpand(item.id);
+    }
+  };
+
   return (
     <div className="px-2">
-      <Button
-        variant="ghost"
-        className={`w-full justify-start px-4 py-3 h-auto text-left transition-all duration-300 rounded-lg mb-1 ${isActive || isRouteActive
+      <div
+        className={`w-full flex items-center justify-between transition-all duration-300 rounded-lg mb-1 overflow-hidden ${isActive || isRouteActive
           ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
           : 'text-gray-700 hover:bg-gray-50 hover:text-[#18A36C]'
           }`}
-        onClick={() => {
-          if (hasChildren) {
-            onToggleExpand(item.id);
-          } else {
-            onItemClick(item.id, item);
-          }
-        }}
       >
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-3">
-            {item.icon && (
-              <div className={`transition-colors ${isActive || isRouteActive ? 'text-[#18A36C]' : 'text-gray-600'}`}>
-                {item.icon}
-              </div>
-            )}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className={`text-sm lg:text-base transition-colors truncate max-w-[180px] ${isActive || isRouteActive ? 'text-[#18A36C] font-medium' : ''
-                  }`}>
-                  {item.title}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                {item.title}
-              </TooltipContent>
-            </Tooltip>
-          </div>
-
-          {hasChildren && (
-            <ChevronRight
-              className={`w-4 h-4 text-gray-400 transition-all duration-200 ${isExpanded ? 'rotate-90 text-[#18A36C]' : 'group-hover:text-[#18A36C] group-hover:translate-x-1'
-                }`}
-            />
+        <div
+          className="flex items-center gap-3 flex-1 min-w-0 px-4 py-3 cursor-pointer"
+          onClick={handleTitleClick}
+        >
+          {item.icon && (
+            <div className={`flex-shrink-0 transition-colors ${isActive || isRouteActive ? 'text-[#18A36C]' : 'text-gray-600'}`}>
+              {item.icon}
+            </div>
           )}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className={`text-sm lg:text-base transition-colors truncate max-w-[180px] ${isActive || isRouteActive ? 'text-[#18A36C] font-medium' : ''
+                }`}>
+                {item.title}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {item.title}
+            </TooltipContent>
+          </Tooltip>
         </div>
-      </Button>
 
+        {hasChildren && (
+          <div
+            className={`hidden lg:flex flex-shrink-0 transition-transform duration-200 p-3 cursor-pointer hover:bg-gray-100 rounded ${isExpanded ? 'rotate-90' : ''
+              } ${isActive ? 'text-[#18A36C]' : 'text-gray-400'}`}
+            onClick={handleArrowClick}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </div>
+        )}
+      </div>
+
+      {/* Показываем children только на desktop */}
       <AnimatePresence initial={false}>
         {hasChildren && isExpanded && (
           <motion.div
@@ -141,7 +151,7 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden"
+            className="overflow-hidden hidden lg:block"
           >
             <div className="bg-white">
               {item.children!.map((child) => (
@@ -184,6 +194,10 @@ export function NavigableClinicMenu() {
 
       // Expand the parent section
       setExpandedItems(new Set([sectionId]));
+    } else if (routeParts[0] === 'clinic' && routeParts.length === 1) {
+      // На главной странице клиники - сбрасываем активный пункт
+      setActiveItem(null);
+      setExpandedItems(new Set());
     }
   }, [currentRoute]);
 
@@ -267,7 +281,8 @@ export function NavigableClinicMenu() {
           <p className="text-xs text-gray-600 mb-2 lg:mb-3">Не нашли нужную информацию?</p>
           <Button
             size="sm"
-            className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white w-full text-xs rounded-lg"
+            onClick={() => navigate('/contacts')}
+            className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white w-full text-xs rounded-lg cursor-pointer"
           >
             Связаться с нами
           </Button>

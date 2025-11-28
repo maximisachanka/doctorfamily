@@ -10,6 +10,7 @@ import { CookieConsent } from "@/components/common/CookieConsent";
 import { LetterNotifications } from "@/components/LetterNotifications/LetterNotifications";
 import { ChatNotifications } from "@/components/ChatNotifications/ChatNotifications";
 import { Onboarding } from "@/components/Onboarding";
+import { ScrollToTop } from "@/components/common/ScrollToTop/ScrollToTop";
 
 export const metadata: Metadata = {
   title: {
@@ -37,6 +38,7 @@ export default function RootLayout({
         <Providers>
           <MenuProvider>
             <Router>
+              <ScrollToTop />
               <Header />
               <main>{children}</main>
               <Footer />

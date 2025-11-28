@@ -45,6 +45,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -68,21 +69,32 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   // Search functionality
   useEffect(() => {
-    if (!query.trim() || query.trim().length < 3) {
+    if (!query.trim() || query.trim().length < 5) {
       setResults([]);
+      setError(null);
       return;
     }
 
     const searchTimer = setTimeout(async () => {
       setLoading(true);
+      setError(null);
       try {
         const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         if (response.ok) {
           const data = await response.json();
-          setResults(data.results || []);
+
+          // Проверяем, есть ли ошибка в ответе (например, использование английского языка)
+          if (data.error) {
+            setError(data.error);
+            setResults([]);
+          } else {
+            setResults(data.results || []);
+            setError(null);
+          }
         }
       } catch (error) {
         console.error("Search error:", error);
+        setError("Ошибка при поиске. Попробуйте позже.");
       } finally {
         setLoading(false);
       }
@@ -93,7 +105,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   // Highlight search query in text
   const highlightText = (text: string, query: string) => {
-    if (!query.trim() || query.trim().length < 3) return text;
+    if (!query.trim() || query.trim().length < 5) return text;
 
     try {
       // Escape special regex characters
@@ -128,6 +140,22 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     router.push(result.url);
     onClose();
     setQuery("");
+  };
+
+  // Валидация ввода - блокируем английские буквы
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Разрешаем: кириллицу, цифры, пробелы, дефисы, точки, запятые
+    const allowedPattern = /^[а-яёА-ЯЁ0-9\s\-.,!?]*$/;
+
+    if (allowedPattern.test(value)) {
+      setQuery(value);
+      setError(null);
+    } else {
+      // Показываем временную ошибку
+      setError("Используйте только русские символы для поиска");
+    }
   };
 
   // Group results by category
@@ -169,7 +197,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     ref={inputRef}
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={handleInputChange}
                     placeholder="Поиск по сайту..."
                     className="w-full pl-16 pr-16 py-6 text-lg outline-none border-0 focus:ring-0"
                   />
@@ -178,7 +206,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   )}
                   <button
                     onClick={onClose}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
+                    className="absolute right-6 cursor-pointer top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <X className="w-6 h-6 text-gray-400" />
                   </button>
@@ -187,15 +215,25 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 {/* Results */}
                 {query.trim() && (
                   <div className="border-t border-gray-200 max-h-[calc(100vh-250px)] sm:max-h-96 overflow-y-auto">
-                    {query.trim().length < 3 && (
+                    {query.trim().length < 5 && (
                       <div className="p-8 text-center text-gray-500">
                         <Search className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                        <p className="text-lg">Введите минимум 3 символа</p>
+                        <p className="text-lg">Введите минимум 5 символов</p>
                         <p className="text-sm mt-1">Для начала поиска</p>
                       </div>
                     )}
 
-                    {query.trim().length >= 3 && results.length === 0 && !loading && (
+                    {error && query.trim().length >= 5 && !loading && (
+                      <div className="p-8 text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 bg-red-100 rounded-full flex items-center justify-center">
+                          <X className="w-6 h-6 text-red-500" />
+                        </div>
+                        <p className="text-lg text-red-600 font-medium">{error}</p>
+                        <p className="text-sm mt-1 text-gray-500">Используйте только русские символы</p>
+                      </div>
+                    )}
+
+                    {query.trim().length >= 5 && results.length === 0 && !loading && !error && (
                       <div className="p-8 text-center text-gray-500">
                         <Search className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                         <p className="text-lg">Ничего не найдено</p>
@@ -232,11 +270,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                                   <p className="text-sm text-gray-600 line-clamp-2">
                                     {highlightText(truncate(result.description, 150), query)}
                                   </p>
-                                  {result.category && (
-                                    <span className="inline-block mt-2 text-xs text-[#18A36C] bg-[#18A36C]/10 px-2 py-1 rounded">
-                                      {result.category}
-                                    </span>
-                                  )}
                                 </div>
                               </div>
                             </motion.div>
@@ -264,14 +297,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     </div>
                   </div>
                 )}
-              </div>
-
-              {/* Keyboard Shortcuts */}
-              <div className="mt-3 text-center text-sm text-gray-400 hidden sm:block">
-                <span className="inline-flex items-center gap-2">
-                  <kbd className="px-2 py-1 bg-white/20 rounded border border-white/30 text-xs">ESC</kbd>
-                  для закрытия
-                </span>
               </div>
             </div>
           </motion.div>

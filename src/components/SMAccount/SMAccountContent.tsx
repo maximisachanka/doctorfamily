@@ -124,6 +124,7 @@ export function AccountContent() {
   const [showMaterialDetailModal, setShowMaterialDetailModal] = useState(false);
   const [selectedMaterial, setSelectedMaterial] = useState<Material | null>(null);
   const [materials, setMaterials] = useState<Material[]>([]);
+  const [materialsTotal, setMaterialsTotal] = useState(0);
   const [materialsLoading, setMaterialsLoading] = useState(false);
   const pathParts = currentRoute.replace(/^\/+|\/+$/g, '').split('/');
 
@@ -140,8 +141,6 @@ export function AccountContent() {
 
   const [subscriptionSettings, setSubscriptionSettings] =
     useState(accountData.subscriptions.settings);
-  const [selectedYear, setSelectedYear] =
-    useState<string>("all");
   const [materialsPage, setMaterialsPage] = useState(1);
   const [contactForm, setContactForm] = useState(
     accountData.contact.form,
@@ -279,14 +278,16 @@ export function AccountContent() {
       setMaterialsLoading(true);
       try {
         const params = new URLSearchParams({
-          year: selectedYear,
-          page: "1",
-          limit: "100",
+          page: materialsPage.toString(),
+          limit: MATERIALS_PER_PAGE.toString(),
         });
         const response = await fetch(`/api/materials?${params}`);
         if (response.ok) {
           const data = await response.json();
           setMaterials(data.materials);
+          setMaterialsTotal(data.pagination?.total || 0);
+          // Smooth scroll to top on page change
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
           alert.error("Не удалось загрузить материалы", "Ошибка загрузки");
         }
@@ -298,7 +299,7 @@ export function AccountContent() {
     };
 
     fetchMaterials();
-  }, [selectedYear, alert]);
+  }, [materialsPage, alert]);
 
   useEffect(() => {
     if (sectionFromUrl && ['materials', 'contact'].includes(sectionFromUrl)) {
@@ -603,7 +604,7 @@ export function AccountContent() {
             <Button
               onClick={handleReset}
               variant="outline"
-              className="border-gray-300 text-gray-700 hover:bg-gray-50 w-full sm:w-auto"
+              className="border-gray-300 text-gray-700 w-full sm:w-auto"
             >
               Сброс
             </Button>
@@ -648,24 +649,6 @@ export function AccountContent() {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">
-        <Label className="text-gray-700 text-sm sm:text-base">Период:</Label>
-        <Select
-          value={selectedYear}
-          onValueChange={setSelectedYear}
-        >
-          <SelectTrigger className="w-full sm:w-48 border-gray-300">
-            <SelectValue placeholder="Выберите период" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">За все время</SelectItem>
-            <SelectItem value="2025">2025</SelectItem>
-            <SelectItem value="2024">2024</SelectItem>
-            <SelectItem value="2023">2023</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
       {materialsLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#18A36C] mx-auto"></div>
@@ -674,9 +657,7 @@ export function AccountContent() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredMaterials
-              .slice((materialsPage - 1) * MATERIALS_PER_PAGE, materialsPage * MATERIALS_PER_PAGE)
-              .map((item) => (
+            {filteredMaterials.map((item) => (
                 <Card
                   key={item.id}
                   className="group hover:shadow-lg transition-all duration-300 border border-gray-200"
@@ -723,10 +704,10 @@ export function AccountContent() {
           </div>
 
           {/* Pagination for materials */}
-          {filteredMaterials.length > MATERIALS_PER_PAGE && (
+          {materialsTotal > MATERIALS_PER_PAGE && (
             <Pagination
               currentPage={materialsPage}
-              totalPages={Math.ceil(filteredMaterials.length / MATERIALS_PER_PAGE)}
+              totalPages={Math.ceil(materialsTotal / MATERIALS_PER_PAGE)}
               onPageChange={setMaterialsPage}
               className="mt-8"
             />
@@ -854,7 +835,7 @@ export function AccountContent() {
 
             <Button
               onClick={handleContactSubmit}
-              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+              className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white cursor-pointer"
               disabled={
                 sendingLetter ||
                 !contactForm.subject ||
@@ -1142,30 +1123,6 @@ export function AccountContent() {
                 </div>
               </div>
             </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-6 w-full sm:w-auto">
-              <div className="bg-gray-50 rounded-lg p-3 sm:p-6 border border-gray-200">
-                <div className="flex flex-col items-center justify-center h-full">
-                  <div className="text-xl sm:text-2xl text-gray-800 mb-1">
-                    {subscriptionSettings.categories.length}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600 text-center">
-                    Подписок
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-3 sm:p-6 border border-gray-200">
-                <div className="flex flex-col items-center justify-center h-full">
-                  <div className="text-xl sm:text-2xl text-gray-800 mb-1">
-                    {materials.length}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600 text-center">
-                    Материалов
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -1192,7 +1149,7 @@ export function AccountContent() {
                 onClick={() => setShowEditProfileModal(true)}
                 variant="outline"
                 size="sm"
-                className="border-[#18A36C] text-[#18A36C] hover:bg-[#18A36C] hover:text-white transition-all duration-300 w-full sm:w-auto"
+                className="border-[#18A36C] text-[#18A36C] w-full sm:w-auto hover:shadow-lg hover:shadow-[#18A36C]/20"
               >
                 <Edit3 className="w-4 h-4 mr-2" />
                 Редактировать
@@ -1278,32 +1235,7 @@ export function AccountContent() {
       </div>
 
       {/* Quick Actions Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-        <Card
-          className="group cursor-pointer hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#18A36C]"
-          onClick={() => navigate("/account/subscriptions")}
-        >
-          <CardContent className="p-4 sm:p-6">
-            <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#18A36C] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                <Settings2 className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-              </div>
-              <div>
-                <h3 className="text-base sm:text-lg text-gray-800 mb-0.5 sm:mb-1">
-                  Подписки
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  Настройки уведомлений
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center text-xs sm:text-sm text-[#18A36C]">
-              <span>Управление подписками</span>
-              <ChevronRight className="w-4 h-4 ml-[2.5px] group-hover:translate-x-1 transition-transform" />
-            </div>
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
         <Card
           className="group cursor-pointer hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#18A36C]"
           onClick={() => navigate("/account/materials")}
@@ -1330,7 +1262,7 @@ export function AccountContent() {
         </Card>
 
         <Card
-          className="group cursor-pointer hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#18A36C] sm:col-span-2 lg:col-span-1"
+          className="group cursor-pointer hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#18A36C]"
           onClick={() => navigate("/account/contact")}
         >
           <CardContent className="p-4 sm:p-6">
@@ -1364,7 +1296,7 @@ export function AccountContent() {
           <Button
             variant="outline"
             onClick={() => navigate("/account/materials")}
-            className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C] hover:text-white w-full sm:w-auto"
+            className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C] hover:text-white w-full sm:w-auto hover:shadow-lg hover:shadow-[#18A36C]/20"
           >
             Смотреть все
             <ChevronRight className="w-4 h-4 ml-[2.5px]" />
@@ -1457,7 +1389,7 @@ export function AccountContent() {
               <Button
                 onClick={() => setShowEditProfileModal(true)}
                 variant="outline"
-                className="text-gray-700 border-gray-300 hover:bg-gray-50 w-full sm:w-auto text-sm"
+                className="text-gray-700 border-gray-300 w-full sm:w-auto text-sm"
               >
                 <Edit3 className="w-4 h-4 mr-[2.5px]" />
                 Редактировать
@@ -1465,7 +1397,7 @@ export function AccountContent() {
               <Button
                 onClick={() => setShowChangePasswordModal(true)}
                 variant="outline"
-                className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C]/10 w-full sm:w-auto text-sm"
+                className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C] hover:text-white w-full sm:w-auto text-sm hover:shadow-lg hover:shadow-[#18A36C]/20"
               >
                 <Lock className="w-4 h-4 mr-[2.5px]" />
                 Пароль
@@ -1473,7 +1405,7 @@ export function AccountContent() {
               <Button
                 onClick={handleLogoutClick}
                 variant="outline"
-                className="text-red-600 border-red-300 hover:bg-red-50 w-full sm:w-auto text-sm"
+                className="text-red-600 border-red-300 w-full sm:w-auto text-sm"
               >
                 <LogOut className="w-4 h-4 mr-[2.5px]" />
                 Выйти
@@ -1499,7 +1431,7 @@ export function AccountContent() {
             <Button
               variant="outline"
               onClick={() => setShowLogoutDialog(false)}
-              className="w-full sm:w-auto border-gray-300 text-[#2E2E2E] hover:bg-gray-50"
+              className="w-full sm:w-auto border-gray-300 text-[#2E2E2E]"
             >
               Отмена
             </Button>

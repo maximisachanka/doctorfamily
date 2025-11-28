@@ -199,8 +199,8 @@ export default function AdminContactsPage() {
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-6">
                 {/* Address */}
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-6">
-                    <MapPin className="w-5 h-5 text-blue-500" />
+                  <div className="w-10 h-10 bg-[#18A36C]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-6">
+                    <MapPin className="w-5 h-5 text-[#18A36C]" />
                   </div>
                   <div className="flex-1">
                     <FormField label="Адрес" required>
@@ -216,8 +216,8 @@ export default function AdminContactsPage() {
 
                 {/* Geocoding Search */}
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0 mt-6">
-                    <Search className="w-5 h-5 text-indigo-500" />
+                  <div className="w-10 h-10 bg-[#18A36C]/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-6">
+                    <Search className="w-5 h-5 text-[#18A36C]" />
                   </div>
                   <div className="flex-1">
                     <FormField label="Поиск координат по адресу">
@@ -237,7 +237,7 @@ export default function AdminContactsPage() {
                         <button
                           onClick={handleGeocode}
                           disabled={geocoding || !searchAddress}
-                          className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 disabled:bg-gray-300 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap"
+                          className="px-4 py-2 bg-[#18A36C] hover:bg-[#15905f] disabled:bg-gray-300 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2 whitespace-nowrap cursor-pointer"
                           title="Автоматически найти координаты по введенному адресу"
                         >
                           {geocoding ? (
@@ -352,7 +352,7 @@ export default function AdminContactsPage() {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-full md:w-auto px-6 py-3 bg-[#18A36C] hover:bg-[#149259] disabled:bg-gray-300 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2"
+                    className="w-full md:w-auto px-6 py-3 bg-[#18A36C] hover:bg-[#149259] disabled:bg-gray-300 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {saving ? (
                       <>
