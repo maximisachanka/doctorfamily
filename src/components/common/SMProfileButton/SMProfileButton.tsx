@@ -66,7 +66,7 @@ export const SMProfileButton: React.FC<SMProfileButtonProps> = ({ className, onA
   return (
     <div className="flex items-center gap-1">
       {/* Admin shield button */}
-      {isAdmin && (
+      {session && isAdmin && (
         <Button
           onClick={() => router.push('/admin')}
           variant="ghost"
@@ -79,7 +79,7 @@ export const SMProfileButton: React.FC<SMProfileButtonProps> = ({ className, onA
       )}
 
       {/* Profile/Login button */}
-      {!session && (
+      {status === 'unauthenticated' && (
         <Button
           onClick={handleClick}
           variant="ghost"
@@ -91,7 +91,7 @@ export const SMProfileButton: React.FC<SMProfileButtonProps> = ({ className, onA
       )}
 
       {/* My account button (when logged in) */}
-      {session && (
+      {status === 'authenticated' && session && (
         <Button
           onClick={handleClick}
           variant="ghost"

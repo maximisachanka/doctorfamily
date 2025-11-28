@@ -1497,7 +1497,7 @@ function SMHomePage() {
                                                             lineNumber: 425,
                                                             columnNumber: 19
                                                         }, this),
-                                                        contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-[#2E2E2E] mb-2",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                                 className: "w-36 h-6"
@@ -1511,9 +1511,9 @@ function SMHomePage() {
                                                             lineNumber: 430,
                                                             columnNumber: 21
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                            href: `tel:${(contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$homePage$2e$json__$28$json$29$__["default"].contactSection.contactInfo.phone.number).replace(/[\s\-]/g, '')}`,
+                                                            href: `tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`,
                                                             className: "text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2",
-                                                            children: contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$homePage$2e$json__$28$json$29$__["default"].contactSection.contactInfo.phone.number
+                                                            children: contacts.phone_number
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SMHomePage/SMHomePage.tsx",
                                                             lineNumber: 434,
@@ -1557,7 +1557,7 @@ function SMHomePage() {
                                                             lineNumber: 453,
                                                             columnNumber: 19
                                                         }, this),
-                                                        contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-[#2E2E2E] mb-2",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                                 className: "w-64 h-6"
@@ -1571,11 +1571,11 @@ function SMHomePage() {
                                                             lineNumber: 458,
                                                             columnNumber: 21
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                            href: `https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$homePage$2e$json__$28$json$29$__["default"].contactSection.contactInfo.address.full)}`,
+                                                            href: `https://yandex.ru/maps/?text=${encodeURIComponent(contacts.address)}`,
                                                             target: "_blank",
                                                             rel: "noopener noreferrer",
                                                             className: "text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2",
-                                                            children: contacts?.address || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$homePage$2e$json__$28$json$29$__["default"].contactSection.contactInfo.address.full
+                                                            children: contacts.address
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SMHomePage/SMHomePage.tsx",
                                                             lineNumber: 462,
@@ -1619,7 +1619,7 @@ function SMHomePage() {
                                                             lineNumber: 483,
                                                             columnNumber: 19
                                                         }, this),
-                                                        contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                             className: "text-[#2E2E2E] mb-2",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                                 className: "w-48 h-6"
@@ -1633,9 +1633,9 @@ function SMHomePage() {
                                                             lineNumber: 488,
                                                             columnNumber: 21
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                            href: `mailto:${contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$homePage$2e$json__$28$json$29$__["default"].contactSection.contactInfo.email.address}`,
+                                                            href: `mailto:${contacts.email}`,
                                                             className: "text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2",
-                                                            children: contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$homePage$2e$json__$28$json$29$__["default"].contactSection.contactInfo.email.address
+                                                            children: contacts.email
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SMHomePage/SMHomePage.tsx",
                                                             lineNumber: 492,

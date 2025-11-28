@@ -146,16 +146,16 @@ export function Header() {
             <div className="flex items-center">
               <div className="flex items-center gap-2 lg:gap-3">
                 <MapPin className="w-3 h-3 lg:w-4 lg:h-4 flex-shrink-0" />
-                {contactsLoading ? (
+                {contactsLoading || !contacts ? (
                   <TextSkeleton className="w-48 lg:w-64 h-4" />
                 ) : (
                   <a
-                    href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || contactsConfig.address)}`}
+                    href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts.address)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs lg:text-sm hover:scale-105 transition-transform cursor-pointer inline-block"
                   >
-                    {contacts?.address || contactsConfig.address}
+                    {contacts.address}
                   </a>
                 )}
               </div>
@@ -163,14 +163,14 @@ export function Header() {
 
             <div className="flex items-center gap-2 lg:gap-3">
               <Mail className="w-3 h-3 lg:w-4 lg:h-4 text-white flex-shrink-0" />
-              {contactsLoading ? (
+              {contactsLoading || !contacts ? (
                 <TextSkeleton className="w-40 h-4" />
               ) : (
                 <a
-                  href={`mailto:${contacts?.email || contactsConfig.email}`}
+                  href={`mailto:${contacts.email}`}
                   className="text-xs lg:text-sm hover:scale-105 transition-transform cursor-pointer inline-block"
                 >
-                  {contacts?.email || contactsConfig.email}
+                  {contacts.email}
                 </a>
               )}
             </div>
@@ -210,31 +210,27 @@ export function Header() {
                 <div className="text-right">
                   <div className="flex items-center gap-2 text-[#2E2E2E] text-lg">
                     <Phone className="w-5 h-5 text-[#18A36C]" />
-                    {contactsLoading ? (
+                    {contactsLoading || !contacts ? (
                       <span className="inline-block animate-pulse bg-gray-200 rounded w-36 h-6">&nbsp;</span>
                     ) : (
                       <a
-                        href={`tel:${(contacts?.phone_number || contactsConfig.phone).replace(/[\s\-]/g, '')}`}
+                        href={`tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`}
                         className="hover:text-[#18A36C] transition-colors cursor-pointer"
                       >
-                        {contacts?.phone_number || contactsConfig.phone}
+                        {contacts.phone_number}
                       </a>
                     )}
                   </div>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <span className="inline-block animate-pulse bg-gray-200 rounded w-32 h-4 mt-1">&nbsp;</span>
-                  ) : contacts?.phone_number_sec ? (
+                  ) : contacts.phone_number_sec ? (
                     <a
                       href={`tel:${contacts.phone_number_sec.replace(/[\s\-]/g, '')}`}
                       className="text-sm text-gray-500 hover:text-[#18A36C] transition-colors cursor-pointer"
                     >
                       {contacts.phone_number_sec}
                     </a>
-                  ) : (
-                    <span className="text-sm text-gray-500">
-                      {contactsConfig.callbackText}
-                    </span>
-                  )}
+                  ) : null}
                 </div>
 
                 <Button
@@ -306,7 +302,9 @@ export function Header() {
                     setAuthModalType(type || 'login');
                     setIsAuthModalOpen(true);
                   }} />
-                  {!session && (
+                  {session === undefined ? (
+                    <span className="inline-block animate-pulse bg-gray-200 rounded-lg w-24 h-9">&nbsp;</span>
+                  ) : !session && (
                     <Button
                       onClick={() => {
                         setAuthModalType('register');
@@ -390,17 +388,17 @@ export function Header() {
                 {/* Phone */}
                 <div className="flex items-center gap-2">
                   <Phone className="w-5 h-5 text-[#18A36C]" />
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <span className="inline-block animate-pulse bg-gray-200 rounded w-28 h-5">&nbsp;</span>
                   ) : (
                     <div className="flex flex-col gap-0.5">
                       <a
-                        href={`tel:${(contacts?.phone_number || contactsConfig.phone).replace(/[\s\-]/g, '')}`}
+                        href={`tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`}
                         className="text-sm text-gray-700 hover:text-[#18A36C] transition-colors cursor-pointer font-medium"
                       >
-                        {contacts?.phone_number || contactsConfig.phone}
+                        {contacts.phone_number}
                       </a>
-                      {contacts?.phone_number_sec && (
+                      {contacts.phone_number_sec && (
                         <a
                           href={`tel:${contacts.phone_number_sec.replace(/[\s\-]/g, '')}`}
                           className="text-xs text-gray-500 hover:text-[#18A36C] transition-colors cursor-pointer"
@@ -422,7 +420,9 @@ export function Header() {
                 }} />
 
                 {/* Register button */}
-                {!session && (
+                {session === undefined ? (
+                  <span className="inline-block animate-pulse bg-gray-200 rounded-lg w-24 h-9">&nbsp;</span>
+                ) : !session && (
                   <Button
                     onClick={() => {
                       setAuthModalType('register');

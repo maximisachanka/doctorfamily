@@ -28,13 +28,13 @@ export function AIOnboardingModal({ isOpen, onClose }: AIOnboardingModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl z-[101] overflow-hidden"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md max-h-[90vh] bg-white rounded-2xl shadow-2xl z-[101] overflow-hidden flex flex-col"
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#18A36C] to-[#15905f] p-6 relative">
+            <div className="bg-gradient-to-r from-[#18A36C] to-[#15905f] p-6 relative flex-shrink-0">
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
+                className="absolute cursor-pointer top-4 right-4 w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -52,7 +52,7 @@ export function AIOnboardingModal({ isOpen, onClose }: AIOnboardingModalProps) {
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-6 overflow-y-auto flex-1">
               {/* AI Assistant Feature */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}

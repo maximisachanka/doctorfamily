@@ -3282,8 +3282,8 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
     _s();
     const { isBurgerMenuOpen, setIsBurgerMenuOpen } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMMenuContext$2f$SMMenuContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMenu"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const { contacts } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useContacts$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useContacts"])();
-    const { data: session } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"])();
+    const { contacts, loading: contactsLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useContacts$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useContacts"])();
+    const { data: session, status } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"])();
     const [isAdmin, setIsAdmin] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     // Check if user is admin
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
@@ -3308,7 +3308,7 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
         setIsBurgerMenuOpen(false);
     };
     const handleProfileClick = ()=>{
-        if (!session) {
+        if (status === 'unauthenticated' || !session) {
             setIsBurgerMenuOpen(false);
             if (onAuthModalOpen) {
                 onAuthModalOpen('login');
@@ -3318,7 +3318,7 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                     redirect: true
                 });
             }
-        } else {
+        } else if (status === 'authenticated' && session) {
             handleNavigation('/account');
         }
     };
@@ -3410,42 +3410,66 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "bg-white/10 rounded-lg p-3 backdrop-blur-sm",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center gap-2 text-sm",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
-                                                        className: "w-4 h-4 text-green-200"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                        lineNumber: 109,
-                                                        columnNumber: 21
-                                                    }, ("TURBOPACK compile-time value", void 0)),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                        href: `tel:${(contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].phone).replace(/[\s\-]/g, '')}`,
-                                                        className: "hover:text-white transition-colors cursor-pointer",
-                                                        children: contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].phone
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                        lineNumber: 110,
-                                                        columnNumber: 21
-                                                    }, ("TURBOPACK compile-time value", void 0))
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                lineNumber: 108,
-                                                columnNumber: 19
-                                            }, ("TURBOPACK compile-time value", void 0)),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                className: "text-xs text-green-200 hover:text-white transition-colors mt-1 cursor-pointer",
-                                                children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].callbackText
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                lineNumber: 117,
-                                                columnNumber: 19
-                                            }, ("TURBOPACK compile-time value", void 0))
-                                        ]
-                                    }, void 0, true, {
+                                        children: contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "h-5 bg-white/20 rounded animate-pulse w-32"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                    lineNumber: 110,
+                                                    columnNumber: 23
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "h-3 bg-white/20 rounded animate-pulse w-24"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                    lineNumber: 111,
+                                                    columnNumber: 23
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                            lineNumber: 109,
+                                            columnNumber: 21
+                                        }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2 text-sm",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Phone$3e$__["Phone"], {
+                                                            className: "w-4 h-4 text-green-200"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                            lineNumber: 116,
+                                                            columnNumber: 25
+                                                        }, ("TURBOPACK compile-time value", void 0)),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                            href: `tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`,
+                                                            className: "hover:text-white transition-colors cursor-pointer",
+                                                            children: contacts.phone_number
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                            lineNumber: 117,
+                                                            columnNumber: 25
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                    lineNumber: 115,
+                                                    columnNumber: 23
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                contacts.phone_number_sec && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "text-xs text-green-200 mt-1",
+                                                    children: contacts.phone_number_sec
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                    lineNumber: 125,
+                                                    columnNumber: 25
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            ]
+                                        }, void 0, true)
+                                    }, void 0, false, {
                                         fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
                                         lineNumber: 107,
                                         columnNumber: 17
@@ -3487,7 +3511,7 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                                     className: "w-5 h-5 text-gray-400 group-hover:text-[#18A36C] transition-colors"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                    lineNumber: 140,
+                                                    lineNumber: 151,
                                                     columnNumber: 23
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3495,19 +3519,19 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                                     children: item.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                    lineNumber: 141,
+                                                    lineNumber: 152,
                                                     columnNumber: 23
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, item.name, true, {
                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                            lineNumber: 130,
+                                            lineNumber: 141,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0));
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                    lineNumber: 126,
+                                    lineNumber: 137,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3530,13 +3554,36 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                             children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].onlineBookingText
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                            lineNumber: 154,
+                                            lineNumber: 165,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "mt-4 space-y-2",
                                             children: [
-                                                !session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                status === 'loading' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "space-y-2",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-full h-12 animate-pulse bg-gray-200 rounded-lg"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                            lineNumber: 176,
+                                                            columnNumber: 23
+                                                        }, ("TURBOPACK compile-time value", void 0)),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-full h-12 animate-pulse bg-gray-200 rounded-lg"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                            lineNumber: 177,
+                                                            columnNumber: 23
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                    lineNumber: 175,
+                                                    columnNumber: 21
+                                                }, ("TURBOPACK compile-time value", void 0)),
+                                                status === 'unauthenticated' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                             onClick: handleProfileClick,
@@ -3546,12 +3593,12 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                                                 children: "Авторизация"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                                lineNumber: 170,
+                                                                lineNumber: 188,
                                                                 columnNumber: 25
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                            lineNumber: 165,
+                                                            lineNumber: 183,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3567,17 +3614,17 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                                                 children: "Регистрация"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                                lineNumber: 183,
+                                                                lineNumber: 201,
                                                                 columnNumber: 25
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                            lineNumber: 173,
+                                                            lineNumber: 191,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true),
-                                                session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                status === 'authenticated' && session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                     onClick: handleProfileClick,
                                                     variant: "outline",
                                                     className: "w-full border-[#18A36C] text-[#18A36C] py-3 h-auto flex items-center justify-center gap-2 hover:bg-[#18A36C]/10 hover:shadow-lg hover:shadow-[#18A36C]/20 cursor-pointer",
@@ -3586,23 +3633,23 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                            lineNumber: 194,
+                                                            lineNumber: 212,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Мой кабинет"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                            lineNumber: 195,
+                                                            lineNumber: 213,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                    lineNumber: 189,
+                                                    lineNumber: 207,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
-                                                isAdmin && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                status === 'authenticated' && session && isAdmin && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                     onClick: handleAdminClick,
                                                     variant: "outline",
                                                     className: "w-full border-[#18A36C] text-[#18A36C] py-3 h-auto flex items-center justify-center gap-2 hover:bg-[#18A36C]/10 hover:shadow-lg hover:shadow-[#18A36C]/20 cursor-pointer",
@@ -3611,32 +3658,32 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                            lineNumber: 205,
+                                                            lineNumber: 223,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0)),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             children: "Админ-панель"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                            lineNumber: 206,
+                                                            lineNumber: 224,
                                                             columnNumber: 23
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                    lineNumber: 200,
+                                                    lineNumber: 218,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                            lineNumber: 162,
+                                            lineNumber: 173,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 159,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -3652,40 +3699,62 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
                                         delay: 1.0
                                     },
                                     className: "mt-6 pt-6 border-t border-[#E8E6E3] text-center text-sm text-[#2E2E2E]",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    children: contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center justify-center gap-2",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
                                                 className: "w-4 h-4 text-[#18A36C]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                lineNumber: 220,
-                                                columnNumber: 19
+                                                lineNumber: 239,
+                                                columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0)),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                href: `mailto:${contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].email}`,
-                                                className: "hover:text-[#18A36C] transition-colors cursor-pointer",
-                                                children: contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].email
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "h-4 bg-gray-200 rounded animate-pulse w-40"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                                lineNumber: 221,
-                                                columnNumber: 19
+                                                lineNumber: 240,
+                                                columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                        lineNumber: 219,
-                                        columnNumber: 17
+                                        lineNumber: 238,
+                                        columnNumber: 19
+                                    }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center justify-center gap-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mail$3e$__["Mail"], {
+                                                className: "w-4 h-4 text-[#18A36C]"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                lineNumber: 244,
+                                                columnNumber: 21
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                href: `mailto:${contacts.email}`,
+                                                className: "hover:text-[#18A36C] transition-colors cursor-pointer",
+                                                children: contacts.email
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                                lineNumber: 245,
+                                                columnNumber: 21
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
+                                        lineNumber: 243,
+                                        columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                                    lineNumber: 213,
+                                    lineNumber: 231,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/common/SMBurgerMenu/SMBurgerMenu.tsx",
-                            lineNumber: 125,
+                            lineNumber: 136,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
@@ -3702,7 +3771,7 @@ const SMBurgerMenu = ({ onAuthModalOpen })=>{
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(SMBurgerMenu, "acbeHBimE3oj1OvND7iSJURn/7A=", false, function() {
+_s(SMBurgerMenu, "zJwYtEwjfrxTm6l6pHogKmlqcGQ=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMMenuContext$2f$SMMenuContext$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMenu"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
@@ -3822,7 +3891,7 @@ const SMProfileButton = ({ className, onAuthModalOpen })=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex items-center gap-1",
         children: [
-            isAdmin && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+            session && isAdmin && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                 onClick: ()=>router.push('/admin'),
                 variant: "ghost",
                 size: "sm",
@@ -3840,7 +3909,7 @@ const SMProfileButton = ({ className, onAuthModalOpen })=>{
                 lineNumber: 70,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
-            !session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+            status === 'unauthenticated' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                 onClick: handleClick,
                 variant: "ghost",
                 size: "sm",
@@ -3857,7 +3926,7 @@ const SMProfileButton = ({ className, onAuthModalOpen })=>{
                 lineNumber: 83,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
-            session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+            status === 'authenticated' && session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                 onClick: handleClick,
                 variant: "ghost",
                 size: "sm",
@@ -5117,18 +5186,18 @@ function Header() {
                                                 lineNumber: 148,
                                                 columnNumber: 17
                                             }, this),
-                                            contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                            contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                 className: "w-48 lg:w-64 h-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
                                                 lineNumber: 150,
                                                 columnNumber: 19
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                href: `https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].address)}`,
+                                                href: `https://yandex.ru/maps/?text=${encodeURIComponent(contacts.address)}`,
                                                 target: "_blank",
                                                 rel: "noopener noreferrer",
                                                 className: "text-xs lg:text-sm hover:scale-105 transition-transform cursor-pointer inline-block",
-                                                children: contacts?.address || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].address
+                                                children: contacts.address
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
                                                 lineNumber: 152,
@@ -5155,16 +5224,16 @@ function Header() {
                                             lineNumber: 165,
                                             columnNumber: 15
                                         }, this),
-                                        contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                        contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                             className: "w-40 h-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
                                             lineNumber: 167,
                                             columnNumber: 17
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                            href: `mailto:${contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].email}`,
+                                            href: `mailto:${contacts.email}`,
                                             className: "text-xs lg:text-sm hover:scale-105 transition-transform cursor-pointer inline-block",
-                                            children: contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].email
+                                            children: contacts.email
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
                                             lineNumber: 169,
@@ -5265,7 +5334,7 @@ function Header() {
                                                                     lineNumber: 212,
                                                                     columnNumber: 21
                                                                 }, this),
-                                                                contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                     className: "inline-block animate-pulse bg-gray-200 rounded w-36 h-6",
                                                                     children: " "
                                                                 }, void 0, false, {
@@ -5273,9 +5342,9 @@ function Header() {
                                                                     lineNumber: 214,
                                                                     columnNumber: 23
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                                    href: `tel:${(contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].phone).replace(/[\s\-]/g, '')}`,
+                                                                    href: `tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`,
                                                                     className: "hover:text-[#18A36C] transition-colors cursor-pointer",
-                                                                    children: contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].phone
+                                                                    children: contacts.phone_number
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/components/Header/Header.tsx",
                                                                     lineNumber: 216,
@@ -5287,14 +5356,14 @@ function Header() {
                                                             lineNumber: 211,
                                                             columnNumber: 19
                                                         }, this),
-                                                        contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "inline-block animate-pulse bg-gray-200 rounded w-32 h-4 mt-1",
                                                             children: " "
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
                                                             lineNumber: 225,
                                                             columnNumber: 21
-                                                        }, this) : contacts?.phone_number_sec ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                        }, this) : contacts.phone_number_sec ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                             href: `tel:${contacts.phone_number_sec.replace(/[\s\-]/g, '')}`,
                                                             className: "text-sm text-gray-500 hover:text-[#18A36C] transition-colors cursor-pointer",
                                                             children: contacts.phone_number_sec
@@ -5302,14 +5371,7 @@ function Header() {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
                                                             lineNumber: 227,
                                                             columnNumber: 21
-                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-sm text-gray-500",
-                                                            children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].callbackText
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 234,
-                                                            columnNumber: 21
-                                                        }, this)
+                                                        }, this) : null
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
@@ -5323,7 +5385,7 @@ function Header() {
                                                     children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].onlineBookingText
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 236,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
@@ -5348,12 +5410,12 @@ function Header() {
                                                 className: "flex items-center cursor-pointer",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$icons$2f$SMMobileLogo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 256,
+                                                    lineNumber: 252,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
-                                                lineNumber: 252,
+                                                lineNumber: 248,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5368,12 +5430,12 @@ function Header() {
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 266,
+                                                            lineNumber: 262,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Header/Header.tsx",
-                                                        lineNumber: 260,
+                                                        lineNumber: 256,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -5384,12 +5446,12 @@ function Header() {
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 273,
+                                                            lineNumber: 269,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Header/Header.tsx",
-                                                        lineNumber: 268,
+                                                        lineNumber: 264,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -5398,24 +5460,24 @@ function Header() {
                                                         children: "Связаться с нами"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Header/Header.tsx",
-                                                        lineNumber: 275,
+                                                        lineNumber: 271,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
-                                                lineNumber: 259,
+                                                lineNumber: 255,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/Header/Header.tsx",
-                                        lineNumber: 251,
+                                        lineNumber: 247,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                    lineNumber: 250,
+                                    lineNumber: 246,
                                     columnNumber: 13
                                 }, this)
                             ]
@@ -5445,12 +5507,12 @@ function Header() {
                                                     children: item.name
                                                 }, item.name, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 293,
+                                                    lineNumber: 289,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 291,
+                                            lineNumber: 287,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5466,10 +5528,17 @@ function Header() {
                                                             }
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 305,
+                                                            lineNumber: 301,
                                                             columnNumber: 19
                                                         }, this),
-                                                        !session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                        session === undefined ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "inline-block animate-pulse bg-gray-200 rounded-lg w-24 h-9",
+                                                            children: " "
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/Header/Header.tsx",
+                                                            lineNumber: 306,
+                                                            columnNumber: 21
+                                                        }, this) : !session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                             onClick: ()=>{
                                                                 setAuthModalType('register');
                                                                 setIsAuthModalOpen(true);
@@ -5478,13 +5547,13 @@ function Header() {
                                                             children: "Регистрация"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 310,
+                                                            lineNumber: 308,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 304,
+                                                    lineNumber: 300,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5498,35 +5567,35 @@ function Header() {
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 330,
+                                                            lineNumber: 328,
                                                             columnNumber: 23
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                                                             className: "w-5 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 332,
+                                                            lineNumber: 330,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Header/Header.tsx",
-                                                        lineNumber: 323,
+                                                        lineNumber: 321,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 322,
+                                                    lineNumber: 320,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 303,
+                                            lineNumber: 299,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                    lineNumber: 290,
+                                    lineNumber: 286,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMBurgerMenu$2f$SMBurgerMenu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -5536,18 +5605,18 @@ function Header() {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                    lineNumber: 338,
+                                    lineNumber: 336,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/Header/Header.tsx",
-                            lineNumber: 289,
+                            lineNumber: 285,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Header/Header.tsx",
-                        lineNumber: 288,
+                        lineNumber: 284,
                         columnNumber: 9
                     }, this)
                 ]
@@ -5577,12 +5646,12 @@ function Header() {
                                                 className: "w-6 h-6 text-[#18A36C]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
-                                                lineNumber: 359,
+                                                lineNumber: 357,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 353,
+                                            lineNumber: 351,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -5590,18 +5659,18 @@ function Header() {
                                             className: "flex items-center cursor-pointer",
                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$icons$2f$SMLogo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
-                                                lineNumber: 366,
+                                                lineNumber: 364,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 362,
+                                            lineNumber: 360,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                    lineNumber: 352,
+                                    lineNumber: 350,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5617,7 +5686,7 @@ function Header() {
                                                 className: "pl-4 pr-10 bg-gray-50 border-0 h-10 rounded-lg focus:outline-none focus:shadow-none cursor-pointer text-sm"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
-                                                lineNumber: 376,
+                                                lineNumber: 374,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5626,23 +5695,23 @@ function Header() {
                                                     className: "w-4 h-4 text-white"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 383,
+                                                    lineNumber: 381,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/Header/Header.tsx",
-                                                lineNumber: 382,
+                                                lineNumber: 380,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/Header/Header.tsx",
-                                        lineNumber: 372,
+                                        lineNumber: 370,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                    lineNumber: 371,
+                                    lineNumber: 369,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5655,54 +5724,54 @@ function Header() {
                                                     className: "w-5 h-5 text-[#18A36C]"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 392,
+                                                    lineNumber: 390,
                                                     columnNumber: 19
                                                 }, this),
-                                                contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     className: "inline-block animate-pulse bg-gray-200 rounded w-28 h-5",
                                                     children: " "
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 394,
+                                                    lineNumber: 392,
                                                     columnNumber: 21
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex flex-col gap-0.5",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                            href: `tel:${(contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].phone).replace(/[\s\-]/g, '')}`,
+                                                            href: `tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`,
                                                             className: "text-sm text-gray-700 hover:text-[#18A36C] transition-colors cursor-pointer font-medium",
-                                                            children: contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$contacts$2e$json__$28$json$29$__["default"].phone
+                                                            children: contacts.phone_number
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 397,
+                                                            lineNumber: 395,
                                                             columnNumber: 23
                                                         }, this),
-                                                        contacts?.phone_number_sec && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                                        contacts.phone_number_sec && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                                             href: `tel:${contacts.phone_number_sec.replace(/[\s\-]/g, '')}`,
                                                             className: "text-xs text-gray-500 hover:text-[#18A36C] transition-colors cursor-pointer",
                                                             children: contacts.phone_number_sec
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                                            lineNumber: 404,
+                                                            lineNumber: 402,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                                    lineNumber: 396,
+                                                    lineNumber: 394,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 391,
+                                            lineNumber: 389,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "h-6 w-px bg-gray-300"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 416,
+                                            lineNumber: 414,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMProfileButton$2f$SMProfileButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SMProfileButton"], {
@@ -5712,10 +5781,17 @@ function Header() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/Header/Header.tsx",
-                                            lineNumber: 419,
+                                            lineNumber: 417,
                                             columnNumber: 17
                                         }, this),
-                                        !session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                        session === undefined ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "inline-block animate-pulse bg-gray-200 rounded-lg w-24 h-9",
+                                            children: " "
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/Header/Header.tsx",
+                                            lineNumber: 424,
+                                            columnNumber: 19
+                                        }, this) : !session && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                             onClick: ()=>{
                                                 setAuthModalType('register');
                                                 setIsAuthModalOpen(true);
@@ -5730,28 +5806,28 @@ function Header() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/Header/Header.tsx",
-                                    lineNumber: 389,
+                                    lineNumber: 387,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/Header/Header.tsx",
-                            lineNumber: 350,
+                            lineNumber: 348,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Header/Header.tsx",
-                        lineNumber: 349,
+                        lineNumber: 347,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/Header/Header.tsx",
-                    lineNumber: 348,
+                    lineNumber: 346,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/Header/Header.tsx",
-                lineNumber: 347,
+                lineNumber: 345,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMSearch$2f$SMSearch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SearchModal"], {
@@ -6195,16 +6271,16 @@ function Footer() {
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                                    children: contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                         className: "w-32 h-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Footer/Footer.tsx",
                                                         lineNumber: 88,
                                                         columnNumber: 21
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                        href: `tel:${(contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.phone.number).replace(/[\s\-]/g, '')}`,
+                                                        href: `tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`,
                                                         className: "text-[#2E2E2E] text-sm lg:text-base hover:text-[#18A36C] transition-colors cursor-pointer",
-                                                        children: contacts?.phone_number || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.phone.number
+                                                        children: contacts.phone_number
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Footer/Footer.tsx",
                                                         lineNumber: 90,
@@ -6233,16 +6309,16 @@ function Footer() {
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: [
-                                                        contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                                        contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                             className: "w-40 h-5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Footer/Footer.tsx",
                                                             lineNumber: 104,
                                                             columnNumber: 21
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                            href: `mailto:${contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.email.address}`,
+                                                            href: `mailto:${contacts.email}`,
                                                             className: "text-[#2E2E2E] text-sm lg:text-base hover:text-[#18A36C] transition-colors cursor-pointer",
-                                                            children: contacts?.email || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.email.address
+                                                            children: contacts.email
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Footer/Footer.tsx",
                                                             lineNumber: 106,
@@ -6279,18 +6355,18 @@ function Footer() {
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                                    children: contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                         className: "w-48 h-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Footer/Footer.tsx",
                                                         lineNumber: 123,
                                                         columnNumber: 21
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                                        href: `https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.address.full)}`,
+                                                        href: `https://yandex.ru/maps/?text=${encodeURIComponent(contacts.address)}`,
                                                         target: "_blank",
                                                         rel: "noopener noreferrer",
                                                         className: "text-[#2E2E2E] text-sm lg:text-base hover:text-[#18A36C] transition-colors cursor-pointer",
-                                                        children: contacts?.address || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.address.full
+                                                        children: contacts.address
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/Footer/Footer.tsx",
                                                         lineNumber: 125,
@@ -6329,13 +6405,13 @@ function Footer() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "text-gray-500 text-xs lg:text-sm",
-                                                            children: contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                                            children: contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                                 className: "w-24 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/Footer/Footer.tsx",
                                                                 lineNumber: 145,
                                                                 columnNumber: 23
-                                                            }, this) : contacts?.work_hours_main || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.schedule.hours
+                                                            }, this) : contacts.work_hours_main
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Footer/Footer.tsx",
                                                             lineNumber: 143,
@@ -6343,13 +6419,13 @@ function Footer() {
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "text-gray-500 text-xs lg:text-sm",
-                                                            children: contactsLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
+                                                            children: contactsLoading || !contacts ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(TextSkeleton, {
                                                                 className: "w-24 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/components/Footer/Footer.tsx",
                                                                 lineNumber: 152,
                                                                 columnNumber: 23
-                                                            }, this) : contacts?.work_hours_sunday || __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$footer$2e$json__$28$json$29$__["default"].contactInfo.schedule.hours2
+                                                            }, this) : contacts.work_hours_sunday
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/Footer/Footer.tsx",
                                                             lineNumber: 150,
@@ -7054,14 +7130,14 @@ function AIOnboardingModal({ isOpen, onClose }) {
                     transition: {
                         duration: 0.3
                     },
-                    className: "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl z-[101] overflow-hidden",
+                    className: "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md max-h-[90vh] bg-white rounded-2xl shadow-2xl z-[101] overflow-hidden flex flex-col",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "bg-gradient-to-r from-[#18A36C] to-[#15905f] p-6 relative",
+                            className: "bg-gradient-to-r from-[#18A36C] to-[#15905f] p-6 relative flex-shrink-0",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     onClick: onClose,
-                                    className: "absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors",
+                                    className: "absolute cursor-pointer top-4 right-4 w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
                                         className: "w-5 h-5"
                                     }, void 0, false, {
@@ -7120,7 +7196,7 @@ function AIOnboardingModal({ isOpen, onClose }) {
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "p-6 space-y-6",
+                            className: "p-6 space-y-6 overflow-y-auto flex-1",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
                                     initial: {

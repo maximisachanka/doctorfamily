@@ -20,8 +20,8 @@ interface SMBurgerMenuProps {
 const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
   const { isBurgerMenuOpen, setIsBurgerMenuOpen } = useMenu();
   const router = useRouter();
-  const { contacts } = useContacts();
-  const { data: session } = useSession();
+  const { contacts, loading: contactsLoading } = useContacts();
+  const { data: session, status } = useSession();
   const [isAdmin, setIsAdmin] = useState(false);
 
   // Check if user is admin
@@ -42,7 +42,7 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
   };
 
   const handleProfileClick = () => {
-    if (!session) {
+    if (status === 'unauthenticated' || !session) {
       setIsBurgerMenuOpen(false);
       if (onAuthModalOpen) {
         onAuthModalOpen('login');
@@ -52,7 +52,7 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
           redirect: true,
         });
       }
-    } else {
+    } else if (status === 'authenticated' && session) {
       handleNavigation('/account');
     }
   };
@@ -105,18 +105,29 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
                 </div>
 
                 <div className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Phone className="w-4 h-4 text-green-200" />
-                    <a
-                      href={`tel:${(contacts?.phone_number || contactsConfig.phone).replace(/[\s\-]/g, '')}`}
-                      className="hover:text-white transition-colors cursor-pointer"
-                    >
-                      {contacts?.phone_number || contactsConfig.phone}
-                    </a>
-                  </div>
-                  <button className="text-xs text-green-200 hover:text-white transition-colors mt-1 cursor-pointer">
-                    {contactsConfig.callbackText}
-                  </button>
+                  {contactsLoading || !contacts ? (
+                    <div className="space-y-2">
+                      <div className="h-5 bg-white/20 rounded animate-pulse w-32" />
+                      <div className="h-3 bg-white/20 rounded animate-pulse w-24" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Phone className="w-4 h-4 text-green-200" />
+                        <a
+                          href={`tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`}
+                          className="hover:text-white transition-colors cursor-pointer"
+                        >
+                          {contacts.phone_number}
+                        </a>
+                      </div>
+                      {contacts.phone_number_sec && (
+                        <div className="text-xs text-green-200 mt-1">
+                          {contacts.phone_number_sec}
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -160,7 +171,14 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
 
                 {/* Profile and Admin Buttons */}
                 <div className="mt-4 space-y-2">
-                  {!session && (
+                  {status === 'loading' && (
+                    <div className="space-y-2">
+                      <div className="w-full h-12 animate-pulse bg-gray-200 rounded-lg" />
+                      <div className="w-full h-12 animate-pulse bg-gray-200 rounded-lg" />
+                    </div>
+                  )}
+
+                  {status === 'unauthenticated' && (
                     <>
                       <Button
                         onClick={handleProfileClick}
@@ -185,7 +203,7 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
                     </>
                   )}
 
-                  {session && (
+                  {status === 'authenticated' && session && (
                     <Button
                       onClick={handleProfileClick}
                       variant="outline"
@@ -196,7 +214,7 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
                     </Button>
                   )}
 
-                  {isAdmin && (
+                  {status === 'authenticated' && session && isAdmin && (
                     <Button
                       onClick={handleAdminClick}
                       variant="outline"
@@ -216,15 +234,22 @@ const SMBurgerMenu = ({ onAuthModalOpen }: SMBurgerMenuProps) => {
                 transition={{ delay: 1.0 }}
                 className="mt-6 pt-6 border-t border-[#E8E6E3] text-center text-sm text-[#2E2E2E]"
               >
-                <div className="flex items-center justify-center gap-2">
-                  <Mail className="w-4 h-4 text-[#18A36C]" />
-                  <a
-                    href={`mailto:${contacts?.email || contactsConfig.email}`}
-                    className="hover:text-[#18A36C] transition-colors cursor-pointer"
-                  >
-                    {contacts?.email || contactsConfig.email}
-                  </a>
-                </div>
+                {contactsLoading || !contacts ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <Mail className="w-4 h-4 text-[#18A36C]" />
+                    <div className="h-4 bg-gray-200 rounded animate-pulse w-40" />
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    <Mail className="w-4 h-4 text-[#18A36C]" />
+                    <a
+                      href={`mailto:${contacts.email}`}
+                      className="hover:text-[#18A36C] transition-colors cursor-pointer"
+                    >
+                      {contacts.email}
+                    </a>
+                  </div>
+                )}
               </motion.div>
             </div>
           </motion.div>

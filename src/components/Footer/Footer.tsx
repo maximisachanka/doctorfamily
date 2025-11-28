@@ -84,14 +84,14 @@ export function Footer() {
               <div className="flex items-start gap-2 lg:gap-3">
                 <Phone className="w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0 text-[#18A36C]" />
                 <div>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <TextSkeleton className="w-32 h-5" />
                   ) : (
                     <a
-                      href={`tel:${(contacts?.phone_number || footerConfig.contactInfo.phone.number).replace(/[\s\-]/g, '')}`}
+                      href={`tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`}
                       className="text-[#2E2E2E] text-sm lg:text-base hover:text-[#18A36C] transition-colors cursor-pointer"
                     >
-                      {contacts?.phone_number || footerConfig.contactInfo.phone.number}
+                      {contacts.phone_number}
                     </a>
                   )}
                 </div>
@@ -100,14 +100,14 @@ export function Footer() {
               <div className="flex items-start gap-2 lg:gap-3">
                 <Mail className="w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0 text-[#18A36C]" />
                 <div>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <TextSkeleton className="w-40 h-5" />
                   ) : (
                     <a
-                      href={`mailto:${contacts?.email || footerConfig.contactInfo.email.address}`}
+                      href={`mailto:${contacts.email}`}
                       className="text-[#2E2E2E] text-sm lg:text-base hover:text-[#18A36C] transition-colors cursor-pointer"
                     >
-                      {contacts?.email || footerConfig.contactInfo.email.address}
+                      {contacts.email}
                     </a>
                   )}
                   <div className="text-gray-500 text-xs lg:text-sm">
@@ -119,16 +119,16 @@ export function Footer() {
               <div className="flex items-start gap-2 lg:gap-3">
                 <MapPin className="w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0 text-[#18A36C]" />
                 <div>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <TextSkeleton className="w-48 h-5" />
                   ) : (
                     <a
-                      href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || footerConfig.contactInfo.address.full)}`}
+                      href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts.address)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#2E2E2E] text-sm lg:text-base hover:text-[#18A36C] transition-colors cursor-pointer"
                     >
-                      {contacts?.address || footerConfig.contactInfo.address.full}
+                      {contacts.address}
                     </a>
                   )}
                 </div>
@@ -141,17 +141,17 @@ export function Footer() {
                     {footerConfig.contactInfo.schedule.title}
                   </div>
                   <div className="text-gray-500 text-xs lg:text-sm">
-                    {contactsLoading ? (
+                    {contactsLoading || !contacts ? (
                       <TextSkeleton className="w-24 h-4" />
                     ) : (
-                      contacts?.work_hours_main || footerConfig.contactInfo.schedule.hours
+                      contacts.work_hours_main
                     )}
                   </div>
                   <div className="text-gray-500 text-xs lg:text-sm">
-                    {contactsLoading ? (
+                    {contactsLoading || !contacts ? (
                       <TextSkeleton className="w-24 h-4" />
                     ) : (
-                      contacts?.work_hours_sunday || footerConfig.contactInfo.schedule.hours2
+                      contacts.work_hours_sunday
                     )}
                   </div>
                 </div>

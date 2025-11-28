@@ -426,16 +426,16 @@ export function SMHomePage() {
                     {React.createElement(iconMap.Phone, { className: "w-5 h-5 text-[#18A36C]" })}
                     {homePageConfig.contactSection.contactInfo.phone.title}
                   </h3>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <p className="text-[#2E2E2E] mb-2">
                       <TextSkeleton className="w-36 h-6" />
                     </p>
                   ) : (
                     <a
-                      href={`tel:${(contacts?.phone_number || homePageConfig.contactSection.contactInfo.phone.number).replace(/[\s\-]/g, '')}`}
+                      href={`tel:${contacts.phone_number.replace(/[\s\-]/g, '')}`}
                       className="text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2"
                     >
-                      {contacts?.phone_number || homePageConfig.contactSection.contactInfo.phone.number}
+                      {contacts.phone_number}
                     </a>
                   )}
                   <p className="text-sm text-gray-600">
@@ -454,18 +454,18 @@ export function SMHomePage() {
                     {React.createElement(iconMap.MapPin, { className: "w-5 h-5 text-[#18A36C]" })}
                     {homePageConfig.contactSection.contactInfo.address.title}
                   </h3>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <p className="text-[#2E2E2E] mb-2">
                       <TextSkeleton className="w-64 h-6" />
                     </p>
                   ) : (
                     <a
-                      href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts?.address || homePageConfig.contactSection.contactInfo.address.full)}`}
+                      href={`https://yandex.ru/maps/?text=${encodeURIComponent(contacts.address)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2"
                     >
-                      {contacts?.address || homePageConfig.contactSection.contactInfo.address.full}
+                      {contacts.address}
                     </a>
                   )}
                   <p className="text-sm text-gray-600">
@@ -484,16 +484,16 @@ export function SMHomePage() {
                     {React.createElement(iconMap.Mail, { className: "w-5 h-5 text-[#18A36C]" })}
                     {homePageConfig.contactSection.contactInfo.email.title}
                   </h3>
-                  {contactsLoading ? (
+                  {contactsLoading || !contacts ? (
                     <p className="text-[#2E2E2E] mb-2">
                       <TextSkeleton className="w-48 h-6" />
                     </p>
                   ) : (
                     <a
-                      href={`mailto:${contacts?.email || homePageConfig.contactSection.contactInfo.email.address}`}
+                      href={`mailto:${contacts.email}`}
                       className="text-[#2E2E2E] hover:text-[#18A36C] transition-colors cursor-pointer block mb-2"
                     >
-                      {contacts?.email || homePageConfig.contactSection.contactInfo.email.address}
+                      {contacts.email}
                     </a>
                   )}
                   <p className="text-sm text-gray-600">
