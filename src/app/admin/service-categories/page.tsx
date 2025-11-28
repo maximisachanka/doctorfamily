@@ -44,7 +44,6 @@ interface ServiceCategory {
 
 // Список доступных иконок для выбора
 const availableIcons: IconName[] = [
-  'Stethoscope',
   'Baby',
   'Smile',
   'Heart',
@@ -52,26 +51,13 @@ const availableIcons: IconName[] = [
   'Eye',
   'Brain',
   'Users',
+  'Stethoscope',
   'ShieldPlus',
   'Syringe',
   'Pill',
   'Microscope',
   'Hospital',
   'Dna',
-  'Bone',
-  'Droplet',
-  'Waves',
-  'Zap',
-  'Sparkles',
-  'Building',
-  'Building2',
-  'MessageSquare',
-  'UserCheck',
-  'Timer',
-  'Phone',
-  'MapPin',
-  'Mail',
-  'Search',
 ];
 
 export default function AdminServiceCategoriesPage() {
@@ -86,6 +72,7 @@ export default function AdminServiceCategoriesPage() {
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
+  const [searchValue, setSearchValue] = useState('');
 
   // Form states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -93,6 +80,7 @@ export default function AdminServiceCategoriesPage() {
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
+    slug: '',
     icon: '',
     description: '',
     parent_id: '',
@@ -176,54 +164,6 @@ export default function AdminServiceCategoriesPage() {
     setExpandedCategories(newExpanded);
   };
 
-  // Generate slug from name
-  const generateSlug = (name: string): string => {
-    return name
-      .toLowerCase()
-      .trim()
-      // Replace Russian letters
-      .replace(/а/g, 'a')
-      .replace(/б/g, 'b')
-      .replace(/в/g, 'v')
-      .replace(/г/g, 'g')
-      .replace(/д/g, 'd')
-      .replace(/е/g, 'e')
-      .replace(/ё/g, 'yo')
-      .replace(/ж/g, 'zh')
-      .replace(/з/g, 'z')
-      .replace(/и/g, 'i')
-      .replace(/й/g, 'y')
-      .replace(/к/g, 'k')
-      .replace(/л/g, 'l')
-      .replace(/м/g, 'm')
-      .replace(/н/g, 'n')
-      .replace(/о/g, 'o')
-      .replace(/п/g, 'p')
-      .replace(/р/g, 'r')
-      .replace(/с/g, 's')
-      .replace(/т/g, 't')
-      .replace(/у/g, 'u')
-      .replace(/ф/g, 'f')
-      .replace(/х/g, 'h')
-      .replace(/ц/g, 'ts')
-      .replace(/ч/g, 'ch')
-      .replace(/ш/g, 'sh')
-      .replace(/щ/g, 'sch')
-      .replace(/ъ/g, '')
-      .replace(/ы/g, 'y')
-      .replace(/ь/g, '')
-      .replace(/э/g, 'e')
-      .replace(/ю/g, 'yu')
-      .replace(/я/g, 'ya')
-      // Replace spaces and special characters
-      .replace(/\s+/g, '-')
-      .replace(/[^a-z0-9-]/g, '')
-      // Remove multiple dashes
-      .replace(/-+/g, '-')
-      // Remove leading/trailing dashes
-      .replace(/^-|-$/g, '');
-  };
-
   const handleSave = async () => {
     setFormLoading(true);
     try {
@@ -233,15 +173,11 @@ export default function AdminServiceCategoriesPage() {
 
       const method = editingCategory ? 'PUT' : 'POST';
 
-      // Generate slug from name
-      const slug = generateSlug(formData.name);
-
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          slug, // Use auto-generated slug
           parent_id: formData.parent_id ? parseInt(formData.parent_id) : null,
           order: parseInt(formData.order),
         }),
@@ -294,6 +230,7 @@ export default function AdminServiceCategoriesPage() {
     setEditingCategory(category);
     setFormData({
       name: category.name,
+      slug: category.slug,
       icon: category.icon || '',
       description: category.description || '',
       parent_id: category.parent_id?.toString() || '',
@@ -306,6 +243,7 @@ export default function AdminServiceCategoriesPage() {
   const resetForm = () => {
     setFormData({
       name: '',
+      slug: '',
       icon: '',
       description: '',
       parent_id: '',
@@ -328,122 +266,68 @@ export default function AdminServiceCategoriesPage() {
     const isExpanded = expandedCategories.has(category.id);
 
     return (
-      <div key={category.id} className="relative">
-        {/* Vertical line for hierarchy */}
-        {level > 0 && (
-          <div
-            className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#18A36C]/20 via-[#18A36C]/10 to-transparent hidden md:block"
-            style={{ marginLeft: `${(level - 1) * 32 + 16}px` }}
-          />
-        )}
+      <div key={category.id} className="mb-2 relative" style={{ marginLeft: `${level * 24}px` }}>
+        <ItemCard>
+          {/* Toggle button */}
+          {hasChildren && (
+            <button
+              onClick={() => toggleExpand(category.id)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded transition-colors"
+            >
+              {isExpanded ? (
+                <ChevronDown className="w-4 h-4 text-gray-600" />
+              ) : (
+                <ChevronRight className="w-4 h-4 text-gray-600" />
+              )}
+            </button>
+          )}
 
-        {/* Horizontal connector */}
-        {level > 0 && (
-          <div
-            className="absolute top-8 left-0 h-0.5 bg-[#18A36C]/20 hidden md:block"
-            style={{
-              marginLeft: `${(level - 1) * 32 + 16}px`,
-              width: '16px'
-            }}
-          />
-        )}
-
-        <div
-          className="mb-3 md:mb-4"
-          style={{ marginLeft: level > 0 ? `${level * 32}px` : '0' }}
-        >
-          <div className="group relative bg-white rounded-xl border border-gray-200 hover:border-[#18A36C]/50 hover:shadow-lg transition-all duration-300">
-            {/* Gradient decoration */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#18A36C]/0 via-[#18A36C]/5 to-[#18A36C]/0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-            <div className="relative p-4 md:p-5">
-              <div className="flex items-start gap-3 md:gap-4">
-                {/* Toggle button + Icon */}
-                <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-                  {hasChildren && (
-                    <button
-                      onClick={() => toggleExpand(category.id)}
-                      className="p-1.5 hover:bg-[#18A36C]/10 rounded-lg transition-all duration-200 group/btn cursor-pointer"
-                      aria-label={isExpanded ? 'Свернуть' : 'Развернуть'}
-                    >
-                      {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-[#18A36C] group-hover/btn:scale-110 transition-transform" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover/btn:text-[#18A36C] group-hover/btn:scale-110 transition-all" />
-                      )}
-                    </button>
-                  )}
-
-                  {Icon && (
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-[#18A36C]/20 rounded-xl blur-md group-hover:blur-lg transition-all" />
-                      <div className="relative w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md">
-                        <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                      </div>
-                    </div>
-                  )}
+          <div className={hasChildren ? 'ml-8' : 'ml-2'}>
+            {/* Icon and info */}
+            <div className="flex items-center gap-3 mb-3">
+              {Icon && (
+                <div className="w-10 h-10 bg-[#18A36C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Icon className="w-5 h-5 text-[#18A36C]" />
                 </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  {/* Header */}
-                  <div className="mb-2 md:mb-3">
-                    <h3 className="text-base md:text-lg font-semibold text-gray-800 group-hover:text-[#18A36C] transition-colors truncate">
-                      {category.name}
-                    </h3>
-                  </div>
-
-                  {/* Description */}
-                  {category.description && (
-                    <p className="text-xs md:text-sm text-gray-600 leading-relaxed line-clamp-2 mb-3">
-                      {category.description}
-                    </p>
-                  )}
-
-                  {/* Tags */}
-                  <div className="flex items-center gap-1.5 md:gap-2 flex-wrap mb-3 md:mb-4">
-                    <Badge variant="secondary">
-                      <span className="hidden sm:inline">Порядок:</span> {category.order}
-                    </Badge>
-                    <Badge variant={category.is_active ? 'success' : 'danger'}>
-                      {category.is_active ? 'Активна' : 'Неактивна'}
-                    </Badge>
-                    {hasChildren && (
-                      <Badge variant="primary">
-                        <span className="hidden sm:inline">Подкатегорий:</span> {category.children!.length}
-                      </Badge>
-                    )}
-                    {level > 0 && (
-                      <Badge variant="secondary">
-                        <span className="hidden sm:inline">Уровень:</span> {level}
-                      </Badge>
-                    )}
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center justify-end pt-3 border-t border-gray-100">
-                    <CardActions
-                      onEdit={() => handleEdit(category)}
-                      onDelete={() => handleDelete(category.id, category.name)}
-                    />
-                  </div>
-                </div>
+              )}
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-800">{category.name}</h3>
+                <p className="text-xs text-gray-500">/{category.slug}</p>
               </div>
             </div>
 
-            {/* Bottom accent line */}
-            <div className="h-1 bg-gradient-to-r from-transparent via-[#18A36C]/20 to-transparent group-hover:via-[#18A36C] transition-all duration-300 rounded-b-xl" />
+            {/* Description */}
+            {category.description && (
+              <p className="text-sm text-gray-600 mb-3 line-clamp-2">{category.description}</p>
+            )}
+
+            {/* Tags */}
+            <div className="flex items-center gap-2 flex-wrap mb-3">
+              <Badge variant="secondary">Порядок: {category.order}</Badge>
+              <Badge variant={category.is_active ? 'success' : 'danger'}>
+                {category.is_active ? 'Активна' : 'Неактивна'}
+              </Badge>
+              {hasChildren && (
+                <Badge variant="primary">
+                  Подкатегорий: {category.children!.length}
+                </Badge>
+              )}
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-end pt-3 border-t border-gray-100">
+              <CardActions
+                onEdit={() => handleEdit(category)}
+                onDelete={() => handleDelete(category.id, category.name)}
+              />
+            </div>
           </div>
-        </div>
+        </ItemCard>
 
         {/* Render children */}
         {hasChildren && isExpanded && (
-          <div className="relative">
-            {category.children!.map((child, idx) => (
-              <div key={child.id}>
-                {renderCategory(child, level + 1)}
-              </div>
-            ))}
+          <div className="mt-2">
+            {category.children!.map((child) => renderCategory(child, level + 1))}
           </div>
         )}
       </div>
@@ -478,7 +362,8 @@ export default function AdminServiceCategoriesPage() {
             loading={loading}
             onAdd={handleAdd}
             addButtonText="Добавить категорию"
-            hideSearch
+            searchValue={searchValue}
+            onSearchChange={setSearchValue}
           >
             {categories.length === 0 ? (
               <EmptyState
@@ -504,22 +389,36 @@ export default function AdminServiceCategoriesPage() {
             title={editingCategory ? 'Редактирование категории' : 'Новая категория'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.name}
+            disabled={!formData.name || !formData.slug}
           >
             <div className="space-y-4">
-              <FormField label="Название" required>
-                <FormInput
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Детская стоматология"
-                />
-                {formData.name && (
-                  <p className="text-xs text-gray-500 mt-1.5">
-                    URL будет: <span className="font-mono text-[#18A36C]">/{generateSlug(formData.name)}</span>
-                  </p>
-                )}
-              </FormField>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField label="Название" required>
+                  <FormInput
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => {
+                      const name = e.target.value;
+                      setFormData({
+                        ...formData,
+                        name,
+                        // Auto-generate slug from name if creating new
+                        slug: !editingCategory ? name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : formData.slug
+                      });
+                    }}
+                    placeholder="Детская стоматология"
+                  />
+                </FormField>
+
+                <FormField label="Slug (URL)" required>
+                  <FormInput
+                    type="text"
+                    value={formData.slug}
+                    onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                    placeholder="detskaya-stomatologiya"
+                  />
+                </FormField>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Иконка">

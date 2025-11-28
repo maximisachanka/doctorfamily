@@ -17,7 +17,6 @@
 /out/
 
 # production
-.next
 /build
 
 # misc

@@ -310,7 +310,7 @@ export default function AdminPartnersPage() {
 
                       {/* Tags */}
                       <div className="flex items-center gap-2 mt-3">
-                        <Badge variant="default" className="bg-[#18A36C]/10 text-[#18A36C] border-[#18A36C]/20">
+                        <Badge variant="primary">
                           {partner.category.name}
                         </Badge>
                         <Badge variant="secondary">

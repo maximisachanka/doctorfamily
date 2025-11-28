@@ -80,29 +80,14 @@ export const SMProfileButton: React.FC<SMProfileButtonProps> = ({ className, onA
 
       {/* Profile/Login button */}
       {!session && (
-        <>
-          <Button
-            onClick={handleClick}
-            variant="ghost"
-            size="sm"
-            className={`text-[#18A36C] hover:bg-[#18A36C]/10 flex items-center gap-2 px-2 lg:px-3 py-2 text-sm cursor-pointer ${className || ''}`}
-          >
-            <span>Авторизация</span>
-          </Button>
-
-          <Button
-            onClick={() => {
-              if (onAuthModalOpen) {
-                onAuthModalOpen('register');
-              }
-            }}
-            variant="ghost"
-            size="sm"
-            className={`text-[#18A36C] hover:bg-[#18A36C]/10 flex items-center gap-2 px-2 lg:px-3 py-2 text-sm cursor-pointer ${className || ''}`}
-          >
-            <span>Регистрация</span>
-          </Button>
-        </>
+        <Button
+          onClick={handleClick}
+          variant="ghost"
+          size="sm"
+          className={`text-[#18A36C] hover:bg-[#18A36C]/10 flex items-center gap-2 px-2 lg:px-3 py-2 text-sm cursor-pointer ${className || ''}`}
+        >
+          <span>Авторизация</span>
+        </Button>
       )}
 
       {/* My account button (when logged in) */}

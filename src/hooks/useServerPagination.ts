@@ -1,13 +1,26 @@
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
+import { ReadonlyURLSearchParams } from 'next/navigation';
+
+// Safe wrapper для useSearchParams
+function useSafeSearchParams(): ReadonlyURLSearchParams | null {
+  try {
+    // Динамический импорт useSearchParams
+    const { useSearchParams } = require('next/navigation');
+    return useSearchParams();
+  } catch {
+    return null;
+  }
+}
 
 export function useServerPagination(itemsPerPage: number = 12) {
-  const searchParams = useSearchParams();
+  const searchParams = useSafeSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
   // Получаем текущую страницу из URL (по умолчанию 1)
   const currentPage = useMemo(() => {
+    if (!searchParams) return 1;
     const page = searchParams.get('p');
     const pageNum = page ? parseInt(page, 10) : 1;
     return pageNum > 0 ? pageNum : 1;
@@ -15,7 +28,7 @@ export function useServerPagination(itemsPerPage: number = 12) {
 
   // Функция для изменения страницы
   const setPage = useCallback((page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || '');
 
     if (page === 1) {
       params.delete('p');

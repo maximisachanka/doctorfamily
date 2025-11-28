@@ -69,7 +69,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   // Search functionality
   useEffect(() => {
-    if (!query.trim() || query.trim().length < 5) {
+    if (!query.trim() || query.trim().length < 3) {
       setResults([]);
       setError(null);
       return;
@@ -105,7 +105,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   // Highlight search query in text
   const highlightText = (text: string, query: string) => {
-    if (!query.trim() || query.trim().length < 5) return text;
+    if (!query.trim() || query.trim().length < 3) return text;
 
     try {
       // Escape special regex characters
@@ -142,20 +142,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     setQuery("");
   };
 
-  // Валидация ввода - блокируем английские буквы
+  // Валидация ввода
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    // Разрешаем: кириллицу, цифры, пробелы, дефисы, точки, запятые
-    const allowedPattern = /^[а-яёА-ЯЁ0-9\s\-.,!?]*$/;
-
-    if (allowedPattern.test(value)) {
-      setQuery(value);
-      setError(null);
-    } else {
-      // Показываем временную ошибку
-      setError("Используйте только русские символы для поиска");
-    }
+    setQuery(value);
+    setError(null);
   };
 
   // Group results by category
@@ -215,25 +206,24 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 {/* Results */}
                 {query.trim() && (
                   <div className="border-t border-gray-200 max-h-[calc(100vh-250px)] sm:max-h-96 overflow-y-auto">
-                    {query.trim().length < 5 && (
+                    {query.trim().length < 3 && (
                       <div className="p-8 text-center text-gray-500">
                         <Search className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                        <p className="text-lg">Введите минимум 5 символов</p>
+                        <p className="text-lg">Введите минимум 3 символа</p>
                         <p className="text-sm mt-1">Для начала поиска</p>
                       </div>
                     )}
 
-                    {error && query.trim().length >= 5 && !loading && (
+                    {error && query.trim().length >= 3 && !loading && (
                       <div className="p-8 text-center">
                         <div className="w-12 h-12 mx-auto mb-3 bg-red-100 rounded-full flex items-center justify-center">
                           <X className="w-6 h-6 text-red-500" />
                         </div>
                         <p className="text-lg text-red-600 font-medium">{error}</p>
-                        <p className="text-sm mt-1 text-gray-500">Используйте только русские символы</p>
                       </div>
                     )}
 
-                    {query.trim().length >= 5 && results.length === 0 && !loading && !error && (
+                    {query.trim().length >= 3 && results.length === 0 && !loading && !error && (
                       <div className="p-8 text-center text-gray-500">
                         <Search className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                         <p className="text-lg">Ничего не найдено</p>

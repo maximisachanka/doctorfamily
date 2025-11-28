@@ -839,7 +839,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
     );
   }
 
-  // Handle FAQ category page - show subcategories as cards
+  // Handle FAQ main page - show categories only
   if (itemId === 'faq' && clinicItem?.children) {
     return (
       <>
@@ -877,8 +877,34 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 </Card>
               ))}
             </div>
+
+            <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
+              <div className="text-center">
+                <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
+                <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Свяжитесь с нами, и мы предоставим необходимую информацию.
+                </p>
+                <Button
+                  onClick={askQuestionModal.open}
+                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
+                >
+                  <MessageSquare className="w-4 h-4 mr-[2.5px]" />
+                  Задать вопрос
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Ask Question Modal */}
+        <AskQuestionModal
+          isOpen={askQuestionModal.isOpen}
+          onClose={askQuestionModal.close}
+          onComplete={() => {
+            console.log('AI помощник готов к работе');
+          }}
+        />
       </>
     );
   }
@@ -1111,11 +1137,13 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             <Card className="p-6 lg:p-8 border-gray-200">
               <h2 className="text-xl text-[#2E2E2E] mb-6">Часто задаваемые вопросы</h2>
               <Accordion type="single" collapsible className="w-full">
-                {(clinicFaqsData.length > 0 ? clinicFaqsData : clinicItem.faq || []).map((item, index) => (
+                {(clinicFaqsData.length > 0 ? clinicFaqsData : clinicItem.faq || []).map((item, index) => {
+                  const itemId = 'id' in item ? item.id : index;
+                  return (
                   <AccordionItem
-                    key={item.id || index}
-                    value={`item-${item.id || index}`}
-                    id={`faq-${item.id || index}`}
+                    key={itemId}
+                    value={`item-${itemId}`}
+                    id={`faq-${itemId}`}
                     className="scroll-mt-24"
                   >
                     <AccordionTrigger className="text-left text-[#212121] hover:text-[#18A36C] cursor-pointer">
@@ -1125,7 +1153,8 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                       {item.answer}
                     </AccordionContent>
                   </AccordionItem>
-                ))}
+                  );
+                })}
               </Accordion>
             </Card>
           ) : null}

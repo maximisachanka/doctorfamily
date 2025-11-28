@@ -68,8 +68,8 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("q");
 
-    // Минимум 5 символов
-    if (!query || query.trim().length < 5) {
+    // Минимум 3 символа
+    if (!query || query.trim().length < 3) {
       return NextResponse.json({ results: [] }, { status: 200 });
     }
 
@@ -233,7 +233,7 @@ export async function GET(request: NextRequest) {
         title: faq.question,
         description: faq.answer || "Ответ скоро будет добавлен",
         category: faq.category || "Общие вопросы",
-        url: `/clinic/faq/${faqCategory}`,
+        url: `/clinic/faq/${faqCategory}#faq-${faq.id}`,
         type: "faq",
       });
     });

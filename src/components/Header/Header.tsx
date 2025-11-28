@@ -78,21 +78,21 @@ export function Header() {
         window.requestAnimationFrame(() => {
           // Находим блок с навигацией в основном header
           const headers = document.querySelectorAll('header');
-          let navBarElement = null;
+          let navBarElement: HTMLElement | null = null;
 
           headers.forEach(header => {
             const style = window.getComputedStyle(header);
             if (style.position !== 'fixed') {
               // Это основной header, ищем навигацию
               const nav = header.querySelector('nav');
-              if (nav) {
-                navBarElement = nav.parentElement;
+              if (nav && nav.parentElement) {
+                navBarElement = nav.parentElement as HTMLElement;
               }
             }
           });
 
           if (navBarElement) {
-            const rect = navBarElement.getBoundingClientRect();
+            const rect = (navBarElement as HTMLElement).getBoundingClientRect();
             // Когда навигационный блок достигает верха экрана (или почти достигает)
             // показываем компактный header
             const SHOW_THRESHOLD = 10; // Показать когда навигация в 10px от верха
@@ -420,6 +420,19 @@ export function Header() {
                   setAuthModalType(type || 'login');
                   setIsAuthModalOpen(true);
                 }} />
+
+                {/* Register button */}
+                {!session && (
+                  <Button
+                    onClick={() => {
+                      setAuthModalType('register');
+                      setIsAuthModalOpen(true);
+                    }}
+                    className="bg-[#18A36C] hover:bg-[#15905f] text-white px-4 py-2 cursor-pointer rounded-lg transition-all text-sm h-9"
+                  >
+                    Регистрация
+                  </Button>
+                )}
               </div>
             </div>
           </div>

@@ -50,6 +50,7 @@ const menuData: MenuItem[] = [
     title: 'Вопрос ответ',
     icon: <HelpCircle className="w-4 h-4" />,
     children: [
+      { id: 'general', title: 'Общие вопросы' },
       { id: 'children-teeth', title: 'Детские зубы' },
       { id: 'girls-hygiene', title: 'Гигиена девочек' },
       { id: 'boys-hygiene', title: 'Гигиена мальчиков' },
@@ -103,7 +104,7 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
   };
 
   return (
-    <div className="px-2">
+    <div className="px-2" data-menu-item={item.id}>
       <div
         className={`w-full flex items-center justify-between transition-all duration-300 rounded-lg mb-1 overflow-hidden ${isActive || isRouteActive
           ? 'bg-[#18A36C]/10 text-[#18A36C] shadow-sm'
@@ -194,6 +195,14 @@ export function NavigableClinicMenu() {
 
       // Expand the parent section
       setExpandedItems(new Set([sectionId]));
+
+      // Скролл к активному элементу после небольшой задержки
+      setTimeout(() => {
+        const activeElement = document.querySelector(`[data-menu-item="${itemId}"]`);
+        if (activeElement) {
+          activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 300);
     } else if (routeParts[0] === 'clinic' && routeParts.length === 1) {
       // На главной странице клиники - сбрасываем активный пункт
       setActiveItem(null);
