@@ -55,10 +55,15 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
   };
 
   const loadChat = useCallback(async () => {
-    if (status !== 'authenticated') return;
+    if (status !== 'authenticated') {
+      setLoading(false);
+      return;
+    }
 
     try {
-      const response = await fetch('/api/operator-chat/my-chat');
+      const response = await fetch('/api/operator-chat/my-chat', {
+        cache: 'no-store'
+      });
       if (response.ok) {
         const data = await response.json();
         setChat(data.chat);
@@ -75,15 +80,33 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
   }, [status]);
 
   useEffect(() => {
-    loadChat();
+    // Загружаем чат только если пользователь авторизован
+    if (status === 'authenticated') {
+      loadChat();
+    } else if (status === 'unauthenticated') {
+      setLoading(false);
+    }
     // Автообновление убрано - обновляется только при отправке сообщения и открытии
-  }, [loadChat]);
+  }, [status, loadChat]);
 
   useEffect(() => {
     if (chat) {
       scrollToBottom();
     }
   }, [chat?.messages]);
+
+  // Слушаем событие для перезагрузки чата (когда AI переключает на оператора)
+  useEffect(() => {
+    const handleReloadChat = () => {
+      console.log("🔄 Reloading operator chat...");
+      loadChat();
+    };
+
+    window.addEventListener('reloadOperatorChat', handleReloadChat);
+    return () => {
+      window.removeEventListener('reloadOperatorChat', handleReloadChat);
+    };
+  }, [loadChat]);
 
   const handleCreateChat = async () => {
     if (!message.trim() || creating) return;
@@ -94,6 +117,7 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: message.trim() }),
+        cache: 'no-store'
       });
 
       if (response.ok) {
@@ -123,6 +147,7 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: message.trim() }),
+        cache: 'no-store'
       });
 
       if (response.ok) {

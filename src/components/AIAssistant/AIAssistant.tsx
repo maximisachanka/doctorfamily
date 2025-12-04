@@ -135,7 +135,9 @@ export function AIAssistant() {
     }
 
     try {
-      const response = await fetch('/api/operator-chat/my-chat/unread');
+      const response = await fetch('/api/operator-chat/my-chat/unread', {
+        cache: 'no-store'
+      });
       if (response.ok) {
         const data = await response.json();
         setHasUnreadChat(data.hasUnread || false);
@@ -207,6 +209,7 @@ export function AIAssistant() {
         body: JSON.stringify({
           messages: [...messages, userMessage],
         }),
+        cache: 'no-store'
       });
 
       if (!response.ok) {
@@ -218,6 +221,7 @@ export function AIAssistant() {
       console.log("📨 API Response data:", data);
       console.log("📦 Cards in response:", data.cards);
       console.log("💬 Message in response:", data.message);
+      console.log("🔄 Need operator:", data.needOperator);
 
       if (!data.message) {
         throw new Error("No message in response");
@@ -238,6 +242,12 @@ export function AIAssistant() {
         setIsModalOpen(true);
       } else {
         console.log("⚠️ No cards to display");
+      }
+
+      // Если нужен оператор - автоматически переключаемся и создаем чат
+      if (data.needOperator) {
+        console.log("🔄 Switching to operator tab...");
+        handleSwitchToOperator();
       }
     } catch (error) {
       console.error("Chat error:", error);
@@ -261,6 +271,61 @@ export function AIAssistant() {
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleSwitchToOperator = async () => {
+    // Проверяем авторизацию
+    if (status !== 'authenticated') {
+      console.log("⚠️ User not authenticated, opening login modal");
+      alert.info('Для связи с оператором необходимо войти в систему', 'Требуется авторизация');
+      handleOpenLoginModal();
+      return;
+    }
+
+    // Переключаемся на вкладку оператора
+    setActiveTab('operator');
+
+    // Даем время на загрузку компонента
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Проверяем, есть ли уже активный чат
+    try {
+      const chatResponse = await fetch('/api/operator-chat/my-chat', {
+        cache: 'no-store'
+      });
+
+      if (chatResponse.ok) {
+        // Чат уже существует, просто переключились
+        console.log("✅ Chat already exists");
+        return;
+      }
+
+      // Чата нет - создаем новый с автоматическим сообщением
+      console.log("📝 Creating new operator chat...");
+      const createResponse = await fetch('/api/operator-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'Здравствуйте, мне нужна Ваша помощь'
+        }),
+        cache: 'no-store'
+      });
+
+      if (createResponse.ok) {
+        console.log("✅ Operator chat created successfully");
+        alert.success('Вы переключены на оператора. Менеджер скоро ответит!', 'Успех');
+
+        // Перезагружаем компонент оператора через небольшую задержку
+        await new Promise(resolve => setTimeout(resolve, 300));
+        window.dispatchEvent(new CustomEvent('reloadOperatorChat'));
+      } else {
+        const errorData = await createResponse.json();
+        throw new Error(errorData.error || 'Failed to create chat');
+      }
+    } catch (error) {
+      console.error("❌ Error switching to operator:", error);
+      alert.error('Не удалось создать чат с оператором. Попробуйте позже.', 'Ошибка');
     }
   };
 
@@ -315,6 +380,7 @@ export function AIAssistant() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(registerData),
+        cache: 'no-store'
       });
 
       const data = await response.json();
