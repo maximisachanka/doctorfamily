@@ -143,7 +143,6 @@ export default function AdminFeedbacksPage() {
         setApprovedCount(data.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading counts:', error);
     }
   };
 
@@ -171,7 +170,6 @@ export default function AdminFeedbacksPage() {
         setServices(data);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }

@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../common/SMTooltip/SMTooltip';
-import { useRouter } from '../SMRouter/SMRouter';
+import { useRouter as useSMRouter } from '../SMRouter/SMRouter';
+import { useRouter } from 'next/navigation';
 import { useMenu } from '../SMMenuContext/SMMenuContext';
 
 interface MenuItem {
@@ -180,7 +181,8 @@ export function NavigableClinicMenu() {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { navigate, currentRoute } = useRouter();
+  const { navigate, currentRoute } = useSMRouter();
+  const router = useRouter();
   const { isBurgerMenuOpen } = useMenu();
 
   // Auto-expand and select based on current route
@@ -257,7 +259,8 @@ export function NavigableClinicMenu() {
   };
 
   const MenuContent = ({ onItemClick: onItemClickProp }: { onItemClick?: (itemId: string, item: MenuItem) => void }) => (
-    <div className="bg-white flex flex-col h-full overflow-hidden">
+    <div className="bg-white flex flex-col h-full">
+      {/* Header - Fixed */}
       <div className="p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50 flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
@@ -270,7 +273,8 @@ export function NavigableClinicMenu() {
         </div>
       </div>
 
-      <div className="py-2">
+      {/* Scrollable Menu Items */}
+      <div className="flex-1 overflow-y-auto py-2">
         {menuData.map((item) => (
           <MenuItemComponent
             key={item.id}
@@ -285,12 +289,13 @@ export function NavigableClinicMenu() {
         ))}
       </div>
 
-      <div className="p-3 lg:p-4 mt-2 lg:mt-4 border-t border-[#E8E6E3] bg-white">
+      {/* Footer - Fixed */}
+      <div className="p-3 lg:p-4 border-t border-[#E8E6E3] bg-white flex-shrink-0">
         <div className="text-center">
           <p className="text-xs text-gray-600 mb-2 lg:mb-3">Не нашли нужную информацию?</p>
           <Button
             size="sm"
-            onClick={() => navigate('/contacts')}
+            onClick={() => router.push('/contacts')}
             className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white w-full text-xs rounded-lg cursor-pointer"
           >
             Связаться с нами
@@ -302,7 +307,7 @@ export function NavigableClinicMenu() {
 
   return (
     <>
-      <div className="hidden lg:block w-72 bg-white border-r border-[#E8E6E3] shadow-lg flex-shrink-0 sticky top-[80px] h-[calc(100vh-80px)] overflow-y-auto">
+      <div className="hidden lg:block w-72 bg-white border-r border-[#E8E6E3] shadow-lg flex-shrink-0 sticky top-[80px] h-[calc(100vh-80px)]">
         <MenuContent />
       </div>
 

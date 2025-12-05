@@ -85,8 +85,8 @@ function TextSkeleton({ className = '' }: { className?: string }) {
 
 export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   const [activeTab, setActiveTab] = useState('info');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [vacanciesPage, setVacanciesPage] = useState(1);
+  const { currentPage: reviewsPage, setPage: setReviewsPage } = useUrlPagination(REVIEWS_PER_PAGE);
+  const { currentPage: vacanciesPage, setPage: setVacanciesPage } = useUrlPagination(VACANCIES_PER_PAGE);
   const [partnersPage, setPartnersPage] = useState(1);
   const [partners, setPartners] = useState<Partner[]>([]);
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
@@ -141,7 +141,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
       fetch(`/api/partners?category=${itemId}`)
         .then(res => res.json())
         .then(data => setPartners(data))
-        .catch(err => console.error('Failed to load partners:', err))
         .finally(() => setLoading(false));
     }
   }, [itemId]);
@@ -153,7 +152,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
       fetch(`/api/partners/${itemId}`)
         .then(res => res.json())
         .then(data => setSinglePartner(data))
-        .catch(err => console.error('Failed to load partner:', err))
         .finally(() => setLoading(false));
     }
   }, [itemId, categoryId]);
@@ -170,7 +168,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           // Smooth scroll to top on page change
           window.scrollTo({ top: 0, behavior: 'smooth' });
         })
-        .catch(err => console.error('Failed to load vacancies:', err))
         .finally(() => setLoading(false));
     }
   }, [itemId, vacanciesPage]);
@@ -179,7 +176,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
   useEffect(() => {
     if (itemId === 'reviews') {
       setLoading(true);
-      fetch(`/api/clinic-reviews?page=${currentPage}&limit=${REVIEWS_PER_PAGE}`)
+      fetch(`/api/clinic-reviews?page=${reviewsPage}&limit=${REVIEWS_PER_PAGE}`)
         .then(res => res.json())
         .then(data => {
           setClinicReviewsData(data.reviews);
@@ -187,10 +184,9 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           // Smooth scroll to top on page change
           window.scrollTo({ top: 0, behavior: 'smooth' });
         })
-        .catch(err => console.error('Failed to load clinic reviews:', err))
         .finally(() => setLoading(false));
     }
-  }, [itemId, currentPage]);
+  }, [itemId, reviewsPage]);
 
   // Load clinic FAQs for specific categories
   useEffect(() => {
@@ -203,7 +199,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
       fetch(`/api/clinic-faqs?category=${itemId}`)
         .then(res => res.json())
         .then(data => setClinicFaqsData(data))
-        .catch(err => console.error('Failed to load clinic FAQs:', err))
         .finally(() => setFaqLoading(false));
     }
   }, [itemId]);
@@ -215,7 +210,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
       fetch(`/api/vacancies/${itemId}`)
         .then(res => res.json())
         .then(data => setSingleVacancy(data))
-        .catch(err => console.error('Failed to load vacancy:', err))
         .finally(() => setLoading(false));
     }
   }, [itemId, categoryId]);
@@ -260,6 +254,16 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <PartnerCardSkeleton key={i} />
                 ))}
+              </div>
+            ) : partners.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 px-4">
+                <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Users className="w-10 h-10 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-700 mb-2">Партнёры не найдены</h3>
+                <p className="text-gray-500 text-center max-w-md mb-6">
+                  В данной категории пока нет партнёров. Мы работаем над расширением списка наших партнёров.
+                </p>
               </div>
             ) : (
               <>
@@ -326,7 +330,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             )}
           </div>
 
-          <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
+          <div className="mt-8 p-6 bg-[#F4F4F4] rounded-2xl border border-gray-100">
             <div className="text-center">
               <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
               <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
@@ -356,7 +360,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           isOpen={askQuestionModal.isOpen}
           onClose={askQuestionModal.close}
           onComplete={() => {
-            console.log('AI помощник готов к работе');
           }}
         />
       </>
@@ -450,7 +453,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           isOpen={askQuestionModal.isOpen}
           onClose={askQuestionModal.close}
           onComplete={() => {
-            console.log('AI помощник готов к работе');
           }}
         />
       </>
@@ -482,7 +484,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                   <h2 className="text-xl text-[#2E2E2E]">Отзывы пациентов</h2>
                   {!loading && (
                     <div className="text-sm text-gray-600">
-                      Страница {currentPage} из {totalPages} ({reviewsTotal} отзывов)
+                      Страница {reviewsPage} из {totalPages} ({reviewsTotal} отзывов)
                     </div>
                   )}
                 </div>
@@ -493,6 +495,23 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                   {[1, 2, 3, 4, 5].map((i) => (
                     <ReviewItemSkeleton key={i} />
                   ))}
+                </div>
+              ) : currentReviews.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 px-4">
+                  <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                    <Star className="w-10 h-10 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">Отзывы не найдены</h3>
+                  <p className="text-gray-500 text-center max-w-md mb-6">
+                    Пока нет отзывов о клинике. Станьте первым, кто поделится своим опытом!
+                  </p>
+                  <Button
+                    onClick={() => setIsReviewModalOpen(true)}
+                    className="bg-[#18A36C] hover:bg-[#15905f] text-white shadow-lg shadow-[#18A36C]/20"
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Оставить первый отзыв
+                  </Button>
                 </div>
               ) : (
                 <>
@@ -555,9 +574,9 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
 
                   {/* Pagination for reviews */}
                   <Pagination
-                    currentPage={currentPage}
+                    currentPage={reviewsPage}
                     totalPages={totalPages}
-                    onPageChange={setCurrentPage}
+                    onPageChange={setReviewsPage}
                     className="mt-8"
                   />
                 </>
@@ -613,6 +632,16 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <VacancyCardSkeleton key={i} />
                 ))}
+              </div>
+            ) : vacancies.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 px-4">
+                <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Briefcase className="w-10 h-10 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-700 mb-2">Вакансии не найдены</h3>
+                <p className="text-gray-500 text-center max-w-md mb-6">
+                  В данный момент нет открытых вакансий. Следите за обновлениями или отправьте своё резюме на будущее.
+                </p>
               </div>
             ) : (
               <>
@@ -902,7 +931,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           isOpen={askQuestionModal.isOpen}
           onClose={askQuestionModal.close}
           onComplete={() => {
-            console.log('AI помощник готов к работе');
           }}
         />
       </>
@@ -927,24 +955,46 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
 
           {/* Content based on item type */}
           {itemId === 'licenses' && (
-            <Card className="p-6 lg:p-8 border-gray-200">
-              {clinicItem.gallery && clinicItem.gallery.length > 0 && (
-                <div className="mb-6">
-                  <ImageWithFallback
-                    src={clinicItem.gallery[0]}
-                    alt="Лицензия клиники Doctor Family"
-                    className="w-full max-w-2xl mx-auto rounded-lg shadow-lg"
-                  />
-                </div>
-              )}
+            <Card className="p-6 border-gray-200">
+              <h2 className="text-xl text-[#2E2E2E] mb-6 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-[#18A36C]" />
+                Информация о лицензии
+              </h2>
 
-              {clinicItem.content && (
-                <div className="bg-[#F4F4F4] p-6 rounded-lg">
-                  <pre className="whitespace-pre-wrap text-[#212121] leading-relaxed">
-                    {clinicItem.content}
-                  </pre>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Изображение лицензии */}
+                {clinicItem.gallery && clinicItem.gallery.length > 0 ? (
+                  <div className="space-y-4">
+                    <ImageWithFallback
+                      src={clinicItem.gallery[0]}
+                      alt="Лицензия клиники Doctor Family"
+                      className="w-full rounded-lg shadow-lg border border-gray-200 cursor-pointer hover:shadow-xl transition-shadow duration-300"
+                      onClick={() => window.open(clinicItem.gallery![0], '_blank', 'noopener,noreferrer')}
+                    />
+                    <p className="text-xs text-gray-500 text-center">Нажмите на изображение для увеличения</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-12 bg-gray-50 rounded-lg border border-gray-200">
+                    <FileText className="w-12 h-12 text-gray-300 mb-3" />
+                    <p className="text-sm text-gray-500">Изображение лицензии недоступно</p>
+                  </div>
+                )}
+
+                {/* Текстовая информация */}
+                <div>
+                  {clinicItem.content ? (
+                    <div className="bg-[#F4F4F4] p-6 rounded-lg h-full">
+                      <pre className="whitespace-pre-wrap text-[#212121] leading-relaxed text-sm">
+                        {clinicItem.content}
+                      </pre>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-gray-50 rounded-lg border border-gray-200">
+                      <p className="text-sm text-gray-500">Информация о лицензии отсутствует</p>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </Card>
           )}
 
@@ -1159,7 +1209,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             </Card>
           ) : null}
 
-          <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
+          <div className="mt-8 p-6 bg-[#F4F4F4] rounded-2xl border border-gray-100">
             <div className="text-center">
               <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
               <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
@@ -1198,7 +1248,6 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
         onClose={askQuestionModal.close}
         onComplete={() => {
           // Здесь можно добавить логику для открытия чата или другого действия
-          console.log('AI помощник готов к работе');
         }}
       />
     </>

@@ -217,7 +217,8 @@ export function NavigableServicesMenu() {
   };
 
   const MenuContent = ({ onItemClick: onItemClickProp }: { onItemClick?: (itemId: string, item: MenuItem) => void }) => (
-    <div className="bg-white flex flex-col h-full overflow-hidden">
+    <div className="bg-white flex flex-col h-full">
+      {/* Header - Fixed */}
       <div className="p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50 flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-[#18A36C] to-[#15905f] rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
@@ -233,7 +234,9 @@ export function NavigableServicesMenu() {
           </div>
         </div>
       </div>
-      <div className="py-2 flex-1 overflow-y-auto overflow-x-hidden">
+
+      {/* Scrollable Menu Items */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-2">
         {menuData.map((item) => (
           <MenuItemComponent
             key={item.id}
@@ -247,7 +250,8 @@ export function NavigableServicesMenu() {
         ))}
       </div>
 
-      <div className="p-3 lg:p-4 mt-2 lg:mt-4 border-t border-[#E8E6E3] bg-white">
+      {/* Footer - Fixed */}
+      <div className="p-3 lg:p-4 border-t border-[#E8E6E3] bg-white flex-shrink-0">
         <div className="text-center">
           <p className="text-xs text-gray-600 mb-2 lg:mb-3">
             {servicesMenuConfig.footer.text}

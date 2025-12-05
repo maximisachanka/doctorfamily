@@ -58,13 +58,10 @@ export function SMPatientContent() {
         const response = await fetch('/api/contacts');
         if (response.ok) {
           const data = await response.json();
-          console.log('Loaded contacts from API:', data);
           setContacts(data);
         } else {
-          console.error('Failed to load contacts:', response.status);
         }
       } catch (error) {
-        console.error('Error loading contacts:', error);
       } finally {
         setIsLoadingContacts(false);
       }

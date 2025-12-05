@@ -94,7 +94,6 @@ export default function AdminContactsPage() {
         });
       }
     } catch (err) {
-      console.error('Error loading contacts:', err);
       showError('Ошибка загрузки контактов');
     } finally {
       setLoading(false);

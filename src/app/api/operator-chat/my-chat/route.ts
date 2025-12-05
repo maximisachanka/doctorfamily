@@ -114,7 +114,6 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Error fetching patient chat:", error);
     return NextResponse.json(
       { error: "Ошибка при получении чата" },
       {

@@ -55,7 +55,6 @@ export function DoctorsContent() {
         const data = await response.json();
         setCategories(data);
       } catch (err) {
-        console.error('Error fetching categories:', err);
         setError('Не удалось загрузить категории');
       }
     };
@@ -96,7 +95,6 @@ export function DoctorsContent() {
         const data = await response.json();
         setSpecialists(data);
       } catch (err) {
-        console.error('Error fetching specialists:', err);
         setError('Не удалось загрузить специалистов');
         setSpecialists([]);
       } finally {

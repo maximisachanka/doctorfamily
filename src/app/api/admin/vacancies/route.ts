@@ -69,7 +69,6 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(totalCount / limit),
     });
   } catch (error) {
-    console.error("Get vacancies error:", error);
     return NextResponse.json(
       { error: "Ошибка при получении вакансий" },
       { status: 500 }
@@ -100,7 +99,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(vacancy, { status: 201 });
   } catch (error) {
-    console.error("Create vacancy error:", error);
     return NextResponse.json(
       { error: "Ошибка при создании вакансии" },
       { status: 500 }

@@ -72,7 +72,6 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(totalCount / limit),
     });
   } catch (error) {
-    console.error("Get questions error:", error);
     return NextResponse.json(
       { error: "Ошибка при получении вопросов" },
       { status: 500 }
@@ -106,7 +105,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(question, { status: 201 });
   } catch (error) {
-    console.error("Create question error:", error);
     return NextResponse.json(
       { error: "Ошибка при создании вопроса" },
       { status: 500 }

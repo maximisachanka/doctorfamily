@@ -92,7 +92,6 @@ export async function GET(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Error fetching chats:", error);
     return NextResponse.json(
       { error: "Ошибка при получении чатов" },
       {
@@ -229,7 +228,6 @@ export async function POST(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Error creating chat:", error);
     return NextResponse.json(
       { error: "Ошибка при создании чата" },
       {

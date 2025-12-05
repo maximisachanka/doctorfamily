@@ -5,9 +5,6 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 async function parseCardsInMessage(message: string) {
-  console.log("🔍 Parsing message for cards:", message);
-  console.log("🔍 Message length:", message.length);
-  console.log("🔍 Message includes [CARD:", message.includes("[CARD:"));
 
   // Ищем маркеры с учетом возможных пробелов и переносов строк
   const cardRegex = /\[CARD:(SPECIALIST|SERVICE):(\d+)\]/gi;
@@ -17,7 +14,6 @@ async function parseCardsInMessage(message: string) {
   while ((match = cardRegex.exec(message)) !== null) {
     const [fullMatch, type, id] = match;
     const cardId = parseInt(id);
-    console.log(`📌 Found card marker: ${fullMatch}, type: ${type}, id: ${cardId}`);
 
     try {
       if (type === "SPECIALIST") {
@@ -40,7 +36,6 @@ async function parseCardsInMessage(message: string) {
         });
 
         if (specialist) {
-          console.log(`✅ Found specialist:`, specialist);
           cards.push({
             type: "specialist",
             data: {
@@ -50,7 +45,6 @@ async function parseCardsInMessage(message: string) {
             placeholder: fullMatch,
           });
         } else {
-          console.log(`❌ Specialist ${cardId} not found in DB`);
         }
       } else if (type === "SERVICE") {
         const service = await prisma.service.findUnique({
@@ -70,7 +64,6 @@ async function parseCardsInMessage(message: string) {
         });
 
         if (service) {
-          console.log(`✅ Found service:`, service);
           // Нормализуем данные: category из объекта в строку + добавляем slug
           const normalizedService = {
             ...service,
@@ -83,25 +76,19 @@ async function parseCardsInMessage(message: string) {
             placeholder: fullMatch,
           });
         } else {
-          console.log(`❌ Service ${cardId} not found in DB`);
         }
       }
     } catch (error) {
-      console.error(`❌ Error loading card ${type}:${id}:`, error);
     }
   }
 
-  console.log(`📦 Total cards found: ${cards.length}`, cards);
   return { message, cards };
 }
 
 async function getClinicContext() {
   try {
-    console.log("getClinicContext: Fetching contacts...");
     const contacts = await prisma.contacts.findFirst();
-    console.log("getClinicContext: Contacts fetched:", contacts ? "✓" : "✗");
 
-    console.log("getClinicContext: Fetching services...");
     const services = await prisma.service.findMany({
       select: {
         id: true,
@@ -114,9 +101,7 @@ async function getClinicContext() {
         },
       },
     });
-    console.log("getClinicContext: Services fetched:", services.length);
 
-    console.log("getClinicContext: Fetching specialists...");
     const specialists = await prisma.specialist.findMany({
       select: {
         id: true,
@@ -126,7 +111,6 @@ async function getClinicContext() {
         specialization: true,
       },
     });
-    console.log("getClinicContext: Specialists fetched:", specialists.length);
 
     // Нормализуем данные: преобразуем вложенные объекты в строки
     const normalizedServices = services.map((s) => ({
@@ -140,10 +124,7 @@ async function getClinicContext() {
       specialists,
     };
   } catch (error) {
-    console.error("Error fetching clinic context:", error);
     if (error instanceof Error) {
-      console.error("Error details:", error.message);
-      console.error("Error stack:", error.stack);
     }
     return null;
   }
@@ -341,18 +322,14 @@ ${specialistsText || "Информация загружается..."}
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("Chat API: Starting request...");
 
     // Проверяем подключение к Prisma
     try {
       await prisma.$connect();
-      console.log("Chat API: Prisma connected ✓");
     } catch (dbError) {
-      console.error("Chat API: Prisma connection failed:", dbError);
     }
 
     if (!OPENROUTER_API_KEY) {
-      console.error("Chat API: OpenRouter API key is not configured");
       return NextResponse.json(
         { error: "OpenRouter API key not configured. Please add OPENROUTER_API_KEY to your .env file." },
         {
@@ -367,12 +344,10 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    console.log("Chat API: Request body received");
 
     const { messages } = body;
 
     if (!messages || !Array.isArray(messages)) {
-      console.error("Chat API: Invalid messages format", messages);
       return NextResponse.json(
         { error: "Invalid messages format" },
         {
@@ -386,7 +361,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("Chat API: Fetching clinic context...");
     // Получаем контекст клиники
     const clinicData = await getClinicContext();
 
@@ -404,14 +378,11 @@ export async function POST(request: NextRequest) {
     };
 
     if (!clinicData) {
-      console.warn("Chat API: Using fallback clinic data (DB connection failed)");
     }
 
-    console.log("Chat API: Building system prompt...");
     // Создаём системный промпт
     const systemPrompt = buildSystemPrompt(finalClinicData);
 
-    console.log("Chat API: Sending request to OpenRouter...");
     // Отправляем запрос в OpenRouter
     const response = await fetch(OPENROUTER_URL, {
       method: "POST",
@@ -435,11 +406,9 @@ export async function POST(request: NextRequest) {
       }),
     });
 
-    console.log("Chat API: OpenRouter response status:", response.status);
 
     if (!response.ok) {
       const error = await response.text();
-      console.error("OpenRouter API error:", error);
       return NextResponse.json(
         { error: `Failed to get response from AI: ${error.substring(0, 100)}` },
         {
@@ -454,12 +423,10 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-    console.log("Chat API: OpenRouter response received");
 
     const assistantMessage = data.choices?.[0]?.message?.content;
 
     if (!assistantMessage) {
-      console.error("Chat API: No message in response", data);
       return NextResponse.json(
         { error: "No response from AI" },
         {
@@ -473,13 +440,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("Chat API: Parsing cards in message...");
     const { message: cleanMessage, cards } = await parseCardsInMessage(assistantMessage);
-    console.log("Chat API: Found cards:", cards.length);
 
     // Проверяем наличие маркера [NEED_OPERATOR]
     const needOperator = cleanMessage.includes("[NEED_OPERATOR]");
-    console.log("Chat API: Need operator:", needOperator);
 
     // Удаляем плейсхолдеры карточек из сообщения
     let finalMessage = cleanMessage;
@@ -490,7 +454,6 @@ export async function POST(request: NextRequest) {
     // Удаляем маркер оператора из сообщения
     finalMessage = finalMessage.replace("[NEED_OPERATOR]", "").trim();
 
-    console.log("Chat API: Success!");
     return NextResponse.json(
       {
         message: finalMessage,
@@ -506,7 +469,6 @@ export async function POST(request: NextRequest) {
       }
     );
   } catch (error) {
-    console.error("Chat API error:", error);
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
       { error: `Internal server error: ${errorMessage}` },

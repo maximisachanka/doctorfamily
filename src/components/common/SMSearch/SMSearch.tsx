@@ -93,7 +93,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           }
         }
       } catch (error) {
-        console.error("Search error:", error);
         setError("Ошибка при поиске. Попробуйте позже.");
       } finally {
         setLoading(false);

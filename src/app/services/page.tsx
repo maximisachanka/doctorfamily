@@ -493,11 +493,9 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
                     index={index}
                     onDoctorClick={(doctorId) => {
                       // Navigate to doctor page if needed
-                      console.log('Doctor clicked:', doctorId);
                     }}
                     onBookAppointment={(doctorId, doctorName) => {
                       // Handle booking appointment
-                      console.log('Book appointment for:', doctorId, doctorName);
                     }}
                   />
                 ))}
@@ -564,7 +562,6 @@ export function ServicePage({ serviceId, categoryId }: ServicePageProps) {
         onClose={askQuestionModal.close}
         onComplete={() => {
           // Здесь можно добавить логику для открытия чата или другого действия
-          console.log('AI помощник готов к работе');
         }}
       />
     </div>

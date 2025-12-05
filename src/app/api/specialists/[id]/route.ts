@@ -33,7 +33,6 @@ export async function GET(
 
     return NextResponse.json(specialist);
   } catch (error) {
-    console.error('Error fetching specialist:', error);
     return NextResponse.json(
       { error: 'Failed to fetch specialist' },
       { status: 500 }

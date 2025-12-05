@@ -38,7 +38,6 @@ export async function GET(request: NextRequest) {
       }
     }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching vacancies:", error);
     return NextResponse.json(
       { error: "Failed to fetch vacancies" },
       { status: 500 }

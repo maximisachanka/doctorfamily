@@ -66,7 +66,6 @@ export default function CategoryPage() {
         const foundCategory = findCategory(servicesMenuData.menuData, categorySlug);
 
         if (!foundCategory) {
-          console.error('Category not found:', categorySlug);
           setCategory(null);
           setLoading(false);
           return;
@@ -108,7 +107,6 @@ export default function CategoryPage() {
             }
           }
         } catch (error) {
-          console.log('No services found in DB for this category');
         }
 
         // Если нет подкатегорий и есть ровно одна услуга - редиректим сразу на неё
@@ -121,7 +119,6 @@ export default function CategoryPage() {
         setServices(loadedServices);
         setLoading(false);
       } catch (error) {
-        console.error('Error loading category:', error);
         setCategory(null);
         setLoading(false);
       }

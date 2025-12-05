@@ -73,7 +73,6 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
         setIsBlocked(true);
       }
     } catch (error) {
-      console.error('Error loading chat:', error);
     } finally {
       setLoading(false);
     }
@@ -98,7 +97,6 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
   // Слушаем событие для перезагрузки чата (когда AI переключает на оператора)
   useEffect(() => {
     const handleReloadChat = () => {
-      console.log("🔄 Reloading operator chat...");
       loadChat();
     };
 
@@ -131,7 +129,6 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
         onError?.(data.error || 'Не удалось создать чат');
       }
     } catch (error) {
-      console.error('Error creating chat:', error);
       onError?.('Ошибка при создании чата');
     } finally {
       setCreating(false);
@@ -158,7 +155,6 @@ export function OperatorChatContent({ onError, onOpenLoginModal, onOpenRegisterM
         onError?.(data.error || 'Не удалось отправить сообщение');
       }
     } catch (error) {
-      console.error('Error sending message:', error);
       onError?.('Ошибка при отправке сообщения');
     } finally {
       setSending(false);

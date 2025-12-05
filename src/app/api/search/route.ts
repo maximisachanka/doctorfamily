@@ -326,7 +326,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ results }, { status: 200 });
   } catch (error) {
-    console.error("Search error:", error);
     return NextResponse.json(
       { error: "Ошибка при поиске", results: [] },
       { status: 500 }

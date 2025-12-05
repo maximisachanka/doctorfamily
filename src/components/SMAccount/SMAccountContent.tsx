@@ -61,6 +61,7 @@ import { EditProfileModal } from "./SMEditProfileModal";
 import { MaterialDetailModal, isNewMaterial } from "./SMMaterialDetailModal";
 import { useAlert } from "../common/SMAlert/AlertProvider";
 import { Pagination } from "../common/SMPagination/SMPagination";
+import { useUrlPagination } from "@/hooks/useUrlPagination";
 import {
   WelcomeDashboardSkeleton,
   MaterialsPageSkeleton,
@@ -112,6 +113,8 @@ interface Letter {
   messages?: LetterMessage[];
 }
 
+const MATERIALS_PER_PAGE = 6;
+
 export function AccountContent() {
   const { navigate, currentRoute } = useRouter();
   const { data: session, status } = useSession();
@@ -141,7 +144,7 @@ export function AccountContent() {
 
   const [subscriptionSettings, setSubscriptionSettings] =
     useState(accountData.subscriptions.settings);
-  const [materialsPage, setMaterialsPage] = useState(1);
+  const { currentPage: materialsPage, setPage: setMaterialsPage } = useUrlPagination(MATERIALS_PER_PAGE);
   const [contactForm, setContactForm] = useState(
     accountData.contact.form,
   );
@@ -191,8 +194,6 @@ export function AccountContent() {
     return true;
   };
 
-  const MATERIALS_PER_PAGE = 6;
-
   // Load letters when contact section is active
   const loadLetters = async () => {
     setLettersLoading(true);
@@ -203,7 +204,6 @@ export function AccountContent() {
         setLetters(data);
       }
     } catch (error) {
-      console.error('Error loading letters:', error);
     } finally {
       setLettersLoading(false);
     }
@@ -227,7 +227,6 @@ export function AccountContent() {
       const { clearLetterNotification } = await import('@/utils/letterNotifications');
       clearLetterNotification(letterId);
     } catch (error) {
-      console.error('Error marking reply as read:', error);
     }
   };
 
@@ -255,7 +254,6 @@ export function AccountContent() {
         alert.error(data.error || 'Ошибка при отправке сообщения', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error sending reply:', error);
       alert.error('Ошибка при отправке сообщения', 'Ошибка');
     } finally {
       setSendingReply(false);
@@ -421,7 +419,6 @@ export function AccountContent() {
   };
 
   const handleSubscriptionSubmit = () => {
-    console.log("Subscription settings:", subscriptionSettings);
     setSubmitStatus("success");
     setTimeout(() => setSubmitStatus("idle"), 3000);
   };
@@ -650,9 +647,31 @@ export function AccountContent() {
       </div>
 
       {materialsLoading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#18A36C] mx-auto"></div>
-          <p className="text-gray-600 mt-4">Загрузка материалов...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Card key={i} className="border border-gray-200">
+              {/* Image skeleton */}
+              <div className="w-full h-40 sm:h-48 bg-gray-200 animate-pulse rounded-t-lg" />
+
+              <CardContent className="p-4 sm:p-6">
+                {/* Title skeleton */}
+                <div className="h-5 sm:h-6 bg-gray-200 rounded animate-pulse mb-2 w-3/4" />
+
+                {/* Content skeleton */}
+                <div className="space-y-2 mb-3 sm:mb-4">
+                  <div className="h-3 sm:h-4 bg-gray-200 rounded animate-pulse w-full" />
+                  <div className="h-3 sm:h-4 bg-gray-200 rounded animate-pulse w-5/6" />
+                  <div className="h-3 sm:h-4 bg-gray-200 rounded animate-pulse w-4/6" />
+                </div>
+
+                {/* Footer skeleton */}
+                <div className="flex items-center justify-between">
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-24" />
+                  <div className="h-8 bg-gray-200 rounded animate-pulse w-24" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       ) : (
         <>
@@ -726,6 +745,16 @@ export function AccountContent() {
           </p>
         </div>
       )}
+
+      {/* Material Detail Modal */}
+      <MaterialDetailModal
+        isOpen={showMaterialDetailModal}
+        onClose={() => {
+          setShowMaterialDetailModal(false);
+          setSelectedMaterial(null);
+        }}
+        material={selectedMaterial}
+      />
     </div>
   );
 

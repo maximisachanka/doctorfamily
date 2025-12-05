@@ -20,7 +20,6 @@ export async function GET(request: Request) {
 
     return NextResponse.json(specialists);
   } catch (error) {
-    console.error('Error fetching specialists:', error);
     return NextResponse.json(
       { error: 'Failed to fetch specialists' },
       { status: 500 }

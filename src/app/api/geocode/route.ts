@@ -51,7 +51,6 @@ export async function POST(request: NextRequest) {
       display_name: location.display_name, // Полное название найденного адреса
     });
   } catch (error) {
-    console.error('Geocoding error:', error);
     return NextResponse.json(
       { error: 'Внутренняя ошибка сервера при геокодировании' },
       { status: 500 }

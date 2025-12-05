@@ -80,7 +80,6 @@ export function ChatModal({ chatId, onClose }: ChatModalProps) {
         alert.error('Не удалось загрузить чат', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error loading chat:', error);
       alert.error('Ошибка при загрузке чата', 'Ошибка');
     } finally {
       setLoading(false);
@@ -113,7 +112,6 @@ export function ChatModal({ chatId, onClose }: ChatModalProps) {
         alert.error('Не удалось взять чат', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error taking chat:', error);
       alert.error('Ошибка при взятии чата', 'Ошибка');
     }
   };
@@ -133,7 +131,6 @@ export function ChatModal({ chatId, onClose }: ChatModalProps) {
         alert.error('Не удалось закрыть чат', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error closing chat:', error);
       alert.error('Ошибка при закрытии чата', 'Ошибка');
     }
   };
@@ -174,7 +171,6 @@ export function ChatModal({ chatId, onClose }: ChatModalProps) {
         alert.error(data.error || 'Не удалось ' + (action === 'block' ? 'заблокировать' : 'разблокировать') + ' пользователя', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error blocking/unblocking user:', error);
       alert.error('Ошибка при блокировке/разблокировке', 'Ошибка');
     } finally {
       setBlocking(false);
@@ -204,7 +200,6 @@ export function ChatModal({ chatId, onClose }: ChatModalProps) {
         alert.error(data.error || 'Не удалось удалить чат', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error deleting chat:', error);
       alert.error('Ошибка при удалении чата', 'Ошибка');
     } finally {
       setDeleting(false);
@@ -230,7 +225,6 @@ export function ChatModal({ chatId, onClose }: ChatModalProps) {
         alert.error(data.error || 'Не удалось отправить сообщение', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error sending message:', error);
       alert.error('Ошибка при отправке сообщения', 'Ошибка');
     } finally {
       setSending(false);

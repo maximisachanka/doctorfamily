@@ -138,7 +138,6 @@ export default function AdminQuestionsPage() {
         setServices(data);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

@@ -112,7 +112,6 @@ export default function AdminUsersPage() {
         setOperatorsCount(data.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading counts:', error);
     }
   };
 
@@ -133,7 +132,6 @@ export default function AdminUsersPage() {
         setTotalCount(response.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

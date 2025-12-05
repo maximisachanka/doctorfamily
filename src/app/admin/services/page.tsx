@@ -174,7 +174,6 @@ export default function AdminServicesPage() {
         setSpecialists(data);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

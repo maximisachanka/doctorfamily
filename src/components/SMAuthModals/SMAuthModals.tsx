@@ -96,7 +96,6 @@ export function AuthModals({
         setValid(prev => ({ ...prev, [field]: true }));
       }
     } catch (error) {
-      console.error('Uniqueness check error:', error);
     } finally {
       setChecking(prev => ({ ...prev, [field]: false }));
     }

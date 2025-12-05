@@ -76,7 +76,6 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
           document.title = `${data.name} - ${data.category.name} | Медицинский центр Doctor Family`;
         }
       } catch (err) {
-        console.error('Error fetching specialist:', err);
         setError('Не удалось загрузить данные специалиста');
       } finally {
         setLoading(false);
@@ -109,7 +108,6 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
   }
 
   const handleBookAppointment = () => {
-    console.log(`Booking appointment with ${doctor.name}`);
   };
 
   // conferences уже массив из БД

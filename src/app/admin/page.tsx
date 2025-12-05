@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useSession } from 'next-auth/react';
 import { AnimatePresence } from 'framer-motion';
 import { Users, Loader2 } from 'lucide-react';
 import { Pagination } from '@/components/common/SMPagination/SMPagination';
@@ -27,7 +26,7 @@ import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { useAlert } from '@/components/common/SMAlert';
 import { useUrlPagination } from '@/hooks/useUrlPagination';
-import NotFound from '../not-found';
+import { OperatorWelcome } from '@/components/SMAdmin/OperatorWelcome';
 
 // Types
 interface Specialist {
@@ -59,12 +58,13 @@ interface Category {
 }
 
 export default function AdminPage() {
-  const { status } = useSession();
   const { sessionVerified, isLoading: sessionLoading, verifySession } = useAdminSession();
-  const [hasAdminRole, setHasAdminRole] = useState<boolean | null>(null);
-  const [isCheckingRole, setIsCheckingRole] = useState(true);
   const confirmDialog = useConfirmDialog();
   const { success, error: showError } = useAlert();
+
+  // Check user role
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [roleLoading, setRoleLoading] = useState(true);
 
   // Data states
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
@@ -93,35 +93,30 @@ export default function AdminPage() {
     category_id: '',
   });
 
-  // Check admin role
+  // Check user role when session is verified
   useEffect(() => {
-    if (status === 'authenticated') {
-      checkAdminRole();
-    } else if (status === 'unauthenticated') {
-      setHasAdminRole(false);
-      setIsCheckingRole(false);
-    }
-  }, [status]);
+    const checkRole = async () => {
+      if (sessionVerified) {
+        try {
+          const res = await fetch('/api/admin/auth');
+          const data = await res.json();
+          setUserRole(data.role || null);
+        } catch (error) {
+          setUserRole(null);
+        } finally {
+          setRoleLoading(false);
+        }
+      }
+    };
+    checkRole();
+  }, [sessionVerified]);
 
-  // Load data when session is verified
+  // Load data when session is verified and user is not an operator
   useEffect(() => {
-    if (sessionVerified && hasAdminRole) {
+    if (sessionVerified && userRole && userRole !== 'OPERATOR') {
       loadData();
     }
-  }, [sessionVerified, hasAdminRole]);
-
-  const checkAdminRole = async () => {
-    setIsCheckingRole(true);
-    try {
-      const res = await fetch('/api/admin/auth');
-      const data = await res.json();
-      setHasAdminRole(data.isAdmin);
-    } catch (error) {
-      setHasAdminRole(false);
-    } finally {
-      setIsCheckingRole(false);
-    }
-  };
+  }, [sessionVerified, userRole]);
 
   const handleAuthSuccess = () => {
     verifySession();
@@ -145,7 +140,7 @@ export default function AdminPage() {
         setCategories(data);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
+      // Error loading data
     } finally {
       setLoading(false);
     }
@@ -283,14 +278,9 @@ export default function AdminPage() {
     }
   };
 
-  // Loading state - показываем skeleton с блюром пока проверяем права
-  if (status === 'loading' || hasAdminRole === null || sessionLoading || isCheckingRole) {
+  // Loading state
+  if (sessionLoading || roleLoading) {
     return <AdminAccessSkeleton />;
-  }
-
-  // Not admin - show 404 (только после завершения проверки)
-  if (status === 'unauthenticated' || hasAdminRole === false) {
-    return <NotFound />;
   }
 
   // Admin login form (only if session not verified)
@@ -298,7 +288,19 @@ export default function AdminPage() {
     return <AdminAuthForm onSuccess={handleAuthSuccess} />;
   }
 
-  // Admin panel
+  // Operator welcome page
+  if (userRole === 'OPERATOR') {
+    return (
+      <div className="flex min-h-screen bg-gray-50">
+        <AdminMenu />
+        <div className="flex-1 overflow-auto">
+          <OperatorWelcome />
+        </div>
+      </div>
+    );
+  }
+
+  // Admin panel for ADMIN and CHIEF_DOCTOR
   return (
     <div className="flex min-h-screen bg-gray-50">
       <AdminMenu />

@@ -131,7 +131,6 @@ export default function AdminServiceCategoriesPage() {
         setCategories(data);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

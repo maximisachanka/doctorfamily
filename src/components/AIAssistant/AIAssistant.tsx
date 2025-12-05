@@ -85,7 +85,6 @@ export function AIAssistant() {
         setShowOnboarding(true);
       }
     } catch (error) {
-      console.error('Error loading chat messages from localStorage:', error);
     }
     setIsInitialized(true);
   }, [isOpen]);
@@ -114,7 +113,6 @@ export function AIAssistant() {
       try {
         localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
       } catch (error) {
-        console.error('Error saving chat messages to localStorage:', error);
       }
     }
   }, [messages, isInitialized]);
@@ -143,7 +141,6 @@ export function AIAssistant() {
         setHasUnreadChat(data.hasUnread || false);
       }
     } catch (error) {
-      console.error('Error checking unread chat:', error);
     }
   }, [status]);
 
@@ -174,7 +171,6 @@ export function AIAssistant() {
     try {
       localStorage.removeItem(CHAT_STORAGE_KEY);
     } catch (error) {
-      console.error('Error clearing chat from localStorage:', error);
     }
     setShowClearConfirmation(false);
   }, []);
@@ -184,7 +180,6 @@ export function AIAssistant() {
     try {
       localStorage.setItem(ONBOARDING_SEEN_KEY, 'true');
     } catch (error) {
-      console.error('Error saving onboarding state:', error);
     }
   }, []);
 
@@ -218,10 +213,6 @@ export function AIAssistant() {
       }
 
       const data = await response.json();
-      console.log("📨 API Response data:", data);
-      console.log("📦 Cards in response:", data.cards);
-      console.log("💬 Message in response:", data.message);
-      console.log("🔄 Need operator:", data.needOperator);
 
       if (!data.message) {
         throw new Error("No message in response");
@@ -237,20 +228,16 @@ export function AIAssistant() {
 
       // Если есть карточки - показываем модальное окно
       if (data.cards && data.cards.length > 0) {
-        console.log("🎯 Opening modal with cards:", data.cards);
         setModalCards(data.cards);
         setIsModalOpen(true);
       } else {
-        console.log("⚠️ No cards to display");
       }
 
       // Если нужен оператор - автоматически переключаемся и создаем чат
       if (data.needOperator) {
-        console.log("🔄 Switching to operator tab...");
         handleSwitchToOperator();
       }
     } catch (error) {
-      console.error("Chat error:", error);
 
       let errorText = "Извините, произошла ошибка.";
 
@@ -277,7 +264,6 @@ export function AIAssistant() {
   const handleSwitchToOperator = async () => {
     // Проверяем авторизацию
     if (status !== 'authenticated') {
-      console.log("⚠️ User not authenticated, opening login modal");
       alert.info('Для связи с оператором необходимо войти в систему', 'Требуется авторизация');
       handleOpenLoginModal();
       return;
@@ -297,12 +283,10 @@ export function AIAssistant() {
 
       if (chatResponse.ok) {
         // Чат уже существует, просто переключились
-        console.log("✅ Chat already exists");
         return;
       }
 
       // Чата нет - создаем новый с автоматическим сообщением
-      console.log("📝 Creating new operator chat...");
       const createResponse = await fetch('/api/operator-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -313,7 +297,6 @@ export function AIAssistant() {
       });
 
       if (createResponse.ok) {
-        console.log("✅ Operator chat created successfully");
         alert.success('Вы переключены на оператора. Менеджер скоро ответит!', 'Успех');
 
         // Перезагружаем компонент оператора через небольшую задержку
@@ -324,7 +307,6 @@ export function AIAssistant() {
         throw new Error(errorData.error || 'Failed to create chat');
       }
     } catch (error) {
-      console.error("❌ Error switching to operator:", error);
       alert.error('Не удалось создать чат с оператором. Попробуйте позже.', 'Ошибка');
     }
   };

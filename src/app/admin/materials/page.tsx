@@ -114,7 +114,6 @@ export default function AdminMaterialsPage() {
         setTotalCount(response.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading materials:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

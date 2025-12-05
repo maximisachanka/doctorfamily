@@ -234,7 +234,6 @@ export async function GET(
 
     return NextResponse.json(service);
   } catch (error) {
-    console.error('Error fetching service:', error);
     return NextResponse.json(
       { error: 'Failed to fetch service' },
       { status: 500 }

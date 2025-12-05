@@ -101,7 +101,6 @@ export function ChangePasswordModal({ isOpen, onClose }: ChangePasswordModalProp
       handleClose();
     } catch (error) {
       alert.error('Ошибка при смене пароля. Попробуйте позже.', 'Ошибка');
-      console.error('Change password error:', error);
     } finally {
       setIsLoading(false);
     }

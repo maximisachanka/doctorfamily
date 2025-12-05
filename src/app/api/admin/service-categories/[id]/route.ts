@@ -47,7 +47,6 @@ export async function GET(
 
     return NextResponse.json(category);
   } catch (error) {
-    console.error('Error fetching service category:', error);
     return NextResponse.json(
       { error: 'Failed to fetch service category' },
       { status: 500 }
@@ -129,7 +128,6 @@ export async function PUT(
 
     return NextResponse.json(category);
   } catch (error) {
-    console.error('Error updating service category:', error);
     return NextResponse.json(
       { error: 'Failed to update service category' },
       { status: 500 }
@@ -176,7 +174,6 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error deleting service category:', error);
     return NextResponse.json(
       { error: 'Failed to delete service category' },
       { status: 500 }

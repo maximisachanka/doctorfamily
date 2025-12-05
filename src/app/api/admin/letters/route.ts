@@ -114,7 +114,6 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(totalCount / limit),
     });
   } catch (error) {
-    console.error("Error fetching letters:", error);
     return NextResponse.json(
       { error: "Ошибка при получении писем" },
       { status: 500 }

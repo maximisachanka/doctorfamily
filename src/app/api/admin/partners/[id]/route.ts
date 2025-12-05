@@ -57,7 +57,6 @@ export async function PUT(
 
     return NextResponse.json(partner);
   } catch (error) {
-    console.error("Update partner error:", error);
     return NextResponse.json(
       { error: "Ошибка при обновлении партнёра" },
       { status: 500 }
@@ -85,7 +84,6 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, message: "Партнёр удален" });
   } catch (error) {
-    console.error("Delete partner error:", error);
     return NextResponse.json(
       { error: "Ошибка при удалении партнёра" },
       { status: 500 }

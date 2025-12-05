@@ -107,7 +107,6 @@ export default function AdminPartnersPage() {
         setCategories(partnerCategories);
       }
     } catch (error) {
-      console.error('Error loading categories:', error);
     }
   };
 
@@ -124,7 +123,6 @@ export default function AdminPartnersPage() {
         setTotalCount(response.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

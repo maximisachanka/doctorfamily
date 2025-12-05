@@ -63,10 +63,8 @@ export function SMAccountPage() {
         const data = await response.json();
         setUser(data.user);
       } else {
-        console.error("Failed to fetch user data");
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
     } finally {
       setIsLoading(false);
     }

@@ -32,7 +32,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(faqs, { status: 200 });
   } catch (error) {
-    console.error('Error fetching clinic FAQs:', error);
     return NextResponse.json(
       { error: "Failed to fetch clinic FAQs" },
       { status: 500 }

@@ -121,7 +121,6 @@ export async function GET(
 
     return NextResponse.json({ chat }, { headers: NO_CACHE_HEADERS });
   } catch (error) {
-    console.error("Error fetching chat:", error);
     return NextResponse.json(
       { error: "Ошибка при получении чата" },
       { status: 500, headers: NO_CACHE_HEADERS }
@@ -226,7 +225,6 @@ export async function POST(
 
     return NextResponse.json({ message }, { status: 201, headers: NO_CACHE_HEADERS });
   } catch (error) {
-    console.error("Error sending message:", error);
     return NextResponse.json(
       { error: "Ошибка при отправке сообщения" },
       { status: 500, headers: NO_CACHE_HEADERS }
@@ -338,7 +336,6 @@ export async function PATCH(
 
     return NextResponse.json({ chat: updatedChat }, { headers: NO_CACHE_HEADERS });
   } catch (error) {
-    console.error("Error updating chat:", error);
     return NextResponse.json(
       { error: "Ошибка при обновлении чата" },
       { status: 500, headers: NO_CACHE_HEADERS }
@@ -401,7 +398,6 @@ export async function DELETE(
       { headers: NO_CACHE_HEADERS }
     );
   } catch (error) {
-    console.error("Error deleting chat:", error);
     return NextResponse.json(
       { error: "Ошибка при удалении чата" },
       { status: 500, headers: NO_CACHE_HEADERS }

@@ -89,7 +89,6 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil(totalCount / limit),
     });
   } catch (error) {
-    console.error('Error fetching services:', error);
     return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
   }
 }
@@ -176,7 +175,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(transformedService, { status: 201 });
   } catch (error) {
-    console.error('Error creating service:', error);
     return NextResponse.json({ error: 'Failed to create service' }, { status: 500 });
   }
 }

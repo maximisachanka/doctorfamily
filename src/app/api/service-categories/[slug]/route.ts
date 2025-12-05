@@ -8,7 +8,6 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    console.log('API: Fetching category with slug:', slug);
 
     // @ts-ignore - ServiceCategory будет доступна после npx prisma generate
     const category = await prisma.serviceCategory.findUnique({
@@ -52,7 +51,6 @@ export async function GET(
       },
     });
 
-    console.log('API: Category found:', category ? 'Yes' : 'No');
 
     if (!category) {
       return NextResponse.json(
@@ -63,9 +61,6 @@ export async function GET(
 
     return NextResponse.json(category);
   } catch (error: any) {
-    console.error('API Error fetching service category:', error);
-    console.error('Error details:', error.message);
-    console.error('Error stack:', error.stack);
     return NextResponse.json(
       {
         error: 'Failed to fetch service category',

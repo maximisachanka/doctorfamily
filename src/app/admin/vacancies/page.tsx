@@ -102,7 +102,6 @@ export default function AdminVacanciesPage() {
         setTotalCount(response.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading vacancies:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);

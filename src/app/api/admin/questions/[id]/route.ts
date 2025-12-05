@@ -57,7 +57,6 @@ export async function PUT(
 
     return NextResponse.json(question);
   } catch (error) {
-    console.error("Update question error:", error);
     return NextResponse.json(
       { error: "Ошибка при обновлении вопроса" },
       { status: 500 }
@@ -85,7 +84,6 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, message: "Вопрос удален" });
   } catch (error) {
-    console.error("Delete question error:", error);
     return NextResponse.json(
       { error: "Ошибка при удалении вопроса" },
       { status: 500 }

@@ -48,7 +48,6 @@ export const authOptions: NextAuthOptions = {
                         image: user.avatar_url,
                     };
                 } catch (error) {
-                    console.error("Auth error:", error);
                     return null;
                 }
             }
@@ -64,15 +63,15 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
-                token.role = (user as { role?: string }).role;
+                token.role = user.role;
                 token.picture = user.image;
             }
             return token;
         },
         async session({ session, token }) {
             if (session.user && token.id) {
-                (session.user as { id: string; role?: string }).id = token.id as string;
-                (session.user as { id: string; role?: string }).role = token.role as string;
+                session.user.id = token.id as string;
+                session.user.role = token.role;
                 session.user.image = token.picture as string | null | undefined;
             }
             return session;

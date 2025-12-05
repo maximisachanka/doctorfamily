@@ -471,7 +471,6 @@ export function Header() {
             }
           } catch (err) {
             alert.error("Ошибка при входе. Попробуйте позже.", "Ошибка");
-            console.error("Login error:", err);
           } finally {
             setIsLoading(false);
           }
@@ -519,7 +518,6 @@ export function Header() {
             }
           } catch (err) {
             alert.error("Ошибка при регистрации. Попробуйте позже.", "Ошибка");
-            console.error("Register error:", err);
           } finally {
             setIsLoading(false);
           }
@@ -529,11 +527,9 @@ export function Header() {
 
           try {
             // TODO: Реализовать API для восстановления пароля
-            console.log("Forgot password:", email);
             alert.warning("Функция восстановления пароля пока не реализована", "Скоро будет");
           } catch (err) {
             alert.error("Ошибка при восстановлении пароля. Попробуйте позже.", "Ошибка");
-            console.error("Forgot password error:", err);
           } finally {
             setIsLoading(false);
           }

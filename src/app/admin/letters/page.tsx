@@ -120,7 +120,6 @@ export default function AdminLettersPage() {
         setRepliedCount(data.totalCount || 0);
       }
     } catch (error) {
-      console.error('Error loading counts:', error);
     }
   };
 
@@ -150,7 +149,6 @@ export default function AdminLettersPage() {
         await refetchUnreadCounts();
       }
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Ошибка загрузки данных');
     } finally {
       setLoading(false);
@@ -182,7 +180,6 @@ export default function AdminLettersPage() {
           l.id === letter.id ? { ...l, is_read: true } : l
         ));
       } catch (error) {
-        console.error('Error marking letter as read:', error);
       }
     }
   };

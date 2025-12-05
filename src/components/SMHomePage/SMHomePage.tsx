@@ -33,10 +33,10 @@ export function SMHomePage() {
       <section className="relative min-h-screen flex items-center justify-center">
         <div className="container mx-auto px-4 py-12 lg:py-20">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl lg:text-6xl xl:text-7xl text-[#2E2E2E] mb-8 leading-tight">
+            <h1 className="text-3xl lg:text-5xl xl:text-6xl text-[#18A36C] mb-8 leading-tight">
               {homePageConfig.hero.title}
               <br />
-              <span className="text-[#18A36C]">{homePageConfig.hero.titleHighlight}</span>
+              <span className="text-[#2E2E2E]">{homePageConfig.hero.titleHighlight}</span>
             </h1>
             <p className="text-xl lg:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
               {homePageConfig.hero.subtitle}

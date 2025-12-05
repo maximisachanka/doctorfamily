@@ -82,7 +82,6 @@ export default function AdminChatPage() {
       const data = await res.json();
       setHasAdminRole(data.isAdmin || false);
     } catch (error) {
-      console.error('Error checking admin role:', error);
       setHasAdminRole(false);
     } finally {
       setIsCheckingRole(false);
@@ -110,7 +109,6 @@ export default function AdminChatPage() {
         alert.error('Не удалось загрузить чаты', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error loading chats:', error);
       alert.error('Ошибка при загрузке чатов', 'Ошибка');
     } finally {
       setLoading(false);
@@ -128,7 +126,6 @@ export default function AdminChatPage() {
         alert.error('Не удалось загрузить заблокированных пользователей', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error loading blocked users:', error);
       alert.error('Ошибка при загрузке заблокированных пользователей', 'Ошибка');
     }
   }, [alert]);
@@ -151,7 +148,6 @@ export default function AdminChatPage() {
         alert.error(data.error || 'Не удалось разблокировать пользователя', 'Ошибка');
       }
     } catch (error) {
-      console.error('Error unblocking user:', error);
       alert.error('Ошибка при разблокировке пользователя', 'Ошибка');
     } finally {
       setUnblockingUserId(null);

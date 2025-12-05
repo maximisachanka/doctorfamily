@@ -42,7 +42,6 @@ export async function GET() {
 
     return NextResponse.json(categories);
   } catch (error) {
-    console.error('Error fetching service categories:', error);
     return NextResponse.json(
       { error: 'Failed to fetch service categories' },
       { status: 500 }
@@ -93,7 +92,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(category, { status: 201 });
   } catch (error) {
-    console.error('Error creating service category:', error);
     return NextResponse.json(
       { error: 'Failed to create service category' },
       { status: 500 }
