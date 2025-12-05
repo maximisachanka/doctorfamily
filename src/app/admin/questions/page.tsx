@@ -55,25 +55,6 @@ interface QuestionCategory {
   slug: string;
 }
 
-// Захардкоженные категории FAQ (соответствуют категориям на странице Клиники)
-const FAQ_CATEGORIES: Record<string, string> = {
-  'children-teeth': 'Детские зубы',
-  'girls-hygiene': 'Гигиена девочек',
-  'boys-hygiene': 'Гигиена мальчиков',
-  'girls-puberty': 'Половое созревание девочек',
-  'culdocentesis': 'Кульдоцентез',
-  'stomatology': 'Стоматология',
-  'polyp-removal': 'Удаления полипов | Полипэктомия',
-  'ultrasound': 'УЗИ',
-  'womens-health': 'Женское здоровье',
-  'curettage': 'Раздельное диагностическое выскабливание',
-};
-
-// Функция для получения русского названия категории
-const getCategoryLabel = (category: string | null): string => {
-  if (!category) return '';
-  return FAQ_CATEGORIES[category] || category;
-};
 
 export default function AdminQuestionsPage() {
   const { status } = useSession();
@@ -101,7 +82,6 @@ export default function AdminQuestionsPage() {
   const [formData, setFormData] = useState({
     question: '',
     answer: '',
-    category: '',
     service_id: '',
     question_category_id: '',
   });
@@ -180,7 +160,6 @@ export default function AdminQuestionsPage() {
     setFormData({
       question: '',
       answer: '',
-      category: '',
       service_id: '',
       question_category_id: '',
     });
@@ -198,7 +177,6 @@ export default function AdminQuestionsPage() {
     setFormData({
       question: question.question,
       answer: question.answer || '',
-      category: question.category || '',
       service_id: question.service_id?.toString() || '',
       question_category_id: question.question_category_id?.toString() || '',
     });
@@ -324,9 +302,6 @@ export default function AdminQuestionsPage() {
                               {question.questionCategory && (
                                 <Badge variant="success">Категория: {question.questionCategory.name}</Badge>
                               )}
-                              {question.category && (
-                                <Badge variant="primary">Старая: {getCategoryLabel(question.category)}</Badge>
-                              )}
                               {question.service && (
                                 <Badge variant="secondary">Услуга: {question.service.title}</Badge>
                               )}
@@ -387,7 +362,7 @@ export default function AdminQuestionsPage() {
                 />
               </FormField>
 
-              <FormField label="Категория вопроса (для страницы Вопросы и ответы)">
+              <FormField label="Категория вопроса">
                 <FormSelect
                   value={formData.question_category_id}
                   onChange={(e) => setFormData({ ...formData, question_category_id: e.target.value })}
@@ -401,23 +376,6 @@ export default function AdminQuestionsPage() {
                 </FormSelect>
                 <p className="text-xs text-gray-500 mt-1">
                   Выберите категорию для отображения в разделе "Вопросы и ответы"
-                </p>
-              </FormField>
-
-              <FormField label="Категория FAQ (для старой страницы Клиника)">
-                <FormSelect
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                >
-                  <option value="">Не выбрано</option>
-                  {Object.entries(FAQ_CATEGORIES).map(([slug, name]) => (
-                    <option key={slug} value={slug}>
-                      {name}
-                    </option>
-                  ))}
-                </FormSelect>
-                <p className="text-xs text-gray-500 mt-1">
-                  Устаревшее поле, используется для обратной совместимости
                 </p>
               </FormField>
 

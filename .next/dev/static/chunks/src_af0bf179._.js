@@ -3925,24 +3925,6 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-// Захардкоженные категории FAQ (соответствуют категориям на странице Клиники)
-const FAQ_CATEGORIES = {
-    'children-teeth': 'Детские зубы',
-    'girls-hygiene': 'Гигиена девочек',
-    'boys-hygiene': 'Гигиена мальчиков',
-    'girls-puberty': 'Половое созревание девочек',
-    'culdocentesis': 'Кульдоцентез',
-    'stomatology': 'Стоматология',
-    'polyp-removal': 'Удаления полипов | Полипэктомия',
-    'ultrasound': 'УЗИ',
-    'womens-health': 'Женское здоровье',
-    'curettage': 'Раздельное диагностическое выскабливание'
-};
-// Функция для получения русского названия категории
-const getCategoryLabel = (category)=>{
-    if (!category) return '';
-    return FAQ_CATEGORIES[category] || category;
-};
 function AdminQuestionsPage() {
     _s();
     const { status } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"])();
@@ -3967,7 +3949,6 @@ function AdminQuestionsPage() {
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         question: '',
         answer: '',
-        category: '',
         service_id: '',
         question_category_id: ''
     });
@@ -4050,7 +4031,6 @@ function AdminQuestionsPage() {
         setFormData({
             question: '',
             answer: '',
-            category: '',
             service_id: '',
             question_category_id: ''
         });
@@ -4066,7 +4046,6 @@ function AdminQuestionsPage() {
         setFormData({
             question: question.question,
             answer: question.answer || '',
-            category: question.category || '',
             service_id: question.service_id?.toString() || '',
             question_category_id: question.question_category_id?.toString() || ''
         });
@@ -4126,7 +4105,7 @@ function AdminQuestionsPage() {
     if (status === 'loading' || hasAdminRole === null || sessionLoading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSkeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AdminAccessSkeleton"], {}, void 0, false, {
             fileName: "[project]/src/app/admin/questions/page.tsx",
-            lineNumber: 268,
+            lineNumber: 246,
             columnNumber: 12
         }, this);
     }
@@ -4134,7 +4113,7 @@ function AdminQuestionsPage() {
     if (status === 'unauthenticated' || !hasAdminRole) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$not$2d$found$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/src/app/admin/questions/page.tsx",
-            lineNumber: 273,
+            lineNumber: 251,
             columnNumber: 12
         }, this);
     }
@@ -4144,7 +4123,7 @@ function AdminQuestionsPage() {
             onSuccess: handleAuthSuccess
         }, void 0, false, {
             fileName: "[project]/src/app/admin/questions/page.tsx",
-            lineNumber: 278,
+            lineNumber: 256,
             columnNumber: 12
         }, this);
     }
@@ -4153,7 +4132,7 @@ function AdminQuestionsPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminMenu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AdminMenu"], {}, void 0, false, {
                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                lineNumber: 283,
+                lineNumber: 261,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4174,7 +4153,7 @@ function AdminQuestionsPage() {
                                 count: 12
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                lineNumber: 296,
+                                lineNumber: 274,
                                 columnNumber: 30
                             }, void 0),
                             children: questions.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["EmptyState"], {
@@ -4185,7 +4164,7 @@ function AdminQuestionsPage() {
                                 onAction: !searchQuery ? handleAdd : undefined
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                lineNumber: 299,
+                                lineNumber: 277,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
@@ -4204,7 +4183,7 @@ function AdminQuestionsPage() {
                                                                         children: question.question
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                        lineNumber: 315,
+                                                                        lineNumber: 293,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     question.answer && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4212,7 +4191,7 @@ function AdminQuestionsPage() {
                                                                         children: question.answer
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                        lineNumber: 319,
+                                                                        lineNumber: 297,
                                                                         columnNumber: 31
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4226,18 +4205,7 @@ function AdminQuestionsPage() {
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                                lineNumber: 325,
-                                                                                columnNumber: 33
-                                                                            }, this),
-                                                                            question.category && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                                                variant: "primary",
-                                                                                children: [
-                                                                                    "Старая: ",
-                                                                                    getCategoryLabel(question.category)
-                                                                                ]
-                                                                            }, void 0, true, {
-                                                                                fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                                lineNumber: 328,
+                                                                                lineNumber: 303,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             question.service && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4248,7 +4216,7 @@ function AdminQuestionsPage() {
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                                lineNumber: 331,
+                                                                                lineNumber: 306,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             !question.answer && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4256,19 +4224,19 @@ function AdminQuestionsPage() {
                                                                                 children: "Без ответа"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                                lineNumber: 334,
+                                                                                lineNumber: 309,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                        lineNumber: 323,
+                                                                        lineNumber: 301,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                lineNumber: 313,
+                                                                lineNumber: 291,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardActions"], {
@@ -4276,28 +4244,28 @@ function AdminQuestionsPage() {
                                                                 onDelete: ()=>handleDelete(question.id, question.question)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                                lineNumber: 339,
+                                                                lineNumber: 314,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                        lineNumber: 312,
+                                                        lineNumber: 290,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, question.id, false, {
                                                     fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                    lineNumber: 311,
+                                                    lineNumber: 289,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                                            lineNumber: 309,
+                                            lineNumber: 287,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 308,
+                                        lineNumber: 286,
                                         columnNumber: 17
                                     }, this),
                                     totalPages > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMPagination$2f$SMPagination$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Pagination"], {
@@ -4307,14 +4275,14 @@ function AdminQuestionsPage() {
                                         className: "mt-6"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 351,
+                                        lineNumber: 326,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true)
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                            lineNumber: 287,
+                            lineNumber: 265,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormModal"], {
@@ -4340,12 +4308,12 @@ function AdminQuestionsPage() {
                                             placeholder: "Введите вопрос"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                                            lineNumber: 373,
+                                            lineNumber: 348,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 372,
+                                        lineNumber: 347,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormField"], {
@@ -4360,16 +4328,16 @@ function AdminQuestionsPage() {
                                             placeholder: "Введите ответ на вопрос"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                                            lineNumber: 382,
+                                            lineNumber: 357,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 381,
+                                        lineNumber: 356,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormField"], {
-                                        label: "Категория вопроса (для страницы Вопросы и ответы)",
+                                        label: "Категория вопроса",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormSelect"], {
                                                 value: formData.question_category_id,
@@ -4383,7 +4351,7 @@ function AdminQuestionsPage() {
                                                         children: "Не выбрано"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                        lineNumber: 395,
+                                                        lineNumber: 370,
                                                         columnNumber: 19
                                                     }, this),
                                                     questionCategories.map((category)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4391,13 +4359,13 @@ function AdminQuestionsPage() {
                                                             children: category.name
                                                         }, category.id, false, {
                                                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                            lineNumber: 397,
+                                                            lineNumber: 372,
                                                             columnNumber: 21
                                                         }, this))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                lineNumber: 391,
+                                                lineNumber: 366,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4405,59 +4373,13 @@ function AdminQuestionsPage() {
                                                 children: 'Выберите категорию для отображения в разделе "Вопросы и ответы"'
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                lineNumber: 402,
+                                                lineNumber: 377,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 390,
-                                        columnNumber: 15
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormField"], {
-                                        label: "Категория FAQ (для старой страницы Клиника)",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormSelect"], {
-                                                value: formData.category,
-                                                onChange: (e)=>setFormData({
-                                                        ...formData,
-                                                        category: e.target.value
-                                                    }),
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                        value: "",
-                                                        children: "Не выбрано"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                        lineNumber: 412,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    Object.entries(FAQ_CATEGORIES).map(([slug, name])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                            value: slug,
-                                                            children: name
-                                                        }, slug, false, {
-                                                            fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                            lineNumber: 414,
-                                                            columnNumber: 21
-                                                        }, this))
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                lineNumber: 408,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-xs text-gray-500 mt-1",
-                                                children: "Устаревшее поле, используется для обратной совместимости"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                lineNumber: 419,
-                                                columnNumber: 17
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 407,
+                                        lineNumber: 365,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FormField"], {
@@ -4474,7 +4396,7 @@ function AdminQuestionsPage() {
                                                     children: "Не привязан к услуге"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                    lineNumber: 429,
+                                                    lineNumber: 387,
                                                     columnNumber: 19
                                                 }, this),
                                                 services.map((service)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4482,29 +4404,29 @@ function AdminQuestionsPage() {
                                                         children: service.title
                                                     }, service.id, false, {
                                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                                        lineNumber: 431,
+                                                        lineNumber: 389,
                                                         columnNumber: 21
                                                     }, this))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                                            lineNumber: 425,
+                                            lineNumber: 383,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/questions/page.tsx",
-                                        lineNumber: 424,
+                                        lineNumber: 382,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                                lineNumber: 371,
+                                lineNumber: 346,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                            lineNumber: 363,
+                            lineNumber: 338,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMConfirmDialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ConfirmDialog"], {
@@ -4519,28 +4441,28 @@ function AdminQuestionsPage() {
                             loading: confirmDialog.loading
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/questions/page.tsx",
-                            lineNumber: 441,
+                            lineNumber: 399,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/admin/questions/page.tsx",
-                    lineNumber: 286,
+                    lineNumber: 264,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/questions/page.tsx",
-                lineNumber: 285,
+                lineNumber: 263,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/questions/page.tsx",
-        lineNumber: 282,
+        lineNumber: 260,
         columnNumber: 5
     }, this);
 }
-_s(AdminQuestionsPage, "FvPDY2+ERoTrmpem553Kii2NK7g=", false, function() {
+_s(AdminQuestionsPage, "0Iwv9/Qjm5Kj00jJ2GSVcGEBZJo=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$hooks$2f$useAdminSession$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAdminSession"],
