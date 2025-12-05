@@ -504,6 +504,45 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
         isOpen,
         initialType
     ]);
+    // Password strength checker
+    const passwordStrength = (password)=>{
+        if (!password) return {
+            strength: 0,
+            text: '',
+            color: ''
+        };
+        let strength = 0;
+        if (password.length >= 6) strength++;
+        if (password.length >= 8) strength++;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+        if (/\d/.test(password)) strength++;
+        if (/[^a-zA-Z\d]/.test(password)) strength++;
+        if (strength <= 1) return {
+            strength: 20,
+            text: 'Слабый',
+            color: 'bg-red-500'
+        };
+        if (strength <= 2) return {
+            strength: 40,
+            text: 'Средний',
+            color: 'bg-orange-500'
+        };
+        if (strength <= 3) return {
+            strength: 60,
+            text: 'Хороший',
+            color: 'bg-yellow-500'
+        };
+        if (strength <= 4) return {
+            strength: 80,
+            text: 'Сильный',
+            color: 'bg-green-500'
+        };
+        return {
+            strength: 100,
+            text: 'Очень сильный',
+            color: 'bg-emerald-500'
+        };
+    };
     // Debounced uniqueness check
     const checkUniqueness = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useCallback"])({
         "AuthModals.useCallback[checkUniqueness]": async (field, value)=>{
@@ -792,14 +831,14 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                     className: "w-3 h-3"
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 287,
+                    lineNumber: 305,
                     columnNumber: 9
                 }, this),
                 errors[field]
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-            lineNumber: 286,
+            lineNumber: 304,
             columnNumber: 7
         }, this);
     };
@@ -810,7 +849,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                 className: "absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 animate-spin"
             }, void 0, false, {
                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                lineNumber: 296,
+                lineNumber: 314,
                 columnNumber: 14
             }, this);
         }
@@ -819,7 +858,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                 className: "absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500"
             }, void 0, false, {
                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                lineNumber: 299,
+                lineNumber: 317,
                 columnNumber: 14
             }, this);
         }
@@ -828,7 +867,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                 className: "absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-500"
             }, void 0, false, {
                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                lineNumber: 302,
+                lineNumber: 320,
                 columnNumber: 14
             }, this);
         }
@@ -876,13 +915,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 335,
+                                    lineNumber: 353,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 334,
+                            lineNumber: 352,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMInput$2f$SMInput$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -898,13 +937,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                             className: "w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all border-gray-200"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 337,
+                            lineNumber: 355,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 333,
+                    lineNumber: 351,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -919,13 +958,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 351,
+                                    lineNumber: 369,
                                     columnNumber: 18
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 350,
+                            lineNumber: 368,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -944,7 +983,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: "w-full px-4 py-2.5 pr-12 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all border-gray-200"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 354,
+                                    lineNumber: 372,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -955,30 +994,30 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 368,
+                                        lineNumber: 386,
                                         columnNumber: 29
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 368,
+                                        lineNumber: 386,
                                         columnNumber: 62
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 363,
+                                    lineNumber: 381,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 353,
+                            lineNumber: 371,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 349,
+                    lineNumber: 367,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -991,7 +1030,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                 className: "w-4 h-4 mr-2 animate-spin"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 381,
+                                lineNumber: 399,
                                 columnNumber: 13
                             }, this),
                             "Вход..."
@@ -1003,14 +1042,14 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                 className: "w-4 h-4 ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 387,
+                                lineNumber: 405,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 374,
+                    lineNumber: 392,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1022,7 +1061,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                             children: "Забыли пароль?"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 394,
+                            lineNumber: 412,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1031,19 +1070,19 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                             children: "Регистрация"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 400,
+                            lineNumber: 418,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 393,
+                    lineNumber: 411,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-            lineNumber: 326,
+            lineNumber: 344,
             columnNumber: 5
         }, this);
     const renderRegisterForm = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1071,7 +1110,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 420,
+                                    lineNumber: 438,
                                     columnNumber: 19
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1079,13 +1118,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "(мин. 2 символа)"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 421,
+                                    lineNumber: 439,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 419,
+                            lineNumber: 437,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1104,33 +1143,33 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-10 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.lastName ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 424,
+                                    lineNumber: 442,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldStatus, {
                                     field: "lastName"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 433,
+                                    lineNumber: 451,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 423,
+                            lineNumber: 441,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "lastName"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 435,
+                            lineNumber: 453,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 418,
+                    lineNumber: 436,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1144,7 +1183,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 441,
+                                    lineNumber: 459,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1152,13 +1191,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "(мин. 2 символа)"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 442,
+                                    lineNumber: 460,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 440,
+                            lineNumber: 458,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1177,33 +1216,33 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-10 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.firstName ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 445,
+                                    lineNumber: 463,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldStatus, {
                                     field: "firstName"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 454,
+                                    lineNumber: 472,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 444,
+                            lineNumber: 462,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "firstName"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 456,
+                            lineNumber: 474,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 439,
+                    lineNumber: 457,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1217,13 +1256,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "(необязательно)"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 462,
+                                    lineNumber: 480,
                                     columnNumber: 20
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 461,
+                            lineNumber: 479,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1241,33 +1280,33 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-10 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.middleName ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 465,
+                                    lineNumber: 483,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldStatus, {
                                     field: "middleName"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 473,
+                                    lineNumber: 491,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 464,
+                            lineNumber: 482,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "middleName"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 475,
+                            lineNumber: 493,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 460,
+                    lineNumber: 478,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1281,13 +1320,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 481,
+                                    lineNumber: 499,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 480,
+                            lineNumber: 498,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1306,33 +1345,33 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-10 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.email ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 484,
+                                    lineNumber: 502,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldStatus, {
                                     field: "email"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 493,
+                                    lineNumber: 511,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 483,
+                            lineNumber: 501,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "email"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 495,
+                            lineNumber: 513,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 479,
+                    lineNumber: 497,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1346,13 +1385,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 501,
+                                    lineNumber: 519,
                                     columnNumber: 19
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 500,
+                            lineNumber: 518,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1368,33 +1407,33 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-10 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.phone ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 504,
+                                    lineNumber: 522,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldStatus, {
                                     field: "phone"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 513,
+                                    lineNumber: 531,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 503,
+                            lineNumber: 521,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "phone"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 515,
+                            lineNumber: 533,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 499,
+                    lineNumber: 517,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1408,7 +1447,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 521,
+                                    lineNumber: 539,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1416,13 +1455,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "(латиница, цифры, _)"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 522,
+                                    lineNumber: 540,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 520,
+                            lineNumber: 538,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1441,33 +1480,33 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-10 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.login ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 525,
+                                    lineNumber: 543,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldStatus, {
                                     field: "login"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 534,
+                                    lineNumber: 552,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 524,
+                            lineNumber: 542,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "login"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 536,
+                            lineNumber: 554,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 519,
+                    lineNumber: 537,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1481,13 +1520,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 542,
+                                    lineNumber: 560,
                                     columnNumber: 18
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 541,
+                            lineNumber: 559,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1506,7 +1545,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-12 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.password ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 545,
+                                    lineNumber: 563,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1517,79 +1556,102 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 559,
+                                        lineNumber: 577,
                                         columnNumber: 29
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 559,
+                                        lineNumber: 577,
                                         columnNumber: 62
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 554,
+                                    lineNumber: 572,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 544,
+                            lineNumber: 562,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "password"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 562,
+                            lineNumber: 580,
                             columnNumber: 9
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "text-xs text-gray-500 mt-1 space-y-0.5",
+                        registerData.password && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                            initial: {
+                                opacity: 0,
+                                height: 0
+                            },
+                            animate: {
+                                opacity: 1,
+                                height: 'auto'
+                            },
+                            className: "space-y-2 mt-2",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: registerData.password.length >= 4 ? 'text-green-600' : '',
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-center justify-between text-xs",
                                     children: [
-                                        registerData.password.length >= 4 ? '✓' : '○',
-                                        " Минимум 4 символа"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-gray-600",
+                                            children: "Надежность пароля"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                            lineNumber: 590,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: `font-medium ${passwordStrength(registerData.password).color.replace('bg-', 'text-')}`,
+                                            children: passwordStrength(registerData.password).text
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                            lineNumber: 591,
+                                            columnNumber: 15
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 564,
-                                    columnNumber: 11
+                                    lineNumber: 589,
+                                    columnNumber: 13
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: /[A-ZА-ЯЁ]/.test(registerData.password) ? 'text-green-600' : '',
-                                    children: [
-                                        /[A-ZА-ЯЁ]/.test(registerData.password) ? '✓' : '○',
-                                        " Одна заглавная буква"
-                                    ]
-                                }, void 0, true, {
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "h-2 bg-gray-200 rounded-full overflow-hidden",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                        initial: {
+                                            width: 0
+                                        },
+                                        animate: {
+                                            width: `${passwordStrength(registerData.password).strength}%`
+                                        },
+                                        transition: {
+                                            duration: 0.3
+                                        },
+                                        className: `h-full ${passwordStrength(registerData.password).color} rounded-full`
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                        lineNumber: 596,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 567,
-                                    columnNumber: 11
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: /[!@#$%^&*()_+\-=\[\]{}|;':",.<>?\/\\`~]/.test(registerData.password) ? 'text-green-600' : '',
-                                    children: [
-                                        /[!@#$%^&*()_+\-=\[\]{}|;':",.<>?\/\\`~]/.test(registerData.password) ? '✓' : '○',
-                                        " Один спецсимвол"
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 570,
-                                    columnNumber: 11
+                                    lineNumber: 595,
+                                    columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 563,
-                            columnNumber: 9
+                            lineNumber: 584,
+                            columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 540,
+                    lineNumber: 558,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1603,13 +1665,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 579,
+                                    lineNumber: 610,
                                     columnNumber: 32
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 578,
+                            lineNumber: 609,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1628,7 +1690,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     className: `w-full px-4 py-2.5 pr-12 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all ${errors.confirmPassword ? 'border-red-500' : 'border-gray-200'}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 582,
+                                    lineNumber: 613,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1639,37 +1701,87 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 596,
+                                        lineNumber: 627,
                                         columnNumber: 36
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Eye$3e$__["Eye"], {
                                         className: "w-5 h-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 596,
+                                        lineNumber: 627,
                                         columnNumber: 69
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 591,
+                                    lineNumber: 622,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 581,
+                            lineNumber: 612,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldError, {
                             field: "confirmPassword"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 599,
+                            lineNumber: 630,
                             columnNumber: 9
+                        }, this),
+                        registerData.confirmPassword && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                            initial: {
+                                opacity: 0
+                            },
+                            animate: {
+                                opacity: 1
+                            },
+                            className: "flex items-center gap-2 mt-2",
+                            children: registerData.password === registerData.confirmPassword ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
+                                        className: "w-4 h-4 text-green-500"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                        lineNumber: 641,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-xs text-green-600",
+                                        children: "Пароли совпадают"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                        lineNumber: 642,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
+                                        className: "w-4 h-4 text-red-500"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                        lineNumber: 646,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-xs text-red-600",
+                                        children: "Пароли не совпадают"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                                        lineNumber: 647,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true)
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
+                            lineNumber: 634,
+                            columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 577,
+                    lineNumber: 608,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1682,25 +1794,25 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     ...registerData,
                                     agreeToTerms: checked === true
                                 }),
-                            className: "border-gray-300 data-[state=checked]:bg-[#18A36C] data-[state=checked]:border-[#18A36C] mt-0.5"
+                            className: "mt-0.5 h-5 w-5 border-gray-300 data-[state=checked]:bg-[#18A36C] data-[state=checked]:border-[#18A36C] data-[state=checked]:text-white"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 604,
+                            lineNumber: 656,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMLabel$2f$SMLabel$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                             htmlFor: "terms",
-                            className: "text-sm text-gray-700 leading-tight",
+                            className: "text-sm text-gray-700 leading-tight cursor-pointer",
                             children: "Я согласен на обработку персональных данных"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 610,
+                            lineNumber: 662,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 603,
+                    lineNumber: 655,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1713,7 +1825,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                 className: "w-4 h-4 mr-2 animate-spin"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 637,
+                                lineNumber: 689,
                                 columnNumber: 13
                             }, this),
                             "Регистрация..."
@@ -1725,14 +1837,14 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                 className: "w-4 h-4 ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 643,
+                                lineNumber: 695,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 616,
+                    lineNumber: 668,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1743,18 +1855,18 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                         children: "Уже есть аккаунт? Войти"
                     }, void 0, false, {
                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                        lineNumber: 650,
+                        lineNumber: 702,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 649,
+                    lineNumber: 701,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-            lineNumber: 411,
+            lineNumber: 429,
             columnNumber: 5
         }, this);
     const renderForgotPasswordForm = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1778,12 +1890,12 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                         children: "Введите email для получения ссылки на восстановление пароля"
                     }, void 0, false, {
                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                        lineNumber: 668,
+                        lineNumber: 720,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 667,
+                    lineNumber: 719,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1797,13 +1909,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                     children: "*"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                    lineNumber: 676,
+                                    lineNumber: 728,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 675,
+                            lineNumber: 727,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMInput$2f$SMInput$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1815,13 +1927,13 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                             className: "w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#18A36C]/20 focus:border-[#18A36C] transition-all border-gray-200"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 678,
+                            lineNumber: 730,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 674,
+                    lineNumber: 726,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1834,7 +1946,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                 className: "w-4 h-4 mr-2 animate-spin"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 696,
+                                lineNumber: 748,
                                 columnNumber: 13
                             }, this),
                             "Отправка..."
@@ -1846,14 +1958,14 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                 className: "w-4 h-4 ml-2"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 702,
+                                lineNumber: 754,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 689,
+                    lineNumber: 741,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1864,18 +1976,18 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                         children: "Вернуться к входу"
                     }, void 0, false, {
                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                        lineNumber: 709,
+                        lineNumber: 761,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 708,
+                    lineNumber: 760,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-            lineNumber: 661,
+            lineNumber: 713,
             columnNumber: 5
         }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
@@ -1896,7 +2008,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                     className: "absolute inset-0 bg-black/50 backdrop-blur-sm"
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 724,
+                    lineNumber: 776,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1930,7 +2042,7 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                         children: getTitle()
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 743,
+                                        lineNumber: 795,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1941,23 +2053,23 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                                             className: "w-5 h-5 text-white"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                            lineNumber: 749,
+                                            lineNumber: 801,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                        lineNumber: 744,
+                                        lineNumber: 796,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                                lineNumber: 742,
+                                lineNumber: 794,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 741,
+                            lineNumber: 793,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1969,24 +2081,24 @@ function AuthModals({ isOpen, onClose, onLogin, onRegister, onForgotPassword, is
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                            lineNumber: 755,
+                            lineNumber: 807,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-                    lineNumber: 733,
+                    lineNumber: 785,
                     columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-            lineNumber: 722,
+            lineNumber: 774,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/SMAuthModals/SMAuthModals.tsx",
-        lineNumber: 720,
+        lineNumber: 772,
         columnNumber: 5
     }, this);
 }
@@ -4525,12 +4637,11 @@ function AlertProvider({ children }) {
                 id,
                 ...options
             };
-            setAlerts({
-                "AlertProvider.useCallback[showAlert]": (prev)=>[
-                        ...prev,
-                        newAlert
-                    ]
-            }["AlertProvider.useCallback[showAlert]"]);
+            // Удаляем предыдущий алерт и показываем только новый
+            // Это предотвращает накопление множества алертов
+            setAlerts([
+                newAlert
+            ]);
             return id;
         }
     }["AlertProvider.useCallback[showAlert]"], []);
@@ -4613,13 +4724,13 @@ function AlertProvider({ children }) {
                 onRemove: hideAlert
             }, void 0, false, {
                 fileName: "[project]/src/components/common/SMAlert/AlertProvider.tsx",
-                lineNumber: 90,
+                lineNumber: 92,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/common/SMAlert/AlertProvider.tsx",
-        lineNumber: 78,
+        lineNumber: 80,
         columnNumber: 5
     }, this);
 }
@@ -11175,7 +11286,6 @@ function useChiefDoctorNotifications() {
         "useChiefDoctorNotifications.useCallback[checkForUnreadLetters]": async ()=>{
             // Проверяем только если пользователь - главный врач
             if (status !== 'authenticated' || !session) return;
-            // @ts-expect-error - role может быть undefined
             const userRole = session?.user?.role;
             if (userRole !== 'CHIEF_DOCTOR') return;
             try {
@@ -11234,7 +11344,6 @@ function useChiefDoctorNotifications() {
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "useChiefDoctorNotifications.useEffect": ()=>{
             if (status !== 'authenticated') return;
-            // @ts-expect-error - role может быть undefined
             const userRole = session?.user?.role;
             if (userRole !== 'CHIEF_DOCTOR') return;
             // Небольшая задержка для загрузки страницы
@@ -11262,7 +11371,6 @@ function useChiefDoctorNotifications() {
                 }
                 return;
             }
-            // @ts-expect-error - role может быть undefined
             const userRole = session?.user?.role;
             if (userRole !== 'CHIEF_DOCTOR') return;
             // Запускаем периодическую проверку

@@ -8,8 +8,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../common/SMTooltip/SMT
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 import { useRouter as useNextRouter, usePathname } from 'next/navigation';
 import { useMenu } from '../SMMenuContext/SMMenuContext';
+import { MenuSkeleton } from '../common/SMMenuSkeleton';
 import servicesMenuConfig from '@/config/servicesMenu.json';
-import servicesMenuData from '@/data/SMServicesData/SMServicesMenuData.json';
 import { iconMap, IconName } from '@/utils/iconMapper';
 
 interface MenuItem {
@@ -152,10 +152,26 @@ export function NavigableServicesMenu() {
   const currentRoute = usePathname();
   const { isBurgerMenuOpen } = useMenu();
 
-  // Use mocked menu data
+  // Load menu data from API
   useEffect(() => {
-    setCategories(servicesMenuData.menuData);
-    setLoading(false);
+    const fetchMenuData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/services-menu');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data.menuData || []);
+        } else {
+          console.error('Failed to fetch services menu');
+        }
+      } catch (error) {
+        console.error('Error fetching services menu:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuData();
   }, []);
 
   const menuData = categories;
@@ -237,17 +253,23 @@ export function NavigableServicesMenu() {
 
       {/* Scrollable Menu Items */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden py-2">
-        {menuData.map((item) => (
-          <MenuItemComponent
-            key={item.id}
-            item={item}
-            level={0}
-            activeItem={activeItem}
-            onItemClick={onItemClickProp || handleItemClick}
-            expandedItems={expandedItems}
-            onToggleExpand={handleToggleExpand}
-          />
-        ))}
+        {loading ? (
+          <MenuSkeleton itemCount={8} showHeader={false} showFooter={false} />
+        ) : menuData.length > 0 ? (
+          menuData.map((item) => (
+            <MenuItemComponent
+              key={item.id}
+              item={item}
+              level={0}
+              activeItem={activeItem}
+              onItemClick={onItemClickProp || handleItemClick}
+              expandedItems={expandedItems}
+              onToggleExpand={handleToggleExpand}
+            />
+          ))
+        ) : (
+          <div className="px-4 py-6 text-sm text-gray-500">Услуги не найдены</div>
+        )}
       </div>
 
       {/* Footer - Fixed */}

@@ -149,9 +149,12 @@ export default function AdminMaterialsPage() {
 
   const handleAdd = () => {
     resetForm();
+    const currentDate = new Date().toISOString().split('T')[0];
+    const currentYear = new Date().getFullYear().toString();
     setFormData(prev => ({
       ...prev,
-      date: new Date().toISOString().split('T')[0],
+      date: currentDate,
+      year: currentYear,
     }));
     setIsModalOpen(true);
   };
@@ -371,7 +374,11 @@ export default function AdminMaterialsPage() {
                 <FormField label="Дата" required>
                   <FormDateInput
                     value={formData.date}
-                    onChange={(date) => setFormData({ ...formData, date })}
+                    onChange={(date) => {
+                      // Автоматически извлекаем год из выбранной даты
+                      const selectedYear = date ? new Date(date).getFullYear().toString() : new Date().getFullYear().toString();
+                      setFormData({ ...formData, date, year: selectedYear });
+                    }}
                   />
                 </FormField>
 
@@ -382,6 +389,9 @@ export default function AdminMaterialsPage() {
                     onChange={(e) => setFormData({ ...formData, year: e.target.value })}
                     placeholder="2024"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Автоматически заполняется из даты
+                  </p>
                 </FormField>
               </div>
 

@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare, ShoppingBag, Phone, Mail, UserCog, MessagesSquare } from 'lucide-react';
+import { Shield, Users, ChevronRight, Home, FileText, Handshake, Briefcase, HelpCircle, MessageSquare, ShoppingBag, Phone, Mail, UserCog, MessagesSquare, FolderTree } from 'lucide-react';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 import { useUnreadCountsContext } from '@/contexts/UnreadCountsContext';
@@ -36,6 +36,12 @@ const allMenuItems: MenuItem[] = [
     title: 'Услуги',
     icon: <ShoppingBag className="w-4 h-4" />,
     href: '/admin/services',
+  },
+  {
+    id: 'service-categories',
+    title: 'Категории услуг',
+    icon: <FolderTree className="w-4 h-4" />,
+    href: '/admin/service-categories',
   },
   {
     id: 'materials',

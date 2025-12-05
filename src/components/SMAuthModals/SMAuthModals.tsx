@@ -75,6 +75,24 @@ export function AuthModals({
     }
   }, [isOpen, initialType]);
 
+  // Password strength checker
+  const passwordStrength = (password: string): { strength: number; text: string; color: string } => {
+    if (!password) return { strength: 0, text: '', color: '' };
+
+    let strength = 0;
+    if (password.length >= 6) strength++;
+    if (password.length >= 8) strength++;
+    if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z\d]/.test(password)) strength++;
+
+    if (strength <= 1) return { strength: 20, text: 'Слабый', color: 'bg-red-500' };
+    if (strength <= 2) return { strength: 40, text: 'Средний', color: 'bg-orange-500' };
+    if (strength <= 3) return { strength: 60, text: 'Хороший', color: 'bg-yellow-500' };
+    if (strength <= 4) return { strength: 80, text: 'Сильный', color: 'bg-green-500' };
+    return { strength: 100, text: 'Очень сильный', color: 'bg-emerald-500' };
+  };
+
   // Debounced uniqueness check
   const checkUniqueness = useCallback(async (field: 'login' | 'phone' | 'email', value: string) => {
     if (!value || value.length < 3) return;
@@ -560,17 +578,30 @@ export function AuthModals({
           </button>
         </div>
         <FieldError field="password" />
-        <div className="text-xs text-gray-500 mt-1 space-y-0.5">
-          <p className={registerData.password.length >= 4 ? 'text-green-600' : ''}>
-            {registerData.password.length >= 4 ? '✓' : '○'} Минимум 4 символа
-          </p>
-          <p className={/[A-ZА-ЯЁ]/.test(registerData.password) ? 'text-green-600' : ''}>
-            {/[A-ZА-ЯЁ]/.test(registerData.password) ? '✓' : '○'} Одна заглавная буква
-          </p>
-          <p className={/[!@#$%^&*()_+\-=\[\]{}|;':",.<>?\/\\`~]/.test(registerData.password) ? 'text-green-600' : ''}>
-            {/[!@#$%^&*()_+\-=\[\]{}|;':",.<>?\/\\`~]/.test(registerData.password) ? '✓' : '○'} Один спецсимвол
-          </p>
-        </div>
+
+        {/* Password Strength Indicator */}
+        {registerData.password && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="space-y-2 mt-2"
+          >
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-gray-600">Надежность пароля</span>
+              <span className={`font-medium ${passwordStrength(registerData.password).color.replace('bg-', 'text-')}`}>
+                {passwordStrength(registerData.password).text}
+              </span>
+            </div>
+            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${passwordStrength(registerData.password).strength}%` }}
+                transition={{ duration: 0.3 }}
+                className={`h-full ${passwordStrength(registerData.password).color} rounded-full`}
+              />
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {/* Confirm Password */}
@@ -597,6 +628,27 @@ export function AuthModals({
           </button>
         </div>
         <FieldError field="confirmPassword" />
+
+        {/* Match Indicator */}
+        {registerData.confirmPassword && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center gap-2 mt-2"
+          >
+            {registerData.password === registerData.confirmPassword ? (
+              <>
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span className="text-xs text-green-600">Пароли совпадают</span>
+              </>
+            ) : (
+              <>
+                <AlertCircle className="w-4 h-4 text-red-500" />
+                <span className="text-xs text-red-600">Пароли не совпадают</span>
+              </>
+            )}
+          </motion.div>
+        )}
       </div>
 
       {/* Terms checkbox */}
@@ -605,9 +657,9 @@ export function AuthModals({
           id="terms"
           checked={registerData.agreeToTerms}
           onCheckedChange={(checked) => setRegisterData({ ...registerData, agreeToTerms: checked === true })}
-          className="border-gray-300 data-[state=checked]:bg-[#18A36C] data-[state=checked]:border-[#18A36C] mt-0.5"
+          className="mt-0.5 h-5 w-5 border-gray-300 data-[state=checked]:bg-[#18A36C] data-[state=checked]:border-[#18A36C] data-[state=checked]:text-white"
         />
-        <Label htmlFor="terms" className="text-sm text-gray-700 leading-tight">
+        <Label htmlFor="terms" className="text-sm text-gray-700 leading-tight cursor-pointer">
           Я согласен на обработку персональных данных
         </Label>
       </div>

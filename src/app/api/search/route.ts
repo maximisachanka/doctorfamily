@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import servicesMenuData from "@/data/SMServicesData/SMServicesMenuData.json";
+import { getServicesMenuFromDB } from "@/lib/getServicesMenu";
 
 interface SearchResult {
   id: string;
@@ -316,11 +316,12 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    // Поиск по моковому меню услуг (категории и разделы)
-    const serviceMenuResults = searchInServiceMenu(servicesMenuData.menuData, searchTerm);
+    // Поиск по динамическому меню услуг (категории и разделы из БД)
+    const servicesMenu = await getServicesMenuFromDB();
+    const serviceMenuResults = searchInServiceMenu(servicesMenu, searchTerm);
 
-    // Добавляем все результаты из моков
-    // Моки содержат категории и разделы, БД содержит конкретные услуги
+    // Добавляем результаты поиска по категориям
+    // Меню содержит категории и разделы, БД содержит конкретные услуги
     // Это разные типы результатов, поэтому показываем оба
     results.push(...serviceMenuResults);
 

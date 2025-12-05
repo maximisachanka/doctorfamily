@@ -90,7 +90,7 @@ export function MaterialDetailModal({ isOpen, onClose, material }: MaterialDetai
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="relative h-64 rounded-xl overflow-hidden shadow-md"
+                className="relative h-96 rounded-xl overflow-hidden shadow-md"
               >
                 <ImageWithFallback
                   src={material.image}

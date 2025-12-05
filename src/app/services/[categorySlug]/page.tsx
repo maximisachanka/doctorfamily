@@ -3,10 +3,51 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card } from '@/components/common/SMCard/SMCard';
-import { Loader2, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { iconMap, IconName } from '@/utils/iconMapper';
 import { NavigableServicesMenu } from '@/components/SMServices/SMNavigableServicesMenu';
-import servicesMenuData from '@/data/SMServicesData/SMServicesMenuData.json';
+
+// Skeleton components
+function CategoryCardSkeleton() {
+  return (
+    <div className="group relative bg-white rounded-2xl border border-gray-200 p-6 animate-pulse">
+      <div className="flex items-start gap-4 mb-4">
+        <div className="flex-shrink-0 w-16 h-16 bg-gray-200 rounded-xl" />
+        <div className="flex-1 min-w-0 space-y-2">
+          <div className="h-5 bg-gray-200 rounded w-3/4" />
+          <div className="h-4 bg-gray-200 rounded w-1/2" />
+        </div>
+      </div>
+      <div className="space-y-2 mb-4">
+        <div className="h-3 bg-gray-200 rounded w-full" />
+        <div className="h-3 bg-gray-200 rounded w-5/6" />
+      </div>
+      <div className="flex justify-end">
+        <div className="w-8 h-8 bg-gray-200 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+function ServiceCardSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden animate-pulse">
+      <div className="relative h-48 bg-gray-200" />
+      <div className="p-6 space-y-3">
+        <div className="h-5 bg-gray-200 rounded w-4/5" />
+        <div className="h-4 bg-gray-200 rounded w-2/3" />
+        <div className="space-y-2">
+          <div className="h-3 bg-gray-200 rounded w-full" />
+          <div className="h-3 bg-gray-200 rounded w-5/6" />
+          <div className="h-3 bg-gray-200 rounded w-4/5" />
+        </div>
+        <div className="flex justify-end pt-2">
+          <div className="w-8 h-8 bg-gray-200 rounded-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface MenuItem {
   id: string;
@@ -49,7 +90,17 @@ export default function CategoryPage() {
       setLoading(true);
 
       try {
-        // Поиск категории в моковых данных
+        // Загружаем структуру меню из API
+        const menuResponse = await fetch('/api/services-menu');
+        if (!menuResponse.ok) {
+          setCategory(null);
+          setLoading(false);
+          return;
+        }
+
+        const menuData = await menuResponse.json();
+
+        // Поиск категории в динамических данных
         const findCategory = (items: MenuItem[], slug: string): MenuItem | null => {
           for (const item of items) {
             if (item.id === slug) {
@@ -63,7 +114,7 @@ export default function CategoryPage() {
           return null;
         };
 
-        const foundCategory = findCategory(servicesMenuData.menuData, categorySlug);
+        const foundCategory = findCategory(menuData.menuData, categorySlug);
 
         if (!foundCategory) {
           setCategory(null);
@@ -107,6 +158,7 @@ export default function CategoryPage() {
             }
           }
         } catch (error) {
+          console.error('Error loading services:', error);
         }
 
         // Если нет подкатегорий и есть ровно одна услуга - редиректим сразу на неё
@@ -119,6 +171,7 @@ export default function CategoryPage() {
         setServices(loadedServices);
         setLoading(false);
       } catch (error) {
+        console.error('Error loading category:', error);
         setCategory(null);
         setLoading(false);
       }
@@ -135,8 +188,30 @@ export default function CategoryPage() {
       <div className="flex min-h-screen bg-gray-50">
         <NavigableServicesMenu />
         <div className="flex-1">
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-[#18A36C]" />
+          <div className="p-4 lg:p-8">
+            <div className="max-w-4xl mx-auto">
+              {/* Header skeleton */}
+              <div className="mb-8 lg:mb-12">
+                <div className="text-center mb-6 lg:mb-8 animate-pulse">
+                  <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-4" />
+                  <div className="h-8 bg-gray-200 rounded w-1/2 mx-auto mb-3" />
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto" />
+                </div>
+              </div>
+
+              {/* Cards skeleton */}
+              <div className="mb-8">
+                <div className="h-7 bg-gray-200 rounded w-32 mb-6 animate-pulse" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <CategoryCardSkeleton />
+                  <CategoryCardSkeleton />
+                  <CategoryCardSkeleton />
+                  <ServiceCardSkeleton />
+                  <ServiceCardSkeleton />
+                  <ServiceCardSkeleton />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

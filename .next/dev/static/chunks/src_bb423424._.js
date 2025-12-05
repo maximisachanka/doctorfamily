@@ -6912,7 +6912,7 @@ function ClinicPage({ itemId, categoryId }) {
                             fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
                             lineNumber: 1178,
                             columnNumber: 13
-                        }, this) : clinicFaqsData.length > 0 || clinicItem.faq && clinicItem.faq.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMCard$2f$SMCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        }, this) : clinicFaqsData.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMCard$2f$SMCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
                             className: "p-6 lg:p-8 border-gray-200",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -6927,11 +6927,9 @@ function ClinicPage({ itemId, categoryId }) {
                                     type: "single",
                                     collapsible: true,
                                     className: "w-full",
-                                    children: (clinicFaqsData.length > 0 ? clinicFaqsData : clinicItem.faq || []).map((item, index)=>{
-                                        const itemId = 'id' in item ? item.id : index;
-                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMAccordion$2f$SMAccordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AccordionItem"], {
-                                            value: `item-${itemId}`,
-                                            id: `faq-${itemId}`,
+                                    children: clinicFaqsData.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMAccordion$2f$SMAccordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AccordionItem"], {
+                                            value: `item-${item.id}`,
+                                            id: `faq-${item.id}`,
                                             className: "scroll-mt-24",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMAccordion$2f$SMAccordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AccordionTrigger"], {
@@ -6939,7 +6937,7 @@ function ClinicPage({ itemId, categoryId }) {
                                                     children: item.question
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                                    lineNumber: 1199,
+                                                    lineNumber: 1197,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMAccordion$2f$SMAccordion$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AccordionContent"], {
@@ -6947,16 +6945,15 @@ function ClinicPage({ itemId, categoryId }) {
                                                     children: item.answer
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                                    lineNumber: 1202,
+                                                    lineNumber: 1200,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
-                                        }, itemId, true, {
+                                        }, item.id, true, {
                                             fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                            lineNumber: 1193,
+                                            lineNumber: 1191,
                                             columnNumber: 19
-                                        }, this);
-                                    })
+                                        }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
                                     lineNumber: 1189,
@@ -6967,7 +6964,62 @@ function ClinicPage({ itemId, categoryId }) {
                             fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
                             lineNumber: 1187,
                             columnNumber: 13
-                        }, this) : null,
+                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMCard$2f$SMCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "p-6 lg:p-8 border-gray-200",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                    className: "text-xl text-[#2E2E2E] mb-6",
+                                    children: "Часто задаваемые вопросы"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                                    lineNumber: 1209,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-center py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$question$2d$mark$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__HelpCircle$3e$__["HelpCircle"], {
+                                                className: "w-8 h-8 sm:w-10 sm:h-10 text-gray-400"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                                                lineNumber: 1212,
+                                                columnNumber: 19
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                                            lineNumber: 1211,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                            className: "text-lg sm:text-xl text-gray-800 mb-2",
+                                            children: "Вопросы отсутствуют"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                                            lineNumber: 1214,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm sm:text-base text-gray-600 max-w-md mx-auto px-4",
+                                            children: "В данный момент нет часто задаваемых вопросов по этой теме."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                                            lineNumber: 1215,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                                    lineNumber: 1210,
+                                    columnNumber: 15
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
+                            lineNumber: 1208,
+                            columnNumber: 13
+                        }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "mt-8 p-6 bg-[#F4F4F4] rounded-2xl border border-gray-100",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6977,7 +7029,7 @@ function ClinicPage({ itemId, categoryId }) {
                                         className: "w-12 h-12 text-[#18A36C] mx-auto mb-3"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                        lineNumber: 1214,
+                                        lineNumber: 1224,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -6985,7 +7037,7 @@ function ClinicPage({ itemId, categoryId }) {
                                         children: "Не нашли ответа на свой вопрос?"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                        lineNumber: 1215,
+                                        lineNumber: 1225,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6993,7 +7045,7 @@ function ClinicPage({ itemId, categoryId }) {
                                         children: "Свяжитесь с нами, и мы предоставим необходимую информацию."
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                        lineNumber: 1216,
+                                        lineNumber: 1226,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -7004,25 +7056,25 @@ function ClinicPage({ itemId, categoryId }) {
                                                 className: "w-4 h-4 mr-[2.5px]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                                lineNumber: 1223,
+                                                lineNumber: 1233,
                                                 columnNumber: 17
                                             }, this),
                                             "Задать вопрос"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                        lineNumber: 1219,
+                                        lineNumber: 1229,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                                lineNumber: 1213,
+                                lineNumber: 1223,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                            lineNumber: 1212,
+                            lineNumber: 1222,
                             columnNumber: 11
                         }, this)
                     ]
@@ -7042,7 +7094,7 @@ function ClinicPage({ itemId, categoryId }) {
                 onOpenChange: setIsPartnerModalOpen
             }, void 0, false, {
                 fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                lineNumber: 1232,
+                lineNumber: 1242,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMClinic$2f$SMVacancyModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["VacancyModal"], {
@@ -7051,7 +7103,7 @@ function ClinicPage({ itemId, categoryId }) {
                 onOpenChange: setIsVacancyModalOpen
             }, void 0, false, {
                 fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                lineNumber: 1239,
+                lineNumber: 1249,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$AskQuestionModal$2f$AskQuestionModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AskQuestionModal"], {
@@ -7062,7 +7114,7 @@ function ClinicPage({ itemId, categoryId }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/SMClinic/SMClinicPage.tsx",
-                lineNumber: 1246,
+                lineNumber: 1256,
                 columnNumber: 7
             }, this)
         ]

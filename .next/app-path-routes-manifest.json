@@ -73,6 +73,7 @@
   "/api/search/route": "/api/search",
   "/api/service-categories/[slug]/route": "/api/service-categories/[slug]",
   "/api/service-categories/route": "/api/service-categories",
+  "/api/services-menu/route": "/api/services-menu",
   "/api/services/[id]/route": "/api/services/[id]",
   "/api/services/by-category/[categorySlug]/[serviceId]/route": "/api/services/by-category/[categorySlug]/[serviceId]",
   "/api/services/route": "/api/services",

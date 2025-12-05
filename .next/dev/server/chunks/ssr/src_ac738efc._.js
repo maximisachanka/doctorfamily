@@ -2449,7 +2449,20 @@ function SkeletonPulse({ className = '', style }) {
         columnNumber: 5
     }, this);
 }
-function MenuItemSkeleton({ hasIcon = true }) {
+// Предопределённые ширины для скелетонов (чтобы избежать hydration mismatch)
+const SKELETON_WIDTHS = [
+    '55%',
+    '65%',
+    '70%',
+    '60%',
+    '75%',
+    '58%',
+    '68%',
+    '62%'
+];
+function MenuItemSkeleton({ hasIcon = true, index = 0 }) {
+    // Используем фиксированную ширину из массива вместо Math.random()
+    const width = SKELETON_WIDTHS[index % SKELETON_WIDTHS.length];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "px-2 mb-1",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2459,28 +2472,28 @@ function MenuItemSkeleton({ hasIcon = true }) {
                     className: "w-4 h-4 rounded flex-shrink-0"
                 }, void 0, false, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 27,
+                    lineNumber: 33,
                     columnNumber: 21
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SkeletonPulse, {
                     className: "h-4 flex-1",
                     style: {
-                        width: `${Math.random() * 30 + 50}%`
+                        width
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 28,
+                    lineNumber: 34,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-            lineNumber: 26,
+            lineNumber: 32,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-        lineNumber: 25,
+        lineNumber: 31,
         columnNumber: 5
     }, this);
 }
@@ -2495,13 +2508,13 @@ function MenuHeaderSkeleton({ icon }) {
                     children: icon
                 }, void 0, false, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 39,
+                    lineNumber: 45,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SkeletonPulse, {
                     className: "w-12 h-12 rounded-xl flex-shrink-0"
                 }, void 0, false, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 43,
+                    lineNumber: 49,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2511,31 +2524,31 @@ function MenuHeaderSkeleton({ icon }) {
                             className: "h-5 w-32 mb-2"
                         }, void 0, false, {
                             fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                            lineNumber: 46,
+                            lineNumber: 52,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SkeletonPulse, {
                             className: "h-3 w-48"
                         }, void 0, false, {
                             fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                            lineNumber: 47,
+                            lineNumber: 53,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 45,
+                    lineNumber: 51,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-            lineNumber: 37,
+            lineNumber: 43,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-        lineNumber: 36,
+        lineNumber: 42,
         columnNumber: 5
     }, this);
 }
@@ -2549,25 +2562,25 @@ function MenuFooterSkeleton() {
                     className: "h-3 w-40 mx-auto mb-3"
                 }, void 0, false, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 58,
+                    lineNumber: 64,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SkeletonPulse, {
                     className: "h-8 w-full rounded-lg"
                 }, void 0, false, {
                     fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                    lineNumber: 59,
+                    lineNumber: 65,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-            lineNumber: 57,
+            lineNumber: 63,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-        lineNumber: 56,
+        lineNumber: 62,
         columnNumber: 5
     }, this);
 }
@@ -2579,7 +2592,7 @@ function MenuSkeleton({ itemCount = 8, showHeader = true, showFooter = true, hea
                 icon: headerIcon
             }, void 0, false, {
                 fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                lineNumber: 73,
+                lineNumber: 79,
                 columnNumber: 22
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2587,26 +2600,27 @@ function MenuSkeleton({ itemCount = 8, showHeader = true, showFooter = true, hea
                 children: Array.from({
                     length: itemCount
                 }).map((_, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuItemSkeleton, {
-                        hasIcon: true
+                        hasIcon: true,
+                        index: index
                     }, index, false, {
                         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                        lineNumber: 77,
+                        lineNumber: 83,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                lineNumber: 75,
+                lineNumber: 81,
                 columnNumber: 7
             }, this),
             showFooter && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuFooterSkeleton, {}, void 0, false, {
                 fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                lineNumber: 81,
+                lineNumber: 87,
                 columnNumber: 22
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-        lineNumber: 72,
+        lineNumber: 78,
         columnNumber: 5
     }, this);
 }
@@ -2621,40 +2635,42 @@ function MobileMenuSkeleton({ itemCount = 6 }) {
                         className: "h-6 w-32 mb-2"
                     }, void 0, false, {
                         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                        lineNumber: 90,
+                        lineNumber: 96,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SkeletonPulse, {
                         className: "h-4 w-48"
                     }, void 0, false, {
                         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                        lineNumber: 91,
+                        lineNumber: 97,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                lineNumber: 89,
+                lineNumber: 95,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "py-4 px-2",
                 children: Array.from({
                     length: itemCount
-                }).map((_, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuItemSkeleton, {}, index, false, {
+                }).map((_, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuItemSkeleton, {
+                        index: index
+                    }, index, false, {
                         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                        lineNumber: 95,
+                        lineNumber: 101,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-                lineNumber: 93,
+                lineNumber: 99,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/common/SMMenuSkeleton/SMMenuSkeleton.tsx",
-        lineNumber: 88,
+        lineNumber: 94,
         columnNumber: 5
     }, this);
 }

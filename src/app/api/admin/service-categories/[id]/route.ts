@@ -94,7 +94,29 @@ export async function PUT(
 
       if (slugExists) {
         return NextResponse.json(
-          { error: 'Category with this slug already exists' },
+          { error: 'Категория с таким slug уже существует' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Проверяем уникальность order в пределах одного уровня (если order изменился)
+    const newOrder = order !== undefined ? order : existing.order;
+    const newParentId = parent_id !== undefined ? parent_id : existing.parent_id;
+
+    if (newOrder !== existing.order || newParentId !== existing.parent_id) {
+      // @ts-ignore - ServiceCategory будет доступна после npx prisma generate
+      const orderExists = await prisma.serviceCategory.findFirst({
+        where: {
+          order: newOrder,
+          parent_id: newParentId,
+          id: { not: id }, // Исключаем текущую категорию
+        },
+      });
+
+      if (orderExists) {
+        return NextResponse.json(
+          { error: `Порядок сортировки ${newOrder} уже занят другой категорией на этом уровне. Выберите другое значение.` },
           { status: 400 }
         );
       }
@@ -103,7 +125,7 @@ export async function PUT(
     // Проверяем, чтобы категория не стала своим родителем
     if (parent_id === id) {
       return NextResponse.json(
-        { error: 'Category cannot be its own parent' },
+        { error: 'Категория не может быть своим родителем' },
         { status: 400 }
       );
     }

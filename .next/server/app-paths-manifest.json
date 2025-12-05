@@ -73,6 +73,7 @@
   "/api/search/route": "app/api/search/route.js",
   "/api/service-categories/[slug]/route": "app/api/service-categories/[slug]/route.js",
   "/api/service-categories/route": "app/api/service-categories/route.js",
+  "/api/services-menu/route": "app/api/services-menu/route.js",
   "/api/services/[id]/route": "app/api/services/[id]/route.js",
   "/api/services/by-category/[categorySlug]/[serviceId]/route": "app/api/services/by-category/[categorySlug]/[serviceId]/route.js",
   "/api/services/route": "app/api/services/route.js",

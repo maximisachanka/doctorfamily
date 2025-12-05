@@ -25,6 +25,7 @@ import { AdminAccessSkeleton } from '@/components/SMAdmin/SMAdminSkeleton';
 import { useConfirmDialog } from '@/hooks/useConfirmDialog';
 import { ConfirmDialog } from '@/components/SMAdmin/SMConfirmDialog';
 import { iconMap, IconName } from '@/utils/iconMapper';
+import { generateSlug } from '@/utils/slug';
 
 interface ServiceCategory {
   id: number;
@@ -78,6 +79,7 @@ export default function AdminServiceCategoriesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<ServiceCategory | null>(null);
   const [formLoading, setFormLoading] = useState(false);
+  const [orderWarning, setOrderWarning] = useState<string>('');
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -109,7 +111,9 @@ export default function AdminServiceCategoriesPage() {
     try {
       const res = await fetch('/api/admin/auth');
       const data = await res.json();
-      setHasAdminRole(data.isAdmin);
+      // Только администраторы и главные врачи имеют доступ к категориям услуг
+      const hasAccess = data.role === 'ADMIN' || data.role === 'CHIEF_DOCTOR';
+      setHasAdminRole(hasAccess);
     } catch (error) {
       setHasAdminRole(false);
     } finally {
@@ -161,6 +165,26 @@ export default function AdminServiceCategoriesPage() {
       newExpanded.add(id);
     }
     setExpandedCategories(newExpanded);
+  };
+
+  // Expand all categories
+  const expandAll = () => {
+    const allIds = new Set<number>();
+    const collectIds = (cats: ServiceCategory[]) => {
+      cats.forEach(cat => {
+        if (cat.children && cat.children.length > 0) {
+          allIds.add(cat.id);
+          collectIds(cat.children);
+        }
+      });
+    };
+    collectIds(categories);
+    setExpandedCategories(allIds);
+  };
+
+  // Collapse all categories
+  const collapseAll = () => {
+    setExpandedCategories(new Set());
   };
 
   const handleSave = async () => {
@@ -227,7 +251,7 @@ export default function AdminServiceCategoriesPage() {
 
   const handleEdit = (category: ServiceCategory) => {
     setEditingCategory(category);
-    setFormData({
+    const formDataToSet = {
       name: category.name,
       slug: category.slug,
       icon: category.icon || '',
@@ -235,8 +259,37 @@ export default function AdminServiceCategoriesPage() {
       parent_id: category.parent_id?.toString() || '',
       order: category.order.toString(),
       is_active: category.is_active,
-    });
+    };
+    setFormData(formDataToSet);
+    // Сбрасываем предупреждение при редактировании
+    setOrderWarning('');
     setIsModalOpen(true);
+  };
+
+  // Проверка занятости порядка сортировки
+  const checkOrderAvailability = (order: string, parentId: string) => {
+    const orderNum = parseInt(order);
+    if (isNaN(orderNum)) {
+      setOrderWarning('');
+      return;
+    }
+
+    const parentIdNum = parentId ? parseInt(parentId) : null;
+
+    // Ищем категории с таким же порядком и родителем
+    const conflictingCategory = flattenedCategories.find(cat => {
+      // Пропускаем текущую редактируемую категорию
+      if (editingCategory && cat.id === editingCategory.id) {
+        return false;
+      }
+      return cat.order === orderNum && cat.parent_id === parentIdNum;
+    });
+
+    if (conflictingCategory) {
+      setOrderWarning(`⚠️ Порядок ${orderNum} уже занят категорией "${conflictingCategory.name}"`);
+    } else {
+      setOrderWarning('');
+    }
   };
 
   const resetForm = () => {
@@ -250,6 +303,7 @@ export default function AdminServiceCategoriesPage() {
       is_active: true,
     });
     setEditingCategory(null);
+    setOrderWarning('');
     setIsModalOpen(false);
   };
 
@@ -258,75 +312,135 @@ export default function AdminServiceCategoriesPage() {
     setIsModalOpen(true);
   };
 
-  // Recursive category rendering
-  const renderCategory = (category: ServiceCategory, level = 0) => {
+  // Recursive category rendering with hierarchy visualization
+  const renderCategory = (category: ServiceCategory, level = 0, isLast = false) => {
     const Icon = category.icon ? iconMap[category.icon as IconName] : null;
     const hasChildren = category.children && category.children.length > 0;
     const isExpanded = expandedCategories.has(category.id);
 
+    // Определяем цвет границы в зависимости от уровня
+    const getBorderColor = () => {
+      if (level === 0) return 'border-l-[#18A36C]';
+      if (level === 1) return 'border-l-blue-400';
+      return 'border-l-purple-400';
+    };
+
+    // Определяем цвет фона в зависимости от уровня
+    const getBackgroundColor = () => {
+      if (level === 0) return 'bg-white';
+      if (level === 1) return 'bg-blue-50/30';
+      return 'bg-purple-50/30';
+    };
+
     return (
-      <div key={category.id} className="mb-2 relative" style={{ marginLeft: `${level * 24}px` }}>
-        <ItemCard>
-          {/* Toggle button */}
-          {hasChildren && (
-            <button
-              onClick={() => toggleExpand(category.id)}
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded transition-colors"
-            >
-              {isExpanded ? (
-                <ChevronDown className="w-4 h-4 text-gray-600" />
-              ) : (
-                <ChevronRight className="w-4 h-4 text-gray-600" />
-              )}
-            </button>
-          )}
+      <div key={category.id} className="relative">
+        {/* Вертикальная линия связи для дочерних элементов */}
+        {level > 0 && (
+          <div
+            className="absolute left-0 top-0 bottom-0 w-[2px] bg-gray-200"
+            style={{ left: `${(level - 1) * 32 + 16}px` }}
+          />
+        )}
 
-          <div className={hasChildren ? 'ml-8' : 'ml-2'}>
-            {/* Icon and info */}
-            <div className="flex items-center gap-3 mb-3">
-              {Icon && (
-                <div className="w-10 h-10 bg-[#18A36C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-5 h-5 text-[#18A36C]" />
-                </div>
-              )}
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-800">{category.name}</h3>
-                <p className="text-xs text-gray-500">/{category.slug}</p>
-              </div>
-            </div>
+        {/* Горизонтальная линия к карточке */}
+        {level > 0 && (
+          <div
+            className="absolute left-0 top-6 w-4 h-[2px] bg-gray-200"
+            style={{ left: `${(level - 1) * 32 + 16}px` }}
+          />
+        )}
 
-            {/* Description */}
-            {category.description && (
-              <p className="text-sm text-gray-600 mb-3 line-clamp-2">{category.description}</p>
+        <div
+          className="mb-3"
+          style={{ marginLeft: level > 0 ? `${level * 32}px` : '0' }}
+        >
+          <div className={`relative ${getBackgroundColor()} border-l-4 ${getBorderColor()} rounded-lg overflow-hidden transition-all hover:shadow-md`}>
+            {/* Toggle button для категорий с детьми */}
+            {hasChildren && (
+              <button
+                onClick={() => toggleExpand(category.id)}
+                className="absolute left-3 top-6 -translate-y-1/2 z-10 p-1.5 bg-white hover:bg-gray-100 rounded-lg border border-gray-200 shadow-sm transition-all hover:scale-110"
+              >
+                {isExpanded ? (
+                  <ChevronDown className="w-4 h-4 text-[#18A36C]" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 text-gray-600" />
+                )}
+              </button>
             )}
 
-            {/* Tags */}
-            <div className="flex items-center gap-2 flex-wrap mb-3">
-              <Badge variant="secondary">Порядок: {category.order}</Badge>
-              <Badge variant={category.is_active ? 'success' : 'danger'}>
-                {category.is_active ? 'Активна' : 'Неактивна'}
-              </Badge>
-              {hasChildren && (
-                <Badge variant="primary">
-                  Подкатегорий: {category.children!.length}
-                </Badge>
-              )}
-            </div>
+            <div className={`p-4 ${hasChildren ? 'pl-12' : 'pl-4'}`}>
+              {/* Header с иконкой и названием */}
+              <div className="flex items-start gap-3 mb-3">
+                {/* Индикатор уровня */}
+                <div className="flex items-center gap-2">
+                  <div className={`w-1 h-12 rounded-full ${
+                    level === 0 ? 'bg-[#18A36C]' : level === 1 ? 'bg-blue-400' : 'bg-purple-400'
+                  }`} />
 
-            {/* Actions */}
-            <div className="flex items-center justify-end pt-3 border-t border-gray-100">
-              <CardActions
-                onEdit={() => handleEdit(category)}
-                onDelete={() => handleDelete(category.id, category.name)}
-              />
+                  {Icon && (
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                      level === 0 ? 'bg-[#18A36C]/10' : level === 1 ? 'bg-blue-100' : 'bg-purple-100'
+                    }`}>
+                      <Icon className={`w-6 h-6 ${
+                        level === 0 ? 'text-[#18A36C]' : level === 1 ? 'text-blue-600' : 'text-purple-600'
+                      }`} />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-semibold text-gray-800 text-base">{category.name}</h3>
+                    {level === 0 && (
+                      <Badge variant="primary">Корневая</Badge>
+                    )}
+                    {level === 1 && (
+                      <Badge variant="secondary">Подкатегория</Badge>
+                    )}
+                    {level === 2 && (
+                      <Badge variant="secondary">Вложенная</Badge>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 font-mono">/{category.slug}</p>
+                </div>
+              </div>
+
+              {/* Description */}
+              {category.description && (
+                <p className="text-sm text-gray-600 mb-3 pl-14 line-clamp-2">{category.description}</p>
+              )}
+
+              {/* Tags */}
+              <div className="flex items-center gap-2 flex-wrap mb-3 pl-14">
+                <Badge variant="secondary">Порядок: {category.order}</Badge>
+                <Badge variant={category.is_active ? 'success' : 'danger'}>
+                  {category.is_active ? 'Активна' : 'Неактивна'}
+                </Badge>
+                {hasChildren && (
+                  <Badge variant="primary">
+                    Подкатегорий: {category.children!.length}
+                  </Badge>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-end pt-3 border-t border-gray-200 pl-14">
+                <CardActions
+                  onEdit={() => handleEdit(category)}
+                  onDelete={() => handleDelete(category.id, category.name)}
+                />
+              </div>
             </div>
           </div>
-        </ItemCard>
+        </div>
 
         {/* Render children */}
         {hasChildren && isExpanded && (
-          <div className="mt-2">
-            {category.children!.map((child) => renderCategory(child, level + 1))}
+          <div className="mt-2 relative">
+            {category.children!.map((child, index) =>
+              renderCategory(child, level + 1, index === category.children!.length - 1)
+            )}
           </div>
         )}
       </div>
@@ -373,11 +487,29 @@ export default function AdminServiceCategoriesPage() {
                 onAction={handleAdd}
               />
             ) : (
-              <div className="space-y-2">
-                <AnimatePresence>
-                  {categories.map((category) => renderCategory(category))}
-                </AnimatePresence>
-              </div>
+              <>
+                {/* Control buttons */}
+                <div className="flex items-center gap-2 mb-4">
+                  <button
+                    onClick={expandAll}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Развернуть все
+                  </button>
+                  <button
+                    onClick={collapseAll}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Свернуть все
+                  </button>
+                </div>
+
+                <div className="space-y-2">
+                  <AnimatePresence>
+                    {categories.map((category) => renderCategory(category))}
+                  </AnimatePresence>
+                </div>
+              </>
             )}
           </AdminSection>
 
@@ -401,8 +533,8 @@ export default function AdminServiceCategoriesPage() {
                       setFormData({
                         ...formData,
                         name,
-                        // Auto-generate slug from name if creating new
-                        slug: !editingCategory ? name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : formData.slug
+                        // Auto-generate slug from name
+                        slug: generateSlug(name)
                       });
                     }}
                     placeholder="Детская стоматология"
@@ -416,6 +548,19 @@ export default function AdminServiceCategoriesPage() {
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     placeholder="detskaya-stomatologiya"
                   />
+                  <div className="flex items-center gap-2 mt-2">
+                    <p className="text-xs text-gray-500">
+                      Генерируется автоматически из названия
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, slug: generateSlug(formData.name) })}
+                      className="text-xs font-medium text-[#18A36C] hover:text-[#18A36C]/80 underline"
+                      disabled={!formData.name}
+                    >
+                      Регенерировать
+                    </button>
+                  </div>
                 </FormField>
               </div>
 
@@ -448,7 +593,11 @@ export default function AdminServiceCategoriesPage() {
                 <FormField label="Родительская категория">
                   <FormSelect
                     value={formData.parent_id}
-                    onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
+                    onChange={(e) => {
+                      const newParentId = e.target.value;
+                      setFormData({ ...formData, parent_id: newParentId });
+                      checkOrderAvailability(formData.order, newParentId);
+                    }}
                   >
                     <option value="">Корневая категория</option>
                     {flattenedCategories
@@ -467,9 +616,18 @@ export default function AdminServiceCategoriesPage() {
                   <FormInput
                     type="number"
                     value={formData.order}
-                    onChange={(e) => setFormData({ ...formData, order: e.target.value })}
+                    onChange={(e) => {
+                      const newOrder = e.target.value;
+                      setFormData({ ...formData, order: newOrder });
+                      checkOrderAvailability(newOrder, formData.parent_id);
+                    }}
                     placeholder="0"
                   />
+                  {orderWarning && (
+                    <p className="text-xs text-amber-600 mt-1 flex items-center gap-1">
+                      {orderWarning}
+                    </p>
+                  )}
                 </FormField>
 
                 <FormField label="Статус">

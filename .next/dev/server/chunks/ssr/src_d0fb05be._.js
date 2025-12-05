@@ -432,7 +432,7 @@ function SheetDescription({ className, ...props }) {
 __turbopack_context__.v({"header":{"title":"Услуги","subtitle":"Выберите нужное направление"},"footer":{"text":"Не нашли нужную услугу?","buttonText":"Связаться с нами"},"horizontalMenu":{"title":"Наши услуги"}});}),
 "[project]/src/data/SMServicesData/SMServicesMenuData.json (json)", ((__turbopack_context__) => {
 
-__turbopack_context__.v({"menuData":[{"id":"pediatric-dentistry","title":"Детская стоматология","icon":"Baby","children":[{"id":"pediatric-surgeon","title":"Детский хирург-стоматолог"},{"id":"milk-teeth-treatment","title":"Лечение молочных зубов"},{"id":"pediatric-orthodontist","title":"Детский ортодонт"},{"id":"milk-teeth-anesthesia","title":"Лечение молочных зубов под наркозом в Минске"}]},{"id":"dentistry","title":"Стоматология","icon":"Smile","children":[{"id":"therapeutic-dentistry","title":"Терапевтическая стоматология","children":[{"id":"teeth-whitening","title":"Отбеливание зубов Beyond Polus"},{"id":"professional-cleaning","title":"Профессиональная чистка зубов Air Flow"},{"id":"ultrasonic-cleaning","title":"Чистка зубов в Минске — ультразвуковая и профессиональная"},{"id":"pulpitis-treatment","title":"Лечение пульпита в Минске — стоимость"},{"id":"oral-hygiene","title":"Профессиональная гигиена полости рта"},{"id":"caries-treatment","title":"Лечение кариеса в Минске"}]},{"id":"implantation","title":"Имплантация","children":[{"id":"straumann-implants","title":"Имплантация зубов Straumann в Минске"},{"id":"total-implantation","title":"Тотальная (полная) имплантация зубов в Минске"},{"id":"immediate-implantation","title":"Одномоментная имплантация зубов в Минске"},{"id":"osstem-implants","title":"Имплантация зубов Osstem в Минске"},{"id":"all-on-4-6","title":"Имплантация зубов All-on-4 и All-on-6 в Минске"},{"id":"two-stage-implantation","title":"Двухэтапная имплантация зубов в Минске"},{"id":"implantation-prices","title":"Имплантация зубов в Минске — цены и виды"}]},{"id":"orthopedics","title":"Ортопедия","children":[{"id":"veneers","title":"Виниры в Минске — цены и установка"},{"id":"crowns","title":"Коронки на зубы в Минске — цены и виды"}]},{"id":"orthodontics","title":"Ортодонтия","children":[{"id":"braces-installation","title":"Установка брекетов в Минске"},{"id":"orthodontist-consultation","title":"Ортодонт в Минске — консультация врача и лечение прикуса"},{"id":"aligners","title":"Элайнеры в Минске — цены на выравнивание зубов без брекетов"}]},{"id":"surgery","title":"Хирургия","children":[{"id":"tooth-extraction","title":"Удаление зубов в Минске — удаление зуба мудрости и другие сложные случаи"},{"id":"sinus-lift","title":"Синус-лифтинг в Минске — цены и виды операции"}]},{"id":"anesthesia-treatment","title":"Лечение зубов под наркозом в Минске"},{"id":"microscope-treatment","title":"Лечение зубов под микроскопом в Минске"}]},{"id":"gynecology","title":"Гинекология","icon":"Heart","children":[{"id":"gynecologist-appointment","title":"Приём гинеколога"},{"id":"diagnostic-studies","title":"Диагностические исследования"},{"id":"intrauterine-device","title":"Внутриматочная спираль"},{"id":"cervical-conization","title":"Конизация шейки матки"},{"id":"colposcopy","title":"Кольпоскопия шейки матки"},{"id":"tube-patency-check","title":"Проверка проходимости маточных труб (соногистероскопия) с помощью ExEm-геля"},{"id":"polyp-removal","title":"Удаление полипов | Полипэктомия"},{"id":"diagnostic-curettage","title":"Раздельное диагностическое выскабливание"},{"id":"culdocentesis","title":"Кульдоцентез"}]},{"id":"pediatric-gynecology","title":"Детская гинекология","icon":"Baby","children":[{"id":"pelvic-ultrasound-girls","title":"УЗИ органов малого таза для девочек"},{"id":"adolescent-gynecologist","title":"Подростковый гинеколог"},{"id":"pediatric-gynecologist","title":"Детский гинеколог"}]},{"id":"pediatric-urology","title":"Детская урология","icon":"Stethoscope","children":[{"id":"varicocele-treatment","title":"Лечение варикоцеле"},{"id":"pediatric-urologist-appointment","title":"Приём детского уролога"}]},{"id":"endocrinology","title":"Эндокринология","icon":"Activity","children":[{"id":"endocrinologist-consultation","title":"Консультация врача-эндокринолога"}]},{"id":"oncology","title":"Онкология","icon":"Stethoscope","children":[{"id":"oncologist-appointment","title":"Приём врача онколога"}]},{"id":"ultrasound","title":"УЗИ","icon":"Eye","children":[{"id":"pelvic-ultrasound","title":"УЗИ органов малого таза"},{"id":"breast-ultrasound","title":"УЗИ молочных желез"},{"id":"thyroid-ultrasound","title":"УЗИ щитовидной железы"},{"id":"abdominal-ultrasound","title":"УЗИ брюшной полости"},{"id":"fetal-ultrasound","title":"УЗИ плода"},{"id":"gender-party","title":"Гендер пати"}]},{"id":"cardiology","title":"Кардиология","icon":"Heart","children":[{"id":"echo-kg","title":"ЭХО-КГ (УЗИ сердца)"},{"id":"ecg","title":"ЭКГ (электрокардиография)"},{"id":"holter-monitoring","title":"Холтеровское мониторирование"},{"id":"cardiologist-appointment","title":"Приём кардиолога"}]},{"id":"diagnostics","title":"Диагностика","icon":"Search","children":[{"id":"expert-ultrasound","title":"Экспертное УЗИ"},{"id":"analyses","title":"Анализы"},{"id":"tooth-xray","title":"Снимок зуба"},{"id":"3d-dental-scan","title":"3D снимок зубов"},{"id":"panoramic-dental-scan","title":"Панорамный снимок зубок"}]},{"id":"day-hospital","title":"Дневной стационар","icon":"Building2","children":[{"id":"procedure-room","title":"Процедурный кабинет"}]}]});}),
+__turbopack_context__.v({"menuData":[{"id":"dentistry","title":"Стоматология","icon":"Smile","children":[{"id":"therapeutic-dentistry","title":"Терапевтическая стоматология","children":[{"id":"teeth-whitening","title":"Отбеливание зубов Beyond Polus"},{"id":"professional-cleaning","title":"Профессиональная чистка зубов Air Flow"},{"id":"ultrasonic-cleaning","title":"Чистка зубов в Минске — ультразвуковая и профессиональная"},{"id":"pulpitis-treatment","title":"Лечение пульпита в Минске — стоимость"},{"id":"oral-hygiene","title":"Профессиональная гигиена полости рта"},{"id":"caries-treatment","title":"Лечение кариеса в Минске"}]},{"id":"implantation","title":"Имплантация","children":[{"id":"straumann-implants","title":"Имплантация зубов Straumann в Минске"},{"id":"total-implantation","title":"Тотальная (полная) имплантация зубов в Минске"},{"id":"immediate-implantation","title":"Одномоментная имплантация зубов в Минске"},{"id":"osstem-implants","title":"Имплантация зубов Osstem в Минске"},{"id":"all-on-4-6","title":"Имплантация зубов All-on-4 и All-on-6 в Минске"},{"id":"two-stage-implantation","title":"Двухэтапная имплантация зубов в Минске"},{"id":"implantation-prices","title":"Имплантация зубов в Минске — цены и виды"}]},{"id":"orthopedics","title":"Ортопедия","children":[{"id":"veneers","title":"Виниры в Минске — цены и установка"},{"id":"crowns","title":"Коронки на зубы в Минске — цены и виды"}]},{"id":"orthodontics","title":"Ортодонтия","children":[{"id":"braces-installation","title":"Установка брекетов в Минске"},{"id":"orthodontist-consultation","title":"Ортодонт в Минске — консультация врача и лечение прикуса"},{"id":"aligners","title":"Элайнеры в Минске — цены на выравнивание зубов без брекетов"}]},{"id":"surgery","title":"Хирургия","children":[{"id":"tooth-extraction","title":"Удаление зубов в Минске — удаление зуба мудрости и другие сложные случаи"},{"id":"sinus-lift","title":"Синус-лифтинг в Минске — цены и виды операции"}]},{"id":"anesthesia-treatment","title":"Лечение зубов под наркозом в Минске"},{"id":"microscope-treatment","title":"Лечение зубов под микроскопом в Минске"}]},{"id":"gynecology","title":"Гинекология","icon":"Heart","children":[{"id":"gynecologist-appointment","title":"Приём гинеколога"},{"id":"diagnostic-studies","title":"Диагностические исследования"},{"id":"intrauterine-device","title":"Внутриматочная спираль"},{"id":"cervical-conization","title":"Конизация шейки матки"},{"id":"colposcopy","title":"Кольпоскопия шейки матки"},{"id":"tube-patency-check","title":"Проверка проходимости маточных труб (соногистероскопия) с помощью ExEm-геля"},{"id":"polyp-removal","title":"Удаление полипов | Полипэктомия"},{"id":"diagnostic-curettage","title":"Раздельное диагностическое выскабливание"},{"id":"culdocentesis","title":"Кульдоцентез"}]},{"id":"pediatric-gynecology","title":"Детская гинекология","icon":"Baby","children":[{"id":"pelvic-ultrasound-girls","title":"УЗИ органов малого таза для девочек"},{"id":"adolescent-gynecologist","title":"Подростковый гинеколог"},{"id":"pediatric-gynecologist","title":"Детский гинеколог"}]},{"id":"pediatric-urology","title":"Детская урология","icon":"Stethoscope","children":[{"id":"varicocele-treatment","title":"Лечение варикоцеле"},{"id":"pediatric-urologist-appointment","title":"Приём детского уролога"}]},{"id":"endocrinology","title":"Эндокринология","icon":"Activity","children":[{"id":"endocrinologist-consultation","title":"Консультация врача-эндокринолога"}]},{"id":"oncology","title":"Онкология","icon":"Stethoscope","children":[{"id":"oncologist-appointment","title":"Приём врача онколога"}]},{"id":"ultrasound","title":"УЗИ","icon":"Eye","children":[{"id":"pelvic-ultrasound","title":"УЗИ органов малого таза"},{"id":"breast-ultrasound","title":"УЗИ молочных желез"},{"id":"thyroid-ultrasound","title":"УЗИ щитовидной железы"},{"id":"abdominal-ultrasound","title":"УЗИ брюшной полости"},{"id":"fetal-ultrasound","title":"УЗИ плода"},{"id":"gender-party","title":"Гендер пати"}]},{"id":"cardiology","title":"Кардиология","icon":"Heart","children":[{"id":"echo-kg","title":"ЭХО-КГ (УЗИ сердца)"},{"id":"ecg","title":"ЭКГ (электрокардиография)"},{"id":"holter-monitoring","title":"Холтеровское мониторирование"},{"id":"cardiologist-appointment","title":"Приём кардиолога"}]},{"id":"diagnostics","title":"Диагностика","icon":"Search","children":[{"id":"expert-ultrasound","title":"Экспертное УЗИ"},{"id":"analyses","title":"Анализы"},{"id":"tooth-xray","title":"Снимок зуба"},{"id":"3d-dental-scan","title":"3D снимок зубов"},{"id":"panoramic-dental-scan","title":"Панорамный снимок зубок"}]},{"id":"day-hospital","title":"Дневной стационар","icon":"Building2","children":[{"id":"procedure-room","title":"Процедурный кабинет"}]}]});}),
 "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -711,7 +711,7 @@ function NavigableServicesMenu() {
         setExpandedItems(newExpanded);
     };
     const MenuContent = ({ onItemClick: onItemClickProp })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "bg-white flex flex-col h-full overflow-hidden",
+            className: "bg-white flex flex-col h-full",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "p-4 lg:p-6 border-b border-gray-100 bg-gradient-to-r from-white to-gray-50 flex-shrink-0",
@@ -724,12 +724,12 @@ function NavigableServicesMenu() {
                                     className: "w-6 h-6 text-white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                    lineNumber: 224,
+                                    lineNumber: 225,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                lineNumber: 223,
+                                lineNumber: 224,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -740,7 +740,7 @@ function NavigableServicesMenu() {
                                         children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$servicesMenu$2e$json__$28$json$29$__["default"].header.title
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                        lineNumber: 227,
+                                        lineNumber: 228,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -748,28 +748,28 @@ function NavigableServicesMenu() {
                                         children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$servicesMenu$2e$json__$28$json$29$__["default"].header.subtitle
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                        lineNumber: 230,
+                                        lineNumber: 231,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                lineNumber: 226,
+                                lineNumber: 227,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                        lineNumber: 222,
+                        lineNumber: 223,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                    lineNumber: 221,
+                    lineNumber: 222,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "py-2 flex-1 overflow-y-auto overflow-x-hidden",
+                    className: "flex-1 overflow-y-auto overflow-x-hidden py-2",
                     children: menuData.map((item)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuItemComponent, {
                             item: item,
                             level: 0,
@@ -779,16 +779,16 @@ function NavigableServicesMenu() {
                             onToggleExpand: handleToggleExpand
                         }, item.id, false, {
                             fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                            lineNumber: 238,
+                            lineNumber: 241,
                             columnNumber: 11
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                    lineNumber: 236,
+                    lineNumber: 239,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "p-3 lg:p-4 mt-2 lg:mt-4 border-t border-[#E8E6E3] bg-white",
+                    className: "p-3 lg:p-4 border-t border-[#E8E6E3] bg-white flex-shrink-0",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "text-center",
                         children: [
@@ -797,7 +797,7 @@ function NavigableServicesMenu() {
                                 children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$servicesMenu$2e$json__$28$json$29$__["default"].footer.text
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                lineNumber: 252,
+                                lineNumber: 256,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMButton$2f$SMButton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -807,18 +807,18 @@ function NavigableServicesMenu() {
                                 children: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$config$2f$servicesMenu$2e$json__$28$json$29$__["default"].footer.buttonText
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                lineNumber: 255,
+                                lineNumber: 259,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                        lineNumber: 251,
+                        lineNumber: 255,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                    lineNumber: 250,
+                    lineNumber: 254,
                     columnNumber: 7
                 }, this)
             ]
@@ -833,12 +833,12 @@ function NavigableServicesMenu() {
                 className: "hidden lg:block w-72 bg-white border-r border-[#CACACA] shadow-lg flex-shrink-0 sticky top-[80px] h-[calc(100vh-80px)] overflow-y-auto",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuContent, {}, void 0, false, {
                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                    lineNumber: 270,
+                    lineNumber: 274,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                lineNumber: 269,
+                lineNumber: 273,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -857,17 +857,17 @@ function NavigableServicesMenu() {
                                     className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 285,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                lineNumber: 276,
+                                lineNumber: 280,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                            lineNumber: 275,
+                            lineNumber: 279,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMSheet$2f$SMSheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SheetContent"], {
@@ -881,20 +881,20 @@ function NavigableServicesMenu() {
                                             children: "Меню услуг"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                            lineNumber: 286,
+                                            lineNumber: 290,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMSheet$2f$SMSheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SheetDescription"], {
                                             children: "Навигация по медицинским услугам клиники"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                            lineNumber: 287,
+                                            lineNumber: 291,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                    lineNumber: 285,
+                                    lineNumber: 289,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuContent, {
@@ -904,24 +904,24 @@ function NavigableServicesMenu() {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                                    lineNumber: 289,
+                                    lineNumber: 293,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                            lineNumber: 284,
+                            lineNumber: 288,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                    lineNumber: 274,
+                    lineNumber: 278,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SMServices/SMNavigableServicesMenu.tsx",
-                lineNumber: 273,
+                lineNumber: 277,
                 columnNumber: 7
             }, this)
         ]

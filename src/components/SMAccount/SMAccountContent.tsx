@@ -735,13 +735,17 @@ export function AccountContent() {
       )}
 
       {!materialsLoading && filteredMaterials.length === 0 && (
-        <div className="text-center py-8 sm:py-12">
-          <FileText className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-3 sm:mb-4" />
-          <h3 className="text-base sm:text-lg text-gray-800 mb-2">
-            Материалы не найдены
+        <div className="text-center py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
+          </div>
+          <h3 className="text-lg sm:text-xl text-gray-800 mb-2">
+            {materials.length === 0 ? 'Материалы отсутствуют' : 'Материалы не найдены'}
           </h3>
-          <p className="text-sm sm:text-base text-gray-600">
-            В выбранном периоде нет доступных материалов
+          <p className="text-sm sm:text-base text-gray-600 max-w-md mx-auto">
+            {materials.length === 0
+              ? 'В данный момент нет доступных материалов. Они появятся здесь, как только будут опубликованы.'
+              : 'В выбранном периоде нет доступных материалов. Попробуйте выбрать другой период.'}
           </p>
         </div>
       )}
@@ -1301,7 +1305,7 @@ export function AccountContent() {
               </div>
               <div>
                 <h3 className="text-base sm:text-lg text-gray-800 mb-0.5 sm:mb-1">
-                  Связь с врачом
+                  Связаться с главным врачом
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600">
                   Написать главврачу
@@ -1322,20 +1326,35 @@ export function AccountContent() {
           <h2 className="text-lg sm:text-xl lg:text-2xl text-gray-800">
             Последние материалы
           </h2>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/account/materials")}
-            className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C] hover:text-white w-full sm:w-auto hover:shadow-lg hover:shadow-[#18A36C]/20"
-          >
-            Смотреть все
-            <ChevronRight className="w-4 h-4 ml-[2.5px]" />
-          </Button>
+          {materials.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={() => navigate("/account/materials")}
+              className="text-[#18A36C] border-[#18A36C] hover:bg-[#18A36C] hover:text-white w-full sm:w-auto hover:shadow-lg hover:shadow-[#18A36C]/20"
+            >
+              Смотреть все
+              <ChevronRight className="w-4 h-4 ml-[2.5px]" />
+            </Button>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {materials
-            .slice(0, 3)
-            .map((item) => (
+        {materials.length === 0 ? (
+          <div className="text-center py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
+            </div>
+            <h3 className="text-lg sm:text-xl text-gray-800 mb-2">
+              Материалы отсутствуют
+            </h3>
+            <p className="text-sm sm:text-base text-gray-600 max-w-md mx-auto">
+              В данный момент нет доступных материалов. Они появятся здесь, как только будут опубликованы.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {materials
+              .slice(0, 3)
+              .map((item) => (
               <Card
                 key={item.id}
                 className="group hover:shadow-lg transition-all duration-300 border border-gray-200"
@@ -1379,7 +1398,8 @@ export function AccountContent() {
                 </CardContent>
               </Card>
             ))}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Profile Management */}

@@ -1183,17 +1183,15 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                 ))}
               </div>
             </Card>
-          ) : (clinicFaqsData.length > 0 || (clinicItem.faq && clinicItem.faq.length > 0)) ? (
+          ) : clinicFaqsData.length > 0 ? (
             <Card className="p-6 lg:p-8 border-gray-200">
               <h2 className="text-xl text-[#2E2E2E] mb-6">Часто задаваемые вопросы</h2>
               <Accordion type="single" collapsible className="w-full">
-                {(clinicFaqsData.length > 0 ? clinicFaqsData : clinicItem.faq || []).map((item, index) => {
-                  const itemId = 'id' in item ? item.id : index;
-                  return (
+                {clinicFaqsData.map((item) => (
                   <AccordionItem
-                    key={itemId}
-                    value={`item-${itemId}`}
-                    id={`faq-${itemId}`}
+                    key={item.id}
+                    value={`item-${item.id}`}
+                    id={`faq-${item.id}`}
                     className="scroll-mt-24"
                   >
                     <AccordionTrigger className="text-left text-[#212121] hover:text-[#18A36C] cursor-pointer">
@@ -1203,11 +1201,23 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                       {item.answer}
                     </AccordionContent>
                   </AccordionItem>
-                  );
-                })}
+                ))}
               </Accordion>
             </Card>
-          ) : null}
+          ) : (
+            <Card className="p-6 lg:p-8 border-gray-200">
+              <h2 className="text-xl text-[#2E2E2E] mb-6">Часто задаваемые вопросы</h2>
+              <div className="text-center py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-100">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <HelpCircle className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
+                </div>
+                <h3 className="text-lg sm:text-xl text-gray-800 mb-2">Вопросы отсутствуют</h3>
+                <p className="text-sm sm:text-base text-gray-600 max-w-md mx-auto px-4">
+                  В данный момент нет часто задаваемых вопросов по этой теме.
+                </p>
+              </div>
+            </Card>
+          )}
 
           <div className="mt-8 p-6 bg-[#F4F4F4] rounded-2xl border border-gray-100">
             <div className="text-center">

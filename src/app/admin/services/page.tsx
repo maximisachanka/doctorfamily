@@ -433,7 +433,7 @@ export default function AdminServicesPage() {
             title={editingService ? 'Редактирование услуги' : 'Новая услуга'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.title || !formData.subtitle || !formData.price || !formData.service_category_id || formData.specialist_ids.length === 0}
+            disabled={!formData.title || !formData.subtitle || !formData.price || !formData.service_category_id || (specialists.length > 0 && formData.specialist_ids.length === 0)}
           >
             <div className="space-y-6">
               {/* Basic Info */}
@@ -476,35 +476,51 @@ export default function AdminServicesPage() {
               </FormField>
 
               <div className="grid grid-cols-1 gap-4">
-                <FormField label="Специалисты" required>
+                <FormField label="Специалисты" required={specialists.length > 0}>
                   <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-xl p-3 bg-gray-50">
-                    {specialists.map((spec) => (
-                      <label key={spec.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors">
-                        <input
-                          type="checkbox"
-                          checked={formData.specialist_ids.includes(spec.id.toString())}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setFormData({
-                                ...formData,
-                                specialist_ids: [...formData.specialist_ids, spec.id.toString()]
-                              });
-                            } else {
-                              setFormData({
-                                ...formData,
-                                specialist_ids: formData.specialist_ids.filter(id => id !== spec.id.toString())
-                              });
-                            }
-                          }}
-                          className="w-4 h-4 text-[#18A36C] border-gray-300 rounded focus:ring-[#18A36C]"
-                        />
-                        <span className="text-sm text-gray-700">{spec.name}</span>
-                      </label>
-                    ))}
+                    {specialists.length > 0 ? (
+                      specialists.map((spec) => (
+                        <label key={spec.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors">
+                          <input
+                            type="checkbox"
+                            checked={formData.specialist_ids.includes(spec.id.toString())}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData({
+                                  ...formData,
+                                  specialist_ids: [...formData.specialist_ids, spec.id.toString()]
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  specialist_ids: formData.specialist_ids.filter(id => id !== spec.id.toString())
+                                });
+                              }
+                            }}
+                            className="w-4 h-4 text-[#18A36C] border-gray-300 rounded focus:ring-[#18A36C]"
+                          />
+                          <span className="text-sm text-gray-700">{spec.name}</span>
+                        </label>
+                      ))
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-8 text-center">
+                        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mb-3">
+                          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                          </svg>
+                        </div>
+                        <p className="text-sm font-medium text-gray-700 mb-1">Специалисты отсутствуют</p>
+                        <p className="text-xs text-gray-500">
+                          Сначала добавьте специалистов в разделе "Специалисты"
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Выбрано: {formData.specialist_ids.length}
-                  </p>
+                  {specialists.length > 0 && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Выбрано: {formData.specialist_ids.length}
+                    </p>
+                  )}
                 </FormField>
               </div>
 

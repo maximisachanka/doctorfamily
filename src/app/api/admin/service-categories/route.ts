@@ -69,7 +69,23 @@ export async function POST(request: Request) {
 
     if (existing) {
       return NextResponse.json(
-        { error: 'Category with this slug already exists' },
+        { error: 'Категория с таким slug уже существует' },
+        { status: 400 }
+      );
+    }
+
+    // Проверяем уникальность order в пределах одного уровня
+    // @ts-ignore - ServiceCategory будет доступна после npx prisma generate
+    const orderExists = await prisma.serviceCategory.findFirst({
+      where: {
+        order: order || 0,
+        parent_id: parent_id || null,
+      },
+    });
+
+    if (orderExists) {
+      return NextResponse.json(
+        { error: `Порядок сортировки ${order || 0} уже занят другой категорией на этом уровне. Выберите другое значение.` },
         { status: 400 }
       );
     }

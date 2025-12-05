@@ -588,6 +588,12 @@
       "namedRegex": "^/api/services(?:/)?$"
     },
     {
+      "page": "/api/services-menu",
+      "regex": "^/api/services\\-menu(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/services\\-menu(?:/)?$"
+    },
+    {
       "page": "/api/specialists",
       "regex": "^/api/specialists(?:/)?$",
       "routeKeys": {},
