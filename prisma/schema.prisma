@@ -116,18 +116,40 @@ model Specialist {
   @@index([category_id])
 }
 
-model Question {
-  id              Int          @id @default(autoincrement()) @map("questions_id")
-  question        String
-  answer          String?      @db.Text
-  category        String?      // Категория FAQ (slug из захардкоженного списка)
-  service_id      Int?         // Необязательный - для привязки к услуге
+// Категории вопросов (одноуровневая структура, без подкатегорий)
+model QuestionCategory {
+  id          Int        @id @default(autoincrement()) @map("question_category_id")
+  name        String     // Название категории
+  slug        String     @unique // URL-friendly ID
+  description String?    @db.Text // Описание категории
+  order       Int        @default(0) // Порядок сортировки
+  is_active   Boolean    @default(true) // Активна ли категория
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
 
-  service         Service?     @relation(fields: [service_id], references: [id])
+  questions   Question[] // Вопросы в этой категории
+
+  @@map("question_categories")
+  @@index([slug])
+  @@index([is_active])
+  @@index([order])
+}
+
+model Question {
+  id                    Int                @id @default(autoincrement()) @map("questions_id")
+  question              String
+  answer                String?            @db.Text
+  category              String?            // Старое поле (будет удалено после миграции)
+  service_id            Int?               // Для привязки к услуге
+  question_category_id  Int?               // Для привязки к категории вопросов клиники
+
+  service               Service?           @relation(fields: [service_id], references: [id])
+  questionCategory      QuestionCategory?  @relation(fields: [question_category_id], references: [id])
 
   @@map("questions")
   @@index([service_id])
   @@index([category])
+  @@index([question_category_id])
 }
 
 model Feedback {

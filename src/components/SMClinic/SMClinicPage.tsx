@@ -868,74 +868,9 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
     );
   }
 
-  // Handle FAQ main page - show categories only
-  if (itemId === 'faq' && clinicItem?.children) {
-    return (
-      <>
-        <div className="p-4 lg:p-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
-              <h1 className="text-2xl lg:text-3xl text-[#212121] mb-4">{clinicItem.title}</h1>
-              <p className="text-[#212121] leading-relaxed text-sm lg:text-base">
-                {clinicItem.description}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {clinicItem.children.map((category) => (
-                <Card
-                  key={category.id}
-                  className="group hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-[#18A36C] cursor-pointer"
-                  onClick={() => navigate(`/clinic/faq/${category.id}`)}
-                >
-                  <div className="p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-[#18A36C]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <HelpCircle className="w-6 h-6 text-[#18A36C]" />
-                      </div>
-                      <h3 className="text-lg text-[#2E2E2E] group-hover:text-[#18A36C] transition-colors duration-300">
-                        {category.title}
-                      </h3>
-                    </div>
-                    {category.faq && category.faq.length > 0 && (
-                      <p className="text-sm text-gray-500">
-                        {category.faq.length} {category.faq.length === 1 ? 'вопрос' : category.faq.length < 5 ? 'вопроса' : 'вопросов'}
-                      </p>
-                    )}
-                  </div>
-                </Card>
-              ))}
-            </div>
-
-            <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
-              <div className="text-center">
-                <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
-                <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Свяжитесь с нами, и мы предоставим необходимую информацию.
-                </p>
-                <Button
-                  onClick={askQuestionModal.open}
-                  className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white"
-                >
-                  <MessageSquare className="w-4 h-4 mr-[2.5px]" />
-                  Задать вопрос
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Ask Question Modal */}
-        <AskQuestionModal
-          isOpen={askQuestionModal.isOpen}
-          onClose={askQuestionModal.close}
-          onComplete={() => {
-          }}
-        />
-      </>
-    );
-  }
+  // Handle questions - note: the main questions page is handled by /clinic/questions/page.tsx
+  // Individual category pages like /clinic/questions/[slug] are also separate routes
+  // This component (SMClinicPage) handles other clinic items through /clinic/[...slug]
 
   // Default page layout for other items
   return (

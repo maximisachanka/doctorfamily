@@ -61,6 +61,14 @@
       "namedRegex": "^/api/admin/partners/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/admin/question-categories/[id]",
+      "regex": "^/api/admin/question\\-categories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/question\\-categories/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/api/admin/questions/[id]",
       "regex": "^/api/admin/questions/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -149,6 +157,14 @@
       "namedRegex": "^/api/partners/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/api/question-categories/[slug]",
+      "regex": "^/api/question\\-categories/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/question\\-categories/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/api/service-categories/[slug]",
       "regex": "^/api/service\\-categories/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -188,6 +204,14 @@
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/api/vacancies/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/clinic/questions/[slug]",
+      "regex": "^/clinic/questions/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/clinic/questions/(?<nxtPslug>[^/]+?)(?:/)?$"
     },
     {
       "page": "/clinic/[...slug]",
@@ -300,6 +324,12 @@
       "namedRegex": "^/admin/partners(?:/)?$"
     },
     {
+      "page": "/admin/question-categories",
+      "regex": "^/admin/question\\-categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/question\\-categories(?:/)?$"
+    },
+    {
       "page": "/admin/questions",
       "regex": "^/admin/questions(?:/)?$",
       "routeKeys": {},
@@ -382,6 +412,12 @@
       "regex": "^/api/admin/partners(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/admin/partners(?:/)?$"
+    },
+    {
+      "page": "/api/admin/question-categories",
+      "regex": "^/api/admin/question\\-categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/admin/question\\-categories(?:/)?$"
     },
     {
       "page": "/api/admin/questions",
@@ -564,6 +600,12 @@
       "namedRegex": "^/api/patients(?:/)?$"
     },
     {
+      "page": "/api/question-categories",
+      "regex": "^/api/question\\-categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/question\\-categories(?:/)?$"
+    },
+    {
       "page": "/api/reviews/submit",
       "regex": "^/api/reviews/submit(?:/)?$",
       "routeKeys": {},
@@ -616,6 +658,12 @@
       "regex": "^/clinic(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/clinic(?:/)?$"
+    },
+    {
+      "page": "/clinic/questions",
+      "regex": "^/clinic/questions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/clinic/questions(?:/)?$"
     },
     {
       "page": "/contacts",

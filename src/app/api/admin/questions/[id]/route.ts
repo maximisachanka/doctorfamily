@@ -47,10 +47,14 @@ export async function PUT(
         answer: data.answer || null,
         category: data.category || null,
         service_id: data.service_id ? parseInt(data.service_id) : null,
+        question_category_id: data.question_category_id ? parseInt(data.question_category_id) : null,
       },
       include: {
         service: {
           select: { id: true, title: true },
+        },
+        questionCategory: {
+          select: { id: true, name: true },
         },
       },
     });

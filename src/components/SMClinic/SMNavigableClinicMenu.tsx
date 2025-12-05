@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../common/SMTooltip/SMTooltip';
-import { useRouter as useSMRouter } from '../SMRouter/SMRouter';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useMenu } from '../SMMenuContext/SMMenuContext';
 
 interface MenuItem {
@@ -47,22 +47,10 @@ const menuData: MenuItem[] = [
     children: []
   },
   {
-    id: 'faq',
-    title: 'Вопрос ответ',
+    id: 'questions',
+    title: 'Вопросы и ответы',
     icon: <HelpCircle className="w-4 h-4" />,
-    children: [
-      { id: 'general', title: 'Общие вопросы' },
-      { id: 'children-teeth', title: 'Детские зубы' },
-      { id: 'girls-hygiene', title: 'Гигиена девочек' },
-      { id: 'boys-hygiene', title: 'Гигиена мальчиков' },
-      { id: 'girls-puberty', title: 'Половое созревание девочек' },
-      { id: 'culdocentesis', title: 'Кульдоцентез' },
-      { id: 'stomatology', title: 'Стоматология' },
-      { id: 'polyp-removal', title: 'Удаления полипов | Полипэктомия' },
-      { id: 'ultrasound', title: 'УЗИ' },
-      { id: 'womens-health', title: 'Женское здоровье' },
-      { id: 'curettage', title: 'Раздельное диагностическое выскабливание' }
-    ]
+    children: [] // Будут загружены динамически из API
   },
   {
     id: 'vacancies',
@@ -181,13 +169,46 @@ export function NavigableClinicMenu() {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { navigate, currentRoute } = useSMRouter();
+  const [dynamicMenuData, setDynamicMenuData] = useState<MenuItem[]>(menuData);
   const router = useRouter();
+  const pathname = usePathname();
   const { isBurgerMenuOpen } = useMenu();
+
+  // Загрузка категорий вопросов из API
+  useEffect(() => {
+    async function loadQuestionCategories() {
+      try {
+        const response = await fetch('/api/question-categories');
+        if (response.ok) {
+          const categories = await response.json();
+
+          // Обновляем menuData, добавляя категории как children к "questions"
+          const updatedMenu = menuData.map(item => {
+            if (item.id === 'questions') {
+              return {
+                ...item,
+                children: categories.map((cat: any) => ({
+                  id: cat.slug,
+                  title: cat.name,
+                }))
+              };
+            }
+            return item;
+          });
+
+          setDynamicMenuData(updatedMenu);
+        }
+      } catch (error) {
+        console.error('Error loading question categories:', error);
+      }
+    }
+
+    loadQuestionCategories();
+  }, []);
 
   // Auto-expand and select based on current route
   useEffect(() => {
-    const routeParts = currentRoute.split('/').filter(Boolean);
+    const routeParts = pathname.split('/').filter(Boolean);
     if (routeParts[0] === 'clinic' && routeParts.length >= 2) {
       const sectionId = routeParts[1];
       const itemId = routeParts[2] || sectionId;
@@ -210,7 +231,7 @@ export function NavigableClinicMenu() {
       setActiveItem(null);
       setExpandedItems(new Set());
     }
-  }, [currentRoute]);
+  }, [pathname]);
 
   const handleItemClick = (itemId: string, item: MenuItem) => {
     // Обновляем activeItem только если он изменился
@@ -235,15 +256,24 @@ export function NavigableClinicMenu() {
       return false;
     };
 
-    findCategory(menuData);
+    findCategory(dynamicMenuData);
 
     if (foundItem) {
+      // Специальная обработка для главной страницы "Вопросы и ответы"
+      if (itemId === 'questions' && categoryId === 'questions') {
+        router.push('/clinic/questions');
+      }
+      // Если это дочерний элемент категории вопросов
+      else if (categoryId === 'questions' && categoryId !== itemId) {
+        router.push(`/clinic/questions/${itemId}`);
+      }
       // Если это элемент верхнего уровня (нет родителя), используем только itemId
-      if (!categoryId || categoryId === itemId) {
-        navigate(`/clinic/${itemId}`);
-      } else {
-        // Если это дочерний элемент, используем оба
-        navigate(`/clinic/${categoryId}/${itemId}`);
+      else if (!categoryId || categoryId === itemId) {
+        router.push(`/clinic/${itemId}`);
+      }
+      // Если это дочерний элемент, используем оба
+      else {
+        router.push(`/clinic/${categoryId}/${itemId}`);
       }
     }
   };
@@ -275,7 +305,7 @@ export function NavigableClinicMenu() {
 
       {/* Scrollable Menu Items */}
       <div className="flex-1 overflow-y-auto py-2">
-        {menuData.map((item) => (
+        {dynamicMenuData.map((item) => (
           <MenuItemComponent
             key={item.id}
             item={item}
@@ -284,7 +314,7 @@ export function NavigableClinicMenu() {
             onItemClick={onItemClickProp || handleItemClick}
             expandedItems={expandedItems}
             onToggleExpand={handleToggleExpand}
-            currentRoute={currentRoute}
+            currentRoute={pathname}
           />
         ))}
       </div>

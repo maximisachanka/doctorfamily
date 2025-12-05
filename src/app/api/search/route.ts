@@ -131,6 +131,14 @@ export async function GET(request: NextRequest) {
             { answer: { contains: searchTerm, mode: "insensitive" } },
           ],
         },
+        include: {
+          questionCategory: {
+            select: {
+              slug: true,
+              name: true,
+            },
+          },
+        },
         take: 50,
       }),
 
@@ -226,14 +234,19 @@ export async function GET(request: NextRequest) {
 
     // Форматируем FAQ
     faqs.forEach((faq) => {
-      const faqCategory = faq.category || 'general';
+      // Если есть категория - используем новый формат URL
+      const categorySlug = faq.questionCategory?.slug;
+      const categoryName = faq.questionCategory?.name || "Общие вопросы";
+      const url = categorySlug
+        ? `/clinic/questions/${categorySlug}#faq-${faq.id}`
+        : `/clinic/questions`;
 
       results.push({
         id: `faq-${faq.id}`,
         title: faq.question,
         description: faq.answer || "Ответ скоро будет добавлен",
-        category: faq.category || "Общие вопросы",
-        url: `/clinic/faq/${faqCategory}#faq-${faq.id}`,
+        category: categoryName,
+        url: url,
         type: "faq",
       });
     });

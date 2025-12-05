@@ -33,15 +33,26 @@ interface Question {
   answer: string | null;
   category: string | null;
   service_id: number | null;
+  question_category_id: number | null;
   service: {
     id: number;
     title: string;
+  } | null;
+  questionCategory: {
+    id: number;
+    name: string;
   } | null;
 }
 
 interface Service {
   id: number;
   title: string;
+}
+
+interface QuestionCategory {
+  id: number;
+  name: string;
+  slug: string;
 }
 
 // Захардкоженные категории FAQ (соответствуют категориям на странице Клиники)
@@ -79,6 +90,7 @@ export default function AdminQuestionsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [services, setServices] = useState<Service[]>([]);
+  const [questionCategories, setQuestionCategories] = useState<QuestionCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -91,6 +103,7 @@ export default function AdminQuestionsPage() {
     answer: '',
     category: '',
     service_id: '',
+    question_category_id: '',
   });
 
   // Check admin role
@@ -121,9 +134,10 @@ export default function AdminQuestionsPage() {
     try {
       const apiUrl = buildApiUrl('/api/admin/questions', searchQuery);
 
-      const [questionsRes, servicesRes] = await Promise.all([
+      const [questionsRes, servicesRes, categoriesRes] = await Promise.all([
         fetch(apiUrl),
         fetch('/api/services'),
+        fetch('/api/admin/question-categories'),
       ]);
 
       if (questionsRes.ok) {
@@ -136,6 +150,11 @@ export default function AdminQuestionsPage() {
       if (servicesRes.ok) {
         const data = await servicesRes.json();
         setServices(data);
+      }
+
+      if (categoriesRes.ok) {
+        const data = await categoriesRes.json();
+        setQuestionCategories(data);
       }
     } catch (error) {
       showError('Ошибка загрузки данных');
@@ -163,6 +182,7 @@ export default function AdminQuestionsPage() {
       answer: '',
       category: '',
       service_id: '',
+      question_category_id: '',
     });
     setEditingQuestion(null);
     setIsModalOpen(false);
@@ -180,6 +200,7 @@ export default function AdminQuestionsPage() {
       answer: question.answer || '',
       category: question.category || '',
       service_id: question.service_id?.toString() || '',
+      question_category_id: question.question_category_id?.toString() || '',
     });
     setIsModalOpen(true);
   };
@@ -300,11 +321,14 @@ export default function AdminQuestionsPage() {
 
                             {/* Tags */}
                             <div className="flex items-center gap-2 flex-wrap">
+                              {question.questionCategory && (
+                                <Badge variant="success">Категория: {question.questionCategory.name}</Badge>
+                              )}
                               {question.category && (
-                                <Badge variant="primary">{getCategoryLabel(question.category)}</Badge>
+                                <Badge variant="primary">Старая: {getCategoryLabel(question.category)}</Badge>
                               )}
                               {question.service && (
-                                <Badge variant="secondary">{question.service.title}</Badge>
+                                <Badge variant="secondary">Услуга: {question.service.title}</Badge>
                               )}
                               {!question.answer && (
                                 <Badge variant="warning">Без ответа</Badge>
@@ -363,7 +387,24 @@ export default function AdminQuestionsPage() {
                 />
               </FormField>
 
-              <FormField label="Категория FAQ (для страницы Клиника)">
+              <FormField label="Категория вопроса (для страницы Вопросы и ответы)">
+                <FormSelect
+                  value={formData.question_category_id}
+                  onChange={(e) => setFormData({ ...formData, question_category_id: e.target.value })}
+                >
+                  <option value="">Не выбрано</option>
+                  {questionCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </FormSelect>
+                <p className="text-xs text-gray-500 mt-1">
+                  Выберите категорию для отображения в разделе "Вопросы и ответы"
+                </p>
+              </FormField>
+
+              <FormField label="Категория FAQ (для старой страницы Клиника)">
                 <FormSelect
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -375,6 +416,9 @@ export default function AdminQuestionsPage() {
                     </option>
                   ))}
                 </FormSelect>
+                <p className="text-xs text-gray-500 mt-1">
+                  Устаревшее поле, используется для обратной совместимости
+                </p>
               </FormField>
 
               <FormField label="Привязка к услуге (опционально)">

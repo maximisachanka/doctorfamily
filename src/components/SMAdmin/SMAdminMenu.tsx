@@ -68,6 +68,12 @@ const allMenuItems: MenuItem[] = [
     href: '/admin/questions',
   },
   {
+    id: 'question-categories',
+    title: 'Категории вопросов',
+    icon: <FolderTree className="w-4 h-4" />,
+    href: '/admin/question-categories',
+  },
+  {
     id: 'feedbacks',
     title: 'Отзывы',
     icon: <MessageSquare className="w-4 h-4" />,

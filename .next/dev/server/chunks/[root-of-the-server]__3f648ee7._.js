@@ -83,11 +83,15 @@ async function GET(request) {
         const category = searchParams.get("category");
         let faqs;
         if (category) {
-            // Получаем FAQ по категории
+            // Получаем FAQ по старой категории (для обратной совместимости)
+            // Используется на старых страницах клиники с хардкодеными категориями
             faqs = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].question.findMany({
                 where: {
                     service_id: null,
-                    category: category
+                    category: category,
+                    answer: {
+                        not: null
+                    } // Показываем только вопросы с ответами
                 },
                 orderBy: {
                     id: 'asc'
@@ -95,12 +99,25 @@ async function GET(request) {
             });
         } else {
             // Получаем все общие FAQ клиники (service_id = null)
+            // Поддерживаем как старую систему (category), так и новую (question_category_id)
             faqs = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].question.findMany({
                 where: {
-                    service_id: null
+                    service_id: null,
+                    answer: {
+                        not: null
+                    } // Показываем только вопросы с ответами
+                },
+                include: {
+                    questionCategory: {
+                        select: {
+                            id: true,
+                            name: true,
+                            slug: true
+                        }
+                    }
                 },
                 orderBy: {
-                    category: 'asc'
+                    id: 'asc'
                 }
             });
         }
@@ -108,6 +125,7 @@ async function GET(request) {
             status: 200
         });
     } catch (error) {
+        console.error("Error fetching clinic FAQs:", error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: "Failed to fetch clinic FAQs"
         }, {
