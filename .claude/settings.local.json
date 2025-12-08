@@ -8,7 +8,8 @@
       "Bash(npm run build:dev:*)",
       "Bash(npx prisma generate:*)",
       "Bash(npm run prisma:migrate:*)",
-      "Bash(npm run prisma:push:*)"
+      "Bash(npm run prisma:push:*)",
+      "Bash(npm outdated:*)"
     ],
     "deny": [],
     "ask": []
