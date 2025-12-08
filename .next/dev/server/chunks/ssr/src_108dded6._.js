@@ -1242,11 +1242,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMCard$2f$SMCard$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/common/SMCard/SMCard.tsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-right.js [app-ssr] (ecmascript) <export default as ArrowRight>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/iconMapper.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMServices$2f$SMNavigableServicesMenu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/SMServices/SMNavigableServicesMenu.tsx [app-ssr] (ecmascript)");
 'use client';
-;
 ;
 ;
 ;
@@ -1265,7 +1263,7 @@ function CategoryCardSkeleton() {
                         className: "flex-shrink-0 w-16 h-16 bg-gray-200 rounded-xl"
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 15,
+                        lineNumber: 14,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1275,69 +1273,55 @@ function CategoryCardSkeleton() {
                                 className: "h-5 bg-gray-200 rounded w-3/4"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 17,
+                                lineNumber: 16,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-4 bg-gray-200 rounded w-1/2"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 18,
+                                lineNumber: 17,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 16,
+                        lineNumber: 15,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 14,
+                lineNumber: 13,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "space-y-2 mb-4",
+                className: "space-y-2",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-3 bg-gray-200 rounded w-full"
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 22,
+                        lineNumber: 21,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-3 bg-gray-200 rounded w-5/6"
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 23,
+                        lineNumber: 22,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 21,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex justify-end",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "w-8 h-8 bg-gray-200 rounded-full"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                    lineNumber: 26,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 25,
+                lineNumber: 20,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-        lineNumber: 13,
+        lineNumber: 12,
         columnNumber: 5
     }, this);
 }
@@ -1349,7 +1333,7 @@ function ServiceCardSkeleton() {
                 className: "relative h-48 bg-gray-200"
             }, void 0, false, {
                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 35,
+                lineNumber: 31,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1359,14 +1343,14 @@ function ServiceCardSkeleton() {
                         className: "h-5 bg-gray-200 rounded w-4/5"
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 37,
+                        lineNumber: 33,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-4 bg-gray-200 rounded w-2/3"
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 38,
+                        lineNumber: 34,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1376,53 +1360,39 @@ function ServiceCardSkeleton() {
                                 className: "h-3 bg-gray-200 rounded w-full"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 40,
+                                lineNumber: 36,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-200 rounded w-5/6"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 41,
+                                lineNumber: 37,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "h-3 bg-gray-200 rounded w-4/5"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 42,
+                                lineNumber: 38,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 39,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex justify-end pt-2",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "w-8 h-8 bg-gray-200 rounded-full"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                            lineNumber: 45,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 44,
+                        lineNumber: 35,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 36,
+                lineNumber: 32,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-        lineNumber: 34,
+        lineNumber: 30,
         columnNumber: 5
     }, this);
 }
@@ -1486,7 +1456,6 @@ function CategoryPage() {
                                 }))
                         }))
                 };
-                const hasChildren = transformedCategory.children && transformedCategory.children.length > 0;
                 // Загружаем услуги из БД для этой категории
                 let loadedServices = [];
                 try {
@@ -1500,8 +1469,8 @@ function CategoryPage() {
                 } catch (error) {
                     console.error('Error loading services:', error);
                 }
-                // Если нет подкатегорий и есть ровно одна услуга - редиректим сразу на неё
-                if (!hasChildren && loadedServices.length === 1) {
+                // Если есть ровно одна услуга - редиректим сразу на неё
+                if (loadedServices.length === 1) {
                     router.push(`/services/${categorySlug}/${loadedServices[0].id}`);
                     return;
                 }
@@ -1528,7 +1497,7 @@ function CategoryPage() {
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMServices$2f$SMNavigableServicesMenu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["NavigableServicesMenu"], {}, void 0, false, {
                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                    lineNumber: 189,
+                    lineNumber: 180,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1547,32 +1516,32 @@ function CategoryPage() {
                                                 className: "w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                lineNumber: 196,
+                                                lineNumber: 187,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-8 bg-gray-200 rounded w-1/2 mx-auto mb-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                lineNumber: 197,
+                                                lineNumber: 188,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "h-4 bg-gray-200 rounded w-3/4 mx-auto"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                lineNumber: 198,
+                                                lineNumber: 189,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 195,
+                                        lineNumber: 186,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                    lineNumber: 194,
+                                    lineNumber: 185,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1582,7 +1551,7 @@ function CategoryPage() {
                                             className: "h-7 bg-gray-200 rounded w-32 mb-6 animate-pulse"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                            lineNumber: 204,
+                                            lineNumber: 195,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1590,66 +1559,66 @@ function CategoryPage() {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CategoryCardSkeleton, {}, void 0, false, {
                                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                    lineNumber: 206,
+                                                    lineNumber: 197,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CategoryCardSkeleton, {}, void 0, false, {
                                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                    lineNumber: 207,
+                                                    lineNumber: 198,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(CategoryCardSkeleton, {}, void 0, false, {
                                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                    lineNumber: 208,
+                                                    lineNumber: 199,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ServiceCardSkeleton, {}, void 0, false, {
                                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                    lineNumber: 209,
+                                                    lineNumber: 200,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ServiceCardSkeleton, {}, void 0, false, {
                                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                    lineNumber: 210,
+                                                    lineNumber: 201,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ServiceCardSkeleton, {}, void 0, false, {
                                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                    lineNumber: 211,
+                                                    lineNumber: 202,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                            lineNumber: 205,
+                                            lineNumber: 196,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                    lineNumber: 203,
+                                    lineNumber: 194,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                            lineNumber: 192,
+                            lineNumber: 183,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 191,
+                        lineNumber: 182,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                    lineNumber: 190,
+                    lineNumber: 181,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-            lineNumber: 188,
+            lineNumber: 179,
             columnNumber: 7
         }, this);
     }
@@ -1660,7 +1629,7 @@ function CategoryPage() {
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMServices$2f$SMNavigableServicesMenu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["NavigableServicesMenu"], {}, void 0, false, {
                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                    lineNumber: 225,
+                    lineNumber: 216,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1677,7 +1646,7 @@ function CategoryPage() {
                                         children: "Категория не найдена"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 230,
+                                        lineNumber: 221,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1689,7 +1658,7 @@ function CategoryPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 231,
+                                        lineNumber: 222,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1697,46 +1666,45 @@ function CategoryPage() {
                                         children: "Для получения информации свяжитесь с нами по телефону или через форму обратной связи"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 234,
+                                        lineNumber: 225,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 229,
+                                lineNumber: 220,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                            lineNumber: 228,
+                            lineNumber: 219,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 227,
+                        lineNumber: 218,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                    lineNumber: 226,
+                    lineNumber: 217,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-            lineNumber: 224,
+            lineNumber: 215,
             columnNumber: 7
         }, this);
     }
     const Icon = category.icon ? __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["iconMap"][category.icon] : null;
-    const hasChildren = category.children && category.children.length > 0;
     const hasServices = services && services.length > 0;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex min-h-screen bg-gray-50",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMServices$2f$SMNavigableServicesMenu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["NavigableServicesMenu"], {}, void 0, false, {
                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 251,
+                lineNumber: 241,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1757,12 +1725,12 @@ function CategoryPage() {
                                                 className: "w-8 h-8 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                lineNumber: 260,
+                                                lineNumber: 250,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                            lineNumber: 259,
+                                            lineNumber: 249,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1770,7 +1738,7 @@ function CategoryPage() {
                                             children: category.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                            lineNumber: 263,
+                                            lineNumber: 253,
                                             columnNumber: 17
                                         }, this),
                                         category.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1778,154 +1746,28 @@ function CategoryPage() {
                                             children: category.description
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                            lineNumber: 267,
+                                            lineNumber: 257,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                    lineNumber: 257,
+                                    lineNumber: 247,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 256,
+                                lineNumber: 246,
                                 columnNumber: 13
                             }, this),
-                            hasChildren && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "mb-8",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                        className: "text-xl lg:text-2xl text-[#2E2E2E] mb-6",
-                                        children: "Категории"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 277,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
-                                        children: category.children.map((subCategory, index)=>{
-                                            const SubIcon = subCategory.icon ? __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["iconMap"][subCategory.icon] : null;
-                                            const childrenCount = subCategory.children?.length || 0;
-                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "group relative bg-white rounded-2xl border border-gray-200 hover:border-[#18A36C] transition-all duration-300 cursor-pointer hover:shadow-lg p-6",
-                                                onClick: ()=>router.push(`/services/${subCategory.slug}`),
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex items-start gap-4 mb-4",
-                                                        children: [
-                                                            SubIcon && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "flex-shrink-0 w-16 h-16 bg-[#18A36C]/10 rounded-xl flex items-center justify-center group-hover:bg-[#18A36C] transition-all duration-300",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SubIcon, {
-                                                                    className: "w-8 h-8 text-[#18A36C] group-hover:text-white transition-colors duration-300"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                    lineNumber: 293,
-                                                                    columnNumber: 31
-                                                                }, this)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 292,
-                                                                columnNumber: 29
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "flex-1 min-w-0",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                                        className: "text-lg font-semibold text-[#2E2E2E] group-hover:text-[#18A36C] transition-colors duration-300 mb-1",
-                                                                        children: subCategory.name
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                        lineNumber: 297,
-                                                                        columnNumber: 29
-                                                                    }, this),
-                                                                    childrenCount > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "flex items-center gap-3 text-xs text-gray-500",
-                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                            children: [
-                                                                                childrenCount,
-                                                                                " ",
-                                                                                childrenCount === 1 ? 'подкатегория' : 'подкатегорий'
-                                                                            ]
-                                                                        }, void 0, true, {
-                                                                            fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                            lineNumber: 302,
-                                                                            columnNumber: 33
-                                                                        }, this)
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                        lineNumber: 301,
-                                                                        columnNumber: 31
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 296,
-                                                                columnNumber: 27
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                        lineNumber: 290,
-                                                        columnNumber: 25
-                                                    }, this),
-                                                    subCategory.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-sm text-gray-600 leading-relaxed line-clamp-2 mb-4",
-                                                        children: subCategory.description
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                        lineNumber: 310,
-                                                        columnNumber: 27
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex justify-end",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-[#18A36C] transition-all duration-300",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                                                className: "w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 318,
-                                                                columnNumber: 29
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                            lineNumber: 317,
-                                                            columnNumber: 27
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                        lineNumber: 316,
-                                                        columnNumber: 25
-                                                    }, this)
-                                                ]
-                                            }, subCategory.id, true, {
-                                                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                lineNumber: 284,
-                                                columnNumber: 23
-                                            }, this);
-                                        })
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 278,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 276,
-                                columnNumber: 15
-                            }, this),
                             hasServices && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: hasChildren ? 'mt-8' : '',
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                         className: "text-xl lg:text-2xl text-[#2E2E2E] mb-6",
                                         children: "Услуги"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 267,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1943,7 +1785,7 @@ function CategoryPage() {
                                                                 className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 342,
+                                                                lineNumber: 278,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1954,13 +1796,13 @@ function CategoryPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 347,
+                                                                lineNumber: 283,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                        lineNumber: 341,
+                                                        lineNumber: 277,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1971,7 +1813,7 @@ function CategoryPage() {
                                                                 children: service.title
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 355,
+                                                                lineNumber: 291,
                                                                 columnNumber: 25
                                                             }, this),
                                                             service.subtitle && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1979,7 +1821,7 @@ function CategoryPage() {
                                                                 children: service.subtitle
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 359,
+                                                                lineNumber: 295,
                                                                 columnNumber: 27
                                                             }, this),
                                                             service.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1987,54 +1829,33 @@ function CategoryPage() {
                                                                 children: service.description
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 362,
+                                                                lineNumber: 298,
                                                                 columnNumber: 27
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "flex justify-end mt-4",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-[#18A36C] transition-all duration-300",
-                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowRight$3e$__["ArrowRight"], {
-                                                                        className: "w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300"
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                        lineNumber: 370,
-                                                                        columnNumber: 29
-                                                                    }, this)
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                    lineNumber: 369,
-                                                                    columnNumber: 27
-                                                                }, this)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                                lineNumber: 368,
-                                                                columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                        lineNumber: 354,
+                                                        lineNumber: 290,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, service.id, true, {
                                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                                lineNumber: 334,
+                                                lineNumber: 270,
                                                 columnNumber: 21
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 332,
+                                        lineNumber: 268,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 330,
+                                lineNumber: 266,
                                 columnNumber: 15
                             }, this),
-                            !hasChildren && !hasServices && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            !hasServices && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "text-center bg-white border border-[#E8E6E3] rounded-lg p-8 lg:p-12",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2042,7 +1863,7 @@ function CategoryPage() {
                                         children: "Услуги в этой категории скоро появятся"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 383,
+                                        lineNumber: 312,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2050,35 +1871,35 @@ function CategoryPage() {
                                         children: "Для получения информации свяжитесь с нами по телефону или через форму обратной связи"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                        lineNumber: 386,
+                                        lineNumber: 315,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                                lineNumber: 382,
+                                lineNumber: 311,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                        lineNumber: 254,
+                        lineNumber: 244,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                    lineNumber: 253,
+                    lineNumber: 243,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-                lineNumber: 252,
+                lineNumber: 242,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/services/[categorySlug]/page.tsx",
-        lineNumber: 250,
+        lineNumber: 240,
         columnNumber: 5
     }, this);
 }

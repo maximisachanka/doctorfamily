@@ -1,7 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, ArrowRight } from 'lucide-react';
+import { X, ArrowRight, ChevronDown } from 'lucide-react';
 import navigationConfig from '@/config/navigation.json';
 import { iconMap, IconName } from '@/utils/iconMapper';
 
@@ -18,10 +19,138 @@ interface NavigationItem {
   subPages?: { name: string; path: string }[];
 }
 
+interface ServiceCategory {
+  id: number;
+  name: string;
+  slug: string;
+  icon: string | null;
+}
+
+interface ServicesMenuItem {
+  id: string;
+  title: string;
+  icon?: string;
+  description?: string;
+  children?: ServicesMenuItem[];
+}
+
 export function NavigationModal({ isOpen, onClose, onNavigate }: NavigationModalProps) {
+  const [serviceCategories, setServiceCategories] = useState<ServiceCategory[]>([]);
+  const [servicesMenu, setServicesMenu] = useState<ServicesMenuItem[]>([]);
+  const [navigationItems, setNavigationItems] = useState<NavigationItem[]>(
+    navigationConfig.mainNavigation as NavigationItem[]
+  );
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Загружаем категории для специалистов
+        const categoriesResponse = await fetch('/api/service-categories');
+        if (categoriesResponse.ok) {
+          const categoriesData: ServiceCategory[] = await categoriesResponse.json();
+          setServiceCategories(categoriesData);
+        }
+
+        // Загружаем меню услуг с подкатегориями
+        const servicesMenuResponse = await fetch('/api/services-menu');
+        if (servicesMenuResponse.ok) {
+          const servicesMenuData = await servicesMenuResponse.json();
+          setServicesMenu(servicesMenuData.menuData || []);
+        }
+      } catch (error) {
+        console.error('Error fetching navigation data:', error);
+      }
+    };
+
+    if (isOpen) {
+      fetchData();
+    }
+  }, [isOpen]);
+
+  // Функция для преобразования ServicesMenuItem в NavigationItem subPages
+  // Теперь children - это услуги, а не подкатегории
+  const convertServicesMenuToSubPages = (menuItems: ServicesMenuItem[]): { name: string; path: string }[] => {
+    const result: { name: string; path: string }[] = [];
+
+    menuItems.forEach(category => {
+      // Добавляем саму категорию (переход на страницу категории)
+      result.push({
+        name: category.title,
+        path: `/services/${category.id}`,
+      });
+
+      // Добавляем услуги категории как отдельные пункты
+      if (category.children && category.children.length > 0) {
+        category.children.forEach(service => {
+          result.push({
+            name: `  └─ ${service.title}`, // Визуально показываем вложенность
+            path: `/services/${service.id}`,
+          });
+        });
+      }
+    });
+
+    return result;
+  };
+
+  useEffect(() => {
+    const hasServiceCategories = serviceCategories.length > 0;
+    const hasServicesMenu = servicesMenu.length > 0;
+
+    if (!hasServiceCategories && !hasServicesMenu) {
+      return;
+    }
+
+    const updatedNavigation = (navigationConfig.mainNavigation as NavigationItem[]).map(item => {
+      if (item.name === 'Специалисты' && hasServiceCategories) {
+        return {
+          ...item,
+          subPages: [
+            { name: 'Все специалисты', path: '/doctors' },
+            ...serviceCategories.map(category => ({
+              name: category.name,
+              path: `/doctors/${category.slug}`,
+            })),
+          ],
+        };
+      }
+
+      if (item.name === 'Услуги' && hasServicesMenu) {
+        return {
+          ...item,
+          subPages: [
+            { name: 'Все услуги', path: '/services' },
+            ...convertServicesMenuToSubPages(servicesMenu),
+          ],
+        };
+      }
+
+      return item;
+    });
+    setNavigationItems(updatedNavigation);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(serviceCategories), JSON.stringify(servicesMenu)]);
+
   const handleNavigate = (path: string) => {
     onNavigate(path);
     onClose();
+  };
+
+  const toggleCard = (itemName: string, hasSubPages: boolean) => {
+    if (!hasSubPages) {
+      return;
+    }
+
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(itemName)) {
+        newSet.delete(itemName);
+      } else {
+        newSet.add(itemName);
+      }
+      return newSet;
+    });
   };
 
   return (
@@ -66,7 +195,7 @@ export function NavigationModal({ isOpen, onClose, onNavigate }: NavigationModal
             {/* Content */}
             <div className="h-[calc(90vh-140px)] overflow-y-auto px-10 py-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                {(navigationConfig.mainNavigation as NavigationItem[]).map((item, index) => {
+                {navigationItems.map((item, index) => {
                   const Icon = item.icon ? iconMap[item.icon as IconName] : null;
                   const hasSubPages = item.subPages && item.subPages.length > 0;
 
@@ -82,7 +211,7 @@ export function NavigationModal({ isOpen, onClose, onNavigate }: NavigationModal
                       <div className="relative bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-[#18A36C]/30 hover:shadow-xl hover:shadow-[#18A36C]/10 transition-all duration-300">
                         {/* Main Section Button */}
                         <button
-                          onClick={() => handleNavigate(item.path)}
+                          onClick={() => hasSubPages ? toggleCard(item.name, hasSubPages) : handleNavigate(item.path)}
                           className="w-full p-6 cursor-pointer"
                         >
                           <div className="flex items-start gap-4">
@@ -102,30 +231,44 @@ export function NavigationModal({ isOpen, onClose, onNavigate }: NavigationModal
                                 {hasSubPages ? `${item.subPages!.length} подразделов` : 'Перейти в раздел'}
                               </p>
                             </div>
-                            <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#18A36C] group-hover:translate-x-1 transition-all flex-shrink-0 mt-1" />
+                            {hasSubPages ? (
+                              <ChevronDown className={`w-5 h-5 text-gray-400 group-hover:text-[#18A36C] transition-all flex-shrink-0 mt-1 ${expandedCards.has(item.name) ? 'rotate-180' : ''}`} />
+                            ) : (
+                              <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#18A36C] group-hover:translate-x-1 transition-all flex-shrink-0 mt-1" />
+                            )}
                           </div>
                         </button>
 
-                        {/* Subpages - Always visible */}
-                        {hasSubPages && (
-                          <div className="border-t border-gray-100 bg-gradient-to-b from-gray-50/50 to-transparent px-6 py-4">
-                            <div className="space-y-1">
-                              {item.subPages!.map((subPage, subIndex) => (
-                                <motion.button
-                                  key={subPage.path}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: index * 0.08 + subIndex * 0.03 }}
-                                  onClick={() => handleNavigate(subPage.path)}
-                                  className="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:text-[#18A36C] hover:bg-white rounded-lg transition-all cursor-pointer flex items-center justify-between group/sub"
-                                >
-                                  <span className="font-medium">{subPage.name}</span>
-                                  <ArrowRight className="w-4 h-4 opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-1 transition-all" />
-                                </motion.button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+                        {/* Subpages - Collapsible */}
+                        <AnimatePresence>
+                          {hasSubPages && expandedCards.has(item.name) && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                              className="border-t border-gray-100 bg-gradient-to-b from-gray-50/50 to-transparent overflow-hidden"
+                            >
+                              <div className="px-6 py-4">
+                                <div className="space-y-1">
+                                  {item.subPages!.map((subPage, subIndex) => (
+                                    <motion.button
+                                      key={subPage.path}
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: subIndex * 0.03 }}
+                                      onClick={() => handleNavigate(subPage.path)}
+                                      className="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:text-[#18A36C] hover:bg-white rounded-lg transition-all cursor-pointer flex items-center justify-between group/sub"
+                                    >
+                                      <span className="font-medium">{subPage.name}</span>
+                                      <ArrowRight className="w-4 h-4 opacity-0 group-hover/sub:opacity-100 group-hover/sub:translate-x-1 transition-all" />
+                                    </motion.button>
+                                  ))}
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </motion.div>
                   );

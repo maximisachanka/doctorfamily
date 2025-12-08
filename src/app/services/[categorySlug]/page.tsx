@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Card } from '@/components/common/SMCard/SMCard';
-import { ArrowRight } from 'lucide-react';
 import { iconMap, IconName } from '@/utils/iconMapper';
 import { NavigableServicesMenu } from '@/components/SMServices/SMNavigableServicesMenu';
 
@@ -18,12 +17,9 @@ function CategoryCardSkeleton() {
           <div className="h-4 bg-gray-200 rounded w-1/2" />
         </div>
       </div>
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2">
         <div className="h-3 bg-gray-200 rounded w-full" />
         <div className="h-3 bg-gray-200 rounded w-5/6" />
-      </div>
-      <div className="flex justify-end">
-        <div className="w-8 h-8 bg-gray-200 rounded-full" />
       </div>
     </div>
   );
@@ -40,9 +36,6 @@ function ServiceCardSkeleton() {
           <div className="h-3 bg-gray-200 rounded w-full" />
           <div className="h-3 bg-gray-200 rounded w-5/6" />
           <div className="h-3 bg-gray-200 rounded w-4/5" />
-        </div>
-        <div className="flex justify-end pt-2">
-          <div className="w-8 h-8 bg-gray-200 rounded-full" />
         </div>
       </div>
     </div>
@@ -145,8 +138,6 @@ export default function CategoryPage() {
           }))
         };
 
-        const hasChildren = transformedCategory.children && transformedCategory.children.length > 0;
-
         // Загружаем услуги из БД для этой категории
         let loadedServices: Service[] = [];
         try {
@@ -161,8 +152,8 @@ export default function CategoryPage() {
           console.error('Error loading services:', error);
         }
 
-        // Если нет подкатегорий и есть ровно одна услуга - редиректим сразу на неё
-        if (!hasChildren && loadedServices.length === 1) {
+        // Если есть ровно одна услуга - редиректим сразу на неё
+        if (loadedServices.length === 1) {
           router.push(`/services/${categorySlug}/${loadedServices[0].id}`);
           return;
         }
@@ -243,7 +234,6 @@ export default function CategoryPage() {
   }
 
   const Icon = category.icon ? iconMap[category.icon as IconName] : null;
-  const hasChildren = category.children && category.children.length > 0;
   const hasServices = services && services.length > 0;
 
   return (
@@ -271,63 +261,9 @@ export default function CategoryPage() {
               </div>
             </div>
 
-            {/* Subcategories from mocks */}
-            {hasChildren && (
-              <div className="mb-8">
-                <h2 className="text-xl lg:text-2xl text-[#2E2E2E] mb-6">Категории</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {category.children!.map((subCategory, index) => {
-                    const SubIcon = subCategory.icon ? iconMap[subCategory.icon as IconName] : null;
-                    const childrenCount = subCategory.children?.length || 0;
-
-                    return (
-                      <div
-                        key={subCategory.id}
-                        className="group relative bg-white rounded-2xl border border-gray-200 hover:border-[#18A36C] transition-all duration-300 cursor-pointer hover:shadow-lg p-6"
-                        onClick={() => router.push(`/services/${subCategory.slug}`)}
-                      >
-                        {/* Icon and Title */}
-                        <div className="flex items-start gap-4 mb-4">
-                          {SubIcon && (
-                            <div className="flex-shrink-0 w-16 h-16 bg-[#18A36C]/10 rounded-xl flex items-center justify-center group-hover:bg-[#18A36C] transition-all duration-300">
-                              <SubIcon className="w-8 h-8 text-[#18A36C] group-hover:text-white transition-colors duration-300" />
-                            </div>
-                          )}
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-lg font-semibold text-[#2E2E2E] group-hover:text-[#18A36C] transition-colors duration-300 mb-1">
-                              {subCategory.name}
-                            </h3>
-                            {childrenCount > 0 && (
-                              <div className="flex items-center gap-3 text-xs text-gray-500">
-                                <span>{childrenCount} {childrenCount === 1 ? 'подкатегория' : 'подкатегорий'}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        {subCategory.description && (
-                          <p className="text-sm text-gray-600 leading-relaxed line-clamp-2 mb-4">
-                            {subCategory.description}
-                          </p>
-                        )}
-
-                        {/* Arrow */}
-                        <div className="flex justify-end">
-                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-[#18A36C] transition-all duration-300">
-                            <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* Services from database */}
             {hasServices && (
-              <div className={hasChildren ? 'mt-8' : ''}>
+              <div>
                 <h2 className="text-xl lg:text-2xl text-[#2E2E2E] mb-6">Услуги</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {services.map((service) => (
@@ -363,13 +299,6 @@ export default function CategoryPage() {
                             {service.description}
                           </p>
                         )}
-
-                        {/* Arrow */}
-                        <div className="flex justify-end mt-4">
-                          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-[#18A36C] transition-all duration-300">
-                            <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
-                          </div>
-                        </div>
                       </div>
                     </Card>
                   ))}
@@ -377,8 +306,8 @@ export default function CategoryPage() {
               </div>
             )}
 
-            {/* Empty state - only show if no children AND no services */}
-            {!hasChildren && !hasServices && (
+            {/* Empty state - only show if no services */}
+            {!hasServices && (
               <div className="text-center bg-white border border-[#E8E6E3] rounded-lg p-8 lg:p-12">
                 <p className="text-gray-600 mb-4">
                   Услуги в этой категории скоро появятся

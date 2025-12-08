@@ -1,8 +1,7 @@
 'use client';
 
-import type { ComponentType } from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { ChevronRight, Baby, Smile, Heart, Stethoscope, Activity, Eye, Search, Building2, Users, Syringe } from 'lucide-react';
+import { ChevronRight, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../common/SMButton/SMButton';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger } from '../common/SMSheet/SMSheet';
@@ -11,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useMenu } from '../SMMenuContext/SMMenuContext';
 import { MenuSkeleton } from '../common/SMMenuSkeleton';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../common/SMTooltip/SMTooltip';
+import { iconMap, IconName } from '@/utils/iconMapper';
 
 interface MenuItem {
   id: string;
@@ -19,29 +19,12 @@ interface MenuItem {
   children?: MenuItem[];
 }
 
-interface Category {
+interface ServiceCategory {
   id: number;
   name: string;
   slug: string;
+  icon: string | null;
 }
-
-const iconComponentMap: Record<string, ComponentType<{ className?: string }>> = {
-  'pediatric-dentistry': Baby,
-  dentistry: Smile,
-  cardiology: Heart,
-  gynecology: Heart,
-  endocrinology: Activity,
-  oncology: Stethoscope,
-  urology: Search,
-  anesthesiology: Syringe,
-  ultrasound: Eye,
-  'day-hospital': Building2,
-};
-
-const getIconForSlug = (slug: string) => {
-  const Icon = iconComponentMap[slug] ?? Users;
-  return <Icon className="w-4 h-4" />;
-};
 
 interface MenuItemProps {
   item: MenuItem;
@@ -147,7 +130,7 @@ function MenuItemComponent({ item, level, activeItem, onItemClick, expandedItems
 }
 
 export function NavigableDoctorsMenu() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -162,11 +145,11 @@ export function NavigableDoctorsMenu() {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('/api/categories');
+        const response = await fetch('/api/service-categories');
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error('Failed to fetch service categories');
         }
-        const data: Category[] = await response.json();
+        const data: ServiceCategory[] = await response.json();
         setCategories(data);
       } catch (err) {
         setError('Не удалось загрузить категории');
@@ -189,15 +172,18 @@ export function NavigableDoctorsMenu() {
   }, [currentRoute]);
 
   const menuItems = useMemo<MenuItem[]>(() => {
-    const sortedCategories = [...categories].sort((a, b) =>
-      a.name.localeCompare(b.name, 'ru')
-    );
+    return categories.map((category) => {
+      // Используем иконку из категории или fallback
+      const IconComponent = category.icon && iconMap[category.icon as IconName]
+        ? iconMap[category.icon as IconName]
+        : Users;
 
-    return sortedCategories.map((category) => ({
-      id: category.slug,
-      title: category.name,
-      icon: getIconForSlug(category.slug),
-    }));
+      return {
+        id: category.slug,
+        title: category.name,
+        icon: <IconComponent className="w-4 h-4" />,
+      };
+    });
   }, [categories]);
 
   const handleItemClick = (itemId: string, _item: MenuItem) => {

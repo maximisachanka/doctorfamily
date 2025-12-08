@@ -26,6 +26,13 @@ export async function GET(
             slug: true,
           },
         },
+        serviceCategory: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
     });
 
@@ -75,10 +82,12 @@ export async function PUT(
         specializations: data.specializations || [],
         education: data.education || [],
         work_examples: data.work_examples || null,
-        category_id: parseInt(data.category_id),
+        category_id: data.category_id ? parseInt(data.category_id) : null,
+        service_category_id: data.service_category_id ? parseInt(data.service_category_id) : null,
       },
       include: {
         category: true,
+        serviceCategory: true,
       },
     });
 

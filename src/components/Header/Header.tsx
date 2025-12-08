@@ -32,6 +32,7 @@ export function Header() {
   const [authModalType, setAuthModalType] = useState<'login' | 'register' | 'forgot-password'>('login');
   const [isLoading, setIsLoading] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileScrolled, setIsMobileScrolled] = useState(false);
   const [isNavModalOpen, setIsNavModalOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -127,6 +128,30 @@ export function Header() {
     };
   }, []);
 
+  // Mobile/Tablet scroll detection for shadow effect
+  useEffect(() => {
+    let ticking = false;
+
+    const handleMobileScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsMobileScrolled(window.scrollY > 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Initial check
+    handleMobileScroll();
+
+    window.addEventListener("scroll", handleMobileScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleMobileScroll);
+    };
+  }, []);
+
   // Не показываем хедер на страницах админки (после всех хуков!)
   if (pathname?.startsWith('/admin')) {
     return null;
@@ -138,8 +163,8 @@ export function Header() {
 
   return (
     <>
-      {/* Main Header (not sticky - scrolls away) */}
-      <header className="bg-white shadow-lg">
+      {/* Main Header (sticky on mobile/tablet, scrolls on desktop) */}
+      <header className={`bg-white sticky top-0 z-40 lg:relative lg:z-auto lg:shadow-lg transition-shadow duration-300 ${isMobileScrolled ? 'shadow-lg' : 'shadow-none'}`}>
         {/* Top bar with address/email */}
         <div className="hidden md:block bg-[#18A36C] py-2 lg:py-3">
           <div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-white">
@@ -262,13 +287,6 @@ export function Header() {
                     <Search className="w-5 h-5" />
                   </Button>
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    className="p-2"
-                  >
-                    <Phone className="w-5 h-5" />
-                  </Button>
-                  <Button
                     onClick={() => handleNavigation("/contacts")}
                     className="bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-4 text-sm h-9"
                   >
@@ -341,8 +359,8 @@ export function Header() {
         </div>
       </header>
 
-      {/* Compact Sticky Header (slides down when scrolling) */}
-      <header className={`fixed top-0 left-0 right-0 z-50 bg-white shadow-md transition-transform duration-300 ease-in-out ${isScrolled ? 'translate-y-0' : '-translate-y-full'}`}>
+      {/* Compact Sticky Header (slides down when scrolling - desktop only) */}
+      <header className={`hidden lg:block fixed top-0 left-0 right-0 z-50 bg-white shadow-md transition-transform duration-300 ease-in-out ${isScrolled ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="py-3 lg:py-4">
           <div className="max-w-7xl mx-auto px-4">
             <div className="hidden lg:flex items-center gap-6 justify-between">

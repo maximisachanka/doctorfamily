@@ -94,6 +94,7 @@ async function GET(request, { params }) {
             },
             include: {
                 category: true,
+                serviceCategory: true,
                 services: true
             }
         });

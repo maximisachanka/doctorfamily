@@ -79,7 +79,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__
 ;
 async function GET() {
     try {
-        // Получаем только активные категории
         // @ts-ignore - ServiceCategory будет доступна после npx prisma generate
         const categories = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].serviceCategory.findMany({
             where: {
@@ -94,39 +93,16 @@ async function GET() {
                     name: 'asc'
                 }
             ],
-            include: {
-                children: {
-                    where: {
-                        is_active: true
-                    },
-                    orderBy: [
-                        {
-                            order: 'asc'
-                        },
-                        {
-                            name: 'asc'
-                        }
-                    ],
-                    include: {
-                        children: {
-                            where: {
-                                is_active: true
-                            },
-                            orderBy: [
-                                {
-                                    order: 'asc'
-                                },
-                                {
-                                    name: 'asc'
-                                }
-                            ]
-                        }
-                    }
-                }
+            select: {
+                id: true,
+                name: true,
+                slug: true,
+                icon: true
             }
         });
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(categories);
     } catch (error) {
+        console.error('Error fetching service categories:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: 'Failed to fetch service categories'
         }, {

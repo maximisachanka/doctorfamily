@@ -75,20 +75,23 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/prisma.ts [app-route] (ecmascript)");
 ;
-// Функция для рекурсивного построения дерева меню
-function buildMenuTree(categories) {
+// Функция для построения меню с услугами как подпунктами
+function buildMenuWithServices(categories) {
     return categories.map((category)=>{
         const menuItem = {
             id: category.slug,
             title: category.name
         };
-        // Добавляем иконку только для корневых элементов
-        if (!category.parent_id && category.icon) {
+        // Добавляем иконку для категории
+        if (category.icon) {
             menuItem.icon = category.icon;
         }
-        // Добавляем только подкатегории в меню
-        if (category.children && category.children.length > 0) {
-            menuItem.children = buildMenuTree(category.children);
+        // Добавляем услуги как подпункты категории
+        if (category.services && category.services.length > 0) {
+            menuItem.children = category.services.map((service)=>({
+                    id: `${category.slug}/${service.id}`,
+                    title: service.title
+                }));
         }
         return menuItem;
     });
@@ -110,37 +113,22 @@ async function getServicesMenuFromDB() {
                 }
             ],
             include: {
-                children: {
-                    where: {
-                        is_active: true
-                    },
+                services: {
                     orderBy: [
                         {
-                            order: 'asc'
-                        },
-                        {
-                            name: 'asc'
+                            title: 'asc'
                         }
                     ],
-                    include: {
-                        children: {
-                            where: {
-                                is_active: true
-                            },
-                            orderBy: [
-                                {
-                                    order: 'asc'
-                                },
-                                {
-                                    name: 'asc'
-                                }
-                            ]
-                        }
+                    select: {
+                        id: true,
+                        title: true,
+                        subtitle: true,
+                        service_category_id: true
                     }
                 }
             }
         });
-        return buildMenuTree(categories);
+        return buildMenuWithServices(categories);
     } catch (error) {
         console.error('Error fetching services menu from DB:', error);
         return [];

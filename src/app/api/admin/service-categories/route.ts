@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
-// GET - получить все категории с древовидной структурой
+// GET - получить все категории (только корневые, без подкатегорий)
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -12,32 +12,16 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Получаем все категории
+    // Получаем только корневые категории (parent_id = null)
     // @ts-ignore - ServiceCategory будет доступна после npx prisma generate
     const categories = await prisma.serviceCategory.findMany({
+      where: {
+        parent_id: null, // Только корневые категории
+      },
       orderBy: [
         { order: 'asc' },
         { name: 'asc' },
       ],
-      include: {
-        children: {
-          orderBy: [
-            { order: 'asc' },
-            { name: 'asc' },
-          ],
-          include: {
-            children: {
-              orderBy: [
-                { order: 'asc' },
-                { name: 'asc' },
-              ],
-            },
-          },
-        },
-      },
-      where: {
-        parent_id: null, // Только корневые категории
-      },
     });
 
     return NextResponse.json(categories);

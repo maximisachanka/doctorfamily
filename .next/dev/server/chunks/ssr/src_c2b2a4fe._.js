@@ -383,13 +383,25 @@ const allMenuItems = [
         href: '/admin/questions'
     },
     {
+        id: 'question-categories',
+        title: 'Категории вопросов',
+        icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$folder$2d$tree$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FolderTree$3e$__["FolderTree"], {
+            className: "w-4 h-4"
+        }, void 0, false, {
+            fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
+            lineNumber: 73,
+            columnNumber: 11
+        }, ("TURBOPACK compile-time value", void 0)),
+        href: '/admin/question-categories'
+    },
+    {
         id: 'feedbacks',
         title: 'Отзывы',
         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$message$2d$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MessageSquare$3e$__["MessageSquare"], {
             className: "w-4 h-4"
         }, void 0, false, {
             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-            lineNumber: 73,
+            lineNumber: 79,
             columnNumber: 11
         }, ("TURBOPACK compile-time value", void 0)),
         href: '/admin/feedbacks'
@@ -401,7 +413,7 @@ const allMenuItems = [
             className: "w-4 h-4"
         }, void 0, false, {
             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-            lineNumber: 79,
+            lineNumber: 85,
             columnNumber: 11
         }, ("TURBOPACK compile-time value", void 0)),
         href: '/admin/contacts'
@@ -413,7 +425,7 @@ const allMenuItems = [
             className: "w-4 h-4"
         }, void 0, false, {
             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-            lineNumber: 85,
+            lineNumber: 91,
             columnNumber: 11
         }, ("TURBOPACK compile-time value", void 0)),
         href: '/admin/letters',
@@ -426,7 +438,7 @@ const allMenuItems = [
             className: "w-4 h-4"
         }, void 0, false, {
             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-            lineNumber: 92,
+            lineNumber: 98,
             columnNumber: 11
         }, ("TURBOPACK compile-time value", void 0)),
         href: '/admin/users'
@@ -517,12 +529,12 @@ function AdminMenu({ onNavigate }) {
                                     className: "w-6 h-6 text-white"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                    lineNumber: 188,
+                                    lineNumber: 194,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                lineNumber: 187,
+                                lineNumber: 193,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -533,7 +545,7 @@ function AdminMenu({ onNavigate }) {
                                         children: "Админ-панель"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                        lineNumber: 191,
+                                        lineNumber: 197,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -541,24 +553,24 @@ function AdminMenu({ onNavigate }) {
                                         children: "Управление контентом"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                        lineNumber: 194,
+                                        lineNumber: 200,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                lineNumber: 190,
+                                lineNumber: 196,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                        lineNumber: 186,
+                        lineNumber: 192,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                    lineNumber: 185,
+                    lineNumber: 191,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -586,13 +598,13 @@ function AdminMenu({ onNavigate }) {
                                                         children: unreadCount > 99 ? '99+' : unreadCount
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                                        lineNumber: 224,
+                                                        lineNumber: 230,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                                lineNumber: 216,
+                                                lineNumber: 222,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -600,37 +612,37 @@ function AdminMenu({ onNavigate }) {
                                                 children: item.title
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                                lineNumber: 229,
+                                                lineNumber: 235,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                        lineNumber: 215,
+                                        lineNumber: 221,
                                         columnNumber: 17
                                     }, this),
                                     isActive(item.href) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                         className: "w-4 h-4 text-[#18A36C]"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                        lineNumber: 236,
+                                        lineNumber: 242,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, item.id, true, {
                                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                lineNumber: 205,
+                                lineNumber: 211,
                                 columnNumber: 15
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                        lineNumber: 201,
+                        lineNumber: 207,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                    lineNumber: 200,
+                    lineNumber: 206,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -644,7 +656,7 @@ function AdminMenu({ onNavigate }) {
                                     className: "w-4 h-4 text-gray-500 group-hover:text-[#18A36C] transition-colors"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                    lineNumber: 250,
+                                    lineNumber: 256,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -652,13 +664,13 @@ function AdminMenu({ onNavigate }) {
                                     children: "На сайт"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                    lineNumber: 251,
+                                    lineNumber: 257,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                            lineNumber: 246,
+                            lineNumber: 252,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -666,19 +678,19 @@ function AdminMenu({ onNavigate }) {
                             children: "Doctor Family © 2025"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                            lineNumber: 255,
+                            lineNumber: 261,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                    lineNumber: 245,
+                    lineNumber: 251,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-            lineNumber: 183,
+            lineNumber: 189,
             columnNumber: 5
         }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -687,12 +699,12 @@ function AdminMenu({ onNavigate }) {
                 className: "hidden lg:block w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto bg-white border-r border-gray-200 shadow-lg",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuContent, {}, void 0, false, {
                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                    lineNumber: 266,
+                    lineNumber: 272,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                lineNumber: 265,
+                lineNumber: 271,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -710,17 +722,17 @@ function AdminMenu({ onNavigate }) {
                                     className: "w-6 h-6"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                    lineNumber: 277,
+                                    lineNumber: 283,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                lineNumber: 273,
+                                lineNumber: 279,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                            lineNumber: 272,
+                            lineNumber: 278,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMSheet$2f$SMSheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SheetContent"], {
@@ -734,42 +746,42 @@ function AdminMenu({ onNavigate }) {
                                             children: "Админ-панель"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                            lineNumber: 282,
+                                            lineNumber: 288,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$common$2f$SMSheet$2f$SMSheet$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SheetDescription"], {
                                             children: "Управление контентом сайта"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                            lineNumber: 283,
+                                            lineNumber: 289,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 287,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(MenuContent, {}, void 0, false, {
                                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                                    lineNumber: 285,
+                                    lineNumber: 291,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                            lineNumber: 280,
+                            lineNumber: 286,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                    lineNumber: 271,
+                    lineNumber: 277,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SMAdmin/SMAdminMenu.tsx",
-                lineNumber: 270,
+                lineNumber: 276,
                 columnNumber: 7
             }, this)
         ]
@@ -3757,20 +3769,19 @@ function AdminServiceCategoriesPage() {
         setIsModalOpen(true);
     };
     // Проверка занятости порядка сортировки
-    const checkOrderAvailability = (order, parentId)=>{
+    const checkOrderAvailability = (order)=>{
         const orderNum = parseInt(order);
         if (isNaN(orderNum)) {
             setOrderWarning('');
             return;
         }
-        const parentIdNum = parentId ? parseInt(parentId) : null;
-        // Ищем категории с таким же порядком и родителем
+        // Ищем категории с таким же порядком (все корневые)
         const conflictingCategory = flattenedCategories.find((cat)=>{
             // Пропускаем текущую редактируемую категорию
             if (editingCategory && cat.id === editingCategory.id) {
                 return false;
             }
-            return cat.order === orderNum && cat.parent_id === parentIdNum;
+            return cat.order === orderNum;
         });
         if (conflictingCategory) {
             setOrderWarning(`⚠️ Порядок ${orderNum} уже занят категорией "${conflictingCategory.name}"`);
@@ -3823,7 +3834,7 @@ function AdminServiceCategoriesPage() {
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                    lineNumber: 339,
+                    lineNumber: 337,
                     columnNumber: 11
                 }, this),
                 level > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3833,7 +3844,7 @@ function AdminServiceCategoriesPage() {
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                    lineNumber: 347,
+                    lineNumber: 345,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3851,18 +3862,18 @@ function AdminServiceCategoriesPage() {
                                     className: "w-4 h-4 text-[#18A36C]"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                    lineNumber: 365,
+                                    lineNumber: 363,
                                     columnNumber: 19
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                     className: "w-4 h-4 text-gray-600"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                    lineNumber: 367,
+                                    lineNumber: 365,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                lineNumber: 360,
+                                lineNumber: 358,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3878,7 +3889,7 @@ function AdminServiceCategoriesPage() {
                                                         className: `w-1 h-12 rounded-full ${level === 0 ? 'bg-[#18A36C]' : level === 1 ? 'bg-blue-400' : 'bg-purple-400'}`
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 377,
+                                                        lineNumber: 375,
                                                         columnNumber: 19
                                                     }, this),
                                                     Icon && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3887,18 +3898,18 @@ function AdminServiceCategoriesPage() {
                                                             className: `w-6 h-6 ${level === 0 ? 'text-[#18A36C]' : level === 1 ? 'text-blue-600' : 'text-purple-600'}`
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                            lineNumber: 385,
+                                                            lineNumber: 383,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 382,
+                                                        lineNumber: 380,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 376,
+                                                lineNumber: 374,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3912,7 +3923,7 @@ function AdminServiceCategoriesPage() {
                                                                 children: category.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 394,
+                                                                lineNumber: 392,
                                                                 columnNumber: 21
                                                             }, this),
                                                             level === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3920,7 +3931,7 @@ function AdminServiceCategoriesPage() {
                                                                 children: "Корневая"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 396,
+                                                                lineNumber: 394,
                                                                 columnNumber: 23
                                                             }, this),
                                                             level === 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3928,7 +3939,7 @@ function AdminServiceCategoriesPage() {
                                                                 children: "Подкатегория"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 399,
+                                                                lineNumber: 397,
                                                                 columnNumber: 23
                                                             }, this),
                                                             level === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3936,13 +3947,13 @@ function AdminServiceCategoriesPage() {
                                                                 children: "Вложенная"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 402,
+                                                                lineNumber: 400,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 393,
+                                                        lineNumber: 391,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3953,19 +3964,19 @@ function AdminServiceCategoriesPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 405,
+                                                        lineNumber: 403,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 392,
+                                                lineNumber: 390,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 374,
+                                        lineNumber: 372,
                                         columnNumber: 15
                                     }, this),
                                     category.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3973,7 +3984,7 @@ function AdminServiceCategoriesPage() {
                                         children: category.description
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 411,
+                                        lineNumber: 409,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3987,7 +3998,7 @@ function AdminServiceCategoriesPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 416,
+                                                lineNumber: 414,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3995,7 +4006,7 @@ function AdminServiceCategoriesPage() {
                                                 children: category.is_active ? 'Активна' : 'Неактивна'
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 417,
+                                                lineNumber: 415,
                                                 columnNumber: 17
                                             }, this),
                                             hasChildren && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -4006,13 +4017,13 @@ function AdminServiceCategoriesPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 421,
+                                                lineNumber: 419,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 415,
+                                        lineNumber: 413,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4022,29 +4033,29 @@ function AdminServiceCategoriesPage() {
                                             onDelete: ()=>handleDelete(category.id, category.name)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                            lineNumber: 429,
+                                            lineNumber: 427,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 428,
+                                        lineNumber: 426,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                lineNumber: 372,
+                                lineNumber: 370,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                        lineNumber: 357,
+                        lineNumber: 355,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                    lineNumber: 353,
+                    lineNumber: 351,
                     columnNumber: 9
                 }, this),
                 hasChildren && isExpanded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4052,13 +4063,13 @@ function AdminServiceCategoriesPage() {
                     children: category.children.map((child, index)=>renderCategory(child, level + 1, index === category.children.length - 1))
                 }, void 0, false, {
                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                    lineNumber: 440,
+                    lineNumber: 438,
                     columnNumber: 11
                 }, this)
             ]
         }, category.id, true, {
             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-            lineNumber: 336,
+            lineNumber: 334,
             columnNumber: 7
         }, this);
     };
@@ -4066,7 +4077,7 @@ function AdminServiceCategoriesPage() {
     if (status === 'loading' || hasAdminRole === null || sessionLoading || isCheckingRole) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSkeleton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AdminAccessSkeleton"], {}, void 0, false, {
             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-            lineNumber: 452,
+            lineNumber: 450,
             columnNumber: 12
         }, this);
     }
@@ -4074,7 +4085,7 @@ function AdminServiceCategoriesPage() {
     if (status === 'unauthenticated' || hasAdminRole === false) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$not$2d$found$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-            lineNumber: 457,
+            lineNumber: 455,
             columnNumber: 12
         }, this);
     }
@@ -4084,7 +4095,7 @@ function AdminServiceCategoriesPage() {
             onSuccess: handleAuthSuccess
         }, void 0, false, {
             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-            lineNumber: 462,
+            lineNumber: 460,
             columnNumber: 12
         }, this);
     }
@@ -4093,7 +4104,7 @@ function AdminServiceCategoriesPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminMenu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AdminMenu"], {}, void 0, false, {
                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                lineNumber: 467,
+                lineNumber: 465,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4118,7 +4129,7 @@ function AdminServiceCategoriesPage() {
                                 onAction: handleAdd
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                lineNumber: 482,
+                                lineNumber: 480,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
@@ -4131,7 +4142,7 @@ function AdminServiceCategoriesPage() {
                                                 children: "Развернуть все"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 493,
+                                                lineNumber: 491,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4140,13 +4151,13 @@ function AdminServiceCategoriesPage() {
                                                 children: "Свернуть все"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 499,
+                                                lineNumber: 497,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 492,
+                                        lineNumber: 490,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4155,19 +4166,19 @@ function AdminServiceCategoriesPage() {
                                             children: categories.map((category)=>renderCategory(category))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                            lineNumber: 508,
+                                            lineNumber: 506,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 507,
+                                        lineNumber: 505,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true)
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                            lineNumber: 471,
+                            lineNumber: 469,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormModal"], {
@@ -4201,12 +4212,12 @@ function AdminServiceCategoriesPage() {
                                                     placeholder: "Детская стоматология"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                    lineNumber: 528,
+                                                    lineNumber: 526,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 527,
+                                                lineNumber: 525,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
@@ -4223,7 +4234,7 @@ function AdminServiceCategoriesPage() {
                                                         placeholder: "detskaya-stomatologiya"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 545,
+                                                        lineNumber: 543,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4234,7 +4245,7 @@ function AdminServiceCategoriesPage() {
                                                                 children: "Генерируется автоматически из названия"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 552,
+                                                                lineNumber: 550,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4248,150 +4259,105 @@ function AdminServiceCategoriesPage() {
                                                                 children: "Регенерировать"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 555,
+                                                                lineNumber: 553,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 551,
+                                                        lineNumber: 549,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 544,
+                                                lineNumber: 542,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 526,
+                                        lineNumber: 524,
                                         columnNumber: 15
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
+                                        label: "Иконка",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
-                                                label: "Иконка",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormSelect"], {
+                                                value: formData.icon,
+                                                onChange: (e)=>setFormData({
+                                                        ...formData,
+                                                        icon: e.target.value
+                                                    }),
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormSelect"], {
-                                                        value: formData.icon,
-                                                        onChange: (e)=>setFormData({
-                                                                ...formData,
-                                                                icon: e.target.value
-                                                            }),
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                                value: "",
-                                                                children: "Без иконки"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 573,
-                                                                columnNumber: 21
-                                                            }, this),
-                                                            availableIcons.map((iconName)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                                    value: iconName,
-                                                                    children: iconName
-                                                                }, iconName, false, {
-                                                                    fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                    lineNumber: 575,
-                                                                    columnNumber: 23
-                                                                }, this))
-                                                        ]
-                                                    }, void 0, true, {
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                        value: "",
+                                                        children: "Без иконки"
+                                                    }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 569,
+                                                        lineNumber: 570,
                                                         columnNumber: 19
                                                     }, this),
-                                                    formData.icon && __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["iconMap"][formData.icon] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "mt-2 flex items-center gap-2",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "w-8 h-8 bg-[#18A36C]/10 rounded flex items-center justify-center",
-                                                                children: (()=>{
-                                                                    const PreviewIcon = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["iconMap"][formData.icon];
-                                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(PreviewIcon, {
-                                                                        className: "w-4 h-4 text-[#18A36C]"
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                        lineNumber: 585,
-                                                                        columnNumber: 34
-                                                                    }, this);
-                                                                })()
+                                                    availableIcons.map((iconName)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                            value: iconName,
+                                                            children: iconName
+                                                        }, iconName, false, {
+                                                            fileName: "[project]/src/app/admin/service-categories/page.tsx",
+                                                            lineNumber: 572,
+                                                            columnNumber: 21
+                                                        }, this))
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/admin/service-categories/page.tsx",
+                                                lineNumber: 566,
+                                                columnNumber: 17
+                                            }, this),
+                                            formData.icon && __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["iconMap"][formData.icon] && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "mt-2 flex items-center gap-2",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "w-8 h-8 bg-[#18A36C]/10 rounded flex items-center justify-center",
+                                                        children: (()=>{
+                                                            const PreviewIcon = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$iconMapper$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["iconMap"][formData.icon];
+                                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(PreviewIcon, {
+                                                                className: "w-4 h-4 text-[#18A36C]"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
                                                                 lineNumber: 582,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-xs text-gray-500",
-                                                                children: "Предпросмотр"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 588,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
+                                                                columnNumber: 32
+                                                            }, this);
+                                                        })()
+                                                    }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 581,
+                                                        lineNumber: 579,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-xs text-gray-500",
+                                                        children: "Предпросмотр"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/service-categories/page.tsx",
+                                                        lineNumber: 585,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 568,
-                                                columnNumber: 17
+                                                lineNumber: 578,
+                                                columnNumber: 19
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
-                                                label: "Родительская категория",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormSelect"], {
-                                                    value: formData.parent_id,
-                                                    onChange: (e)=>{
-                                                        const newParentId = e.target.value;
-                                                        setFormData({
-                                                            ...formData,
-                                                            parent_id: newParentId
-                                                        });
-                                                        checkOrderAvailability(formData.order, newParentId);
-                                                    },
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                            value: "",
-                                                            children: "Корневая категория"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                            lineNumber: 602,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        flattenedCategories.filter((cat)=>!editingCategory || cat.id !== editingCategory.id).map((cat)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                                                value: cat.id,
-                                                                children: [
-                                                                    '—'.repeat(cat.level),
-                                                                    " ",
-                                                                    cat.name
-                                                                ]
-                                                            }, cat.id, true, {
-                                                                fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                                lineNumber: 606,
-                                                                columnNumber: 25
-                                                            }, this))
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                    lineNumber: 594,
-                                                    columnNumber: 19
-                                                }, this)
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs text-gray-500 mt-1",
+                                                children: "Иконка будет отображаться в меню рядом с названием категории"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 593,
+                                                lineNumber: 588,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 567,
+                                        lineNumber: 565,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4409,12 +4375,12 @@ function AdminServiceCategoriesPage() {
                                                                 ...formData,
                                                                 order: newOrder
                                                             });
-                                                            checkOrderAvailability(newOrder, formData.parent_id);
+                                                            checkOrderAvailability(newOrder);
                                                         },
                                                         placeholder: "0"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 616,
+                                                        lineNumber: 595,
                                                         columnNumber: 19
                                                     }, this),
                                                     orderWarning && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4422,13 +4388,21 @@ function AdminServiceCategoriesPage() {
                                                         children: orderWarning
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                        lineNumber: 627,
+                                                        lineNumber: 606,
                                                         columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-xs text-gray-500 mt-1",
+                                                        children: "Определяет порядок отображения категорий в меню"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/service-categories/page.tsx",
+                                                        lineNumber: 610,
+                                                        columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 615,
+                                                lineNumber: 594,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
@@ -4445,7 +4419,7 @@ function AdminServiceCategoriesPage() {
                                                             children: "Активна"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                            lineNumber: 638,
+                                                            lineNumber: 620,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -4453,24 +4427,24 @@ function AdminServiceCategoriesPage() {
                                                             children: "Неактивна"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                            lineNumber: 639,
+                                                            lineNumber: 621,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                    lineNumber: 634,
+                                                    lineNumber: 616,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                                lineNumber: 633,
+                                                lineNumber: 615,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 614,
+                                        lineNumber: 593,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMAdminSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
@@ -4485,23 +4459,23 @@ function AdminServiceCategoriesPage() {
                                             placeholder: "Краткое описание категории..."
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                            lineNumber: 645,
+                                            lineNumber: 627,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                        lineNumber: 644,
+                                        lineNumber: 626,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                                lineNumber: 525,
+                                lineNumber: 523,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                            lineNumber: 517,
+                            lineNumber: 515,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SMAdmin$2f$SMConfirmDialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ConfirmDialog"], {
@@ -4516,24 +4490,24 @@ function AdminServiceCategoriesPage() {
                             loading: confirmDialog.loading
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                            lineNumber: 656,
+                            lineNumber: 638,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                    lineNumber: 470,
+                    lineNumber: 468,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/service-categories/page.tsx",
-                lineNumber: 469,
+                lineNumber: 467,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/service-categories/page.tsx",
-        lineNumber: 466,
+        lineNumber: 464,
         columnNumber: 5
     }, this);
 }

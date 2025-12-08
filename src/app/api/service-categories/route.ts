@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// GET - публичный endpoint для получения дерева категорий
+// GET - получение категорий услуг верхнего уровня (без подкатегорий)
 export async function GET() {
   try {
-    // Получаем только активные категории
     // @ts-ignore - ServiceCategory будет доступна после npx prisma generate
     const categories = await prisma.serviceCategory.findMany({
       where: {
@@ -15,28 +14,17 @@ export async function GET() {
         { order: 'asc' },
         { name: 'asc' },
       ],
-      include: {
-        children: {
-          where: { is_active: true },
-          orderBy: [
-            { order: 'asc' },
-            { name: 'asc' },
-          ],
-          include: {
-            children: {
-              where: { is_active: true },
-              orderBy: [
-                { order: 'asc' },
-                { name: 'asc' },
-              ],
-            },
-          },
-        },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        icon: true,
       },
     });
 
     return NextResponse.json(categories);
   } catch (error) {
+    console.error('Error fetching service categories:', error);
     return NextResponse.json(
       { error: 'Failed to fetch service categories' },
       { status: 500 }

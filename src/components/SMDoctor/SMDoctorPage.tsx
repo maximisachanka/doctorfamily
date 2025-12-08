@@ -28,11 +28,16 @@ interface Specialist {
   specializations: string[];
   education: string[];
   work_examples: Array<{ title: string; images: string[] }> | null;
-  category: {
+  category?: {
     id: number;
     name: string;
     slug: string;
-  };
+  } | null;
+  serviceCategory?: {
+    id: number;
+    name: string;
+    slug: string;
+  } | null;
 }
 
 export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
@@ -73,7 +78,8 @@ export function DoctorPage({ doctorId, categorySlug }: DoctorPageProps) {
 
         // Обновляем title страницы
         if (data) {
-          document.title = `${data.name} - ${data.category.name} | Медицинский центр Doctor Family`;
+          const categoryName = data.serviceCategory?.name || data.category?.name || 'Специалисты';
+          document.title = `${data.name} - ${categoryName} | Медицинский центр Doctor Family`;
         }
       } catch (err) {
         setError('Не удалось загрузить данные специалиста');

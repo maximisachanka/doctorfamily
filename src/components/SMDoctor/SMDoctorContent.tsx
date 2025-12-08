@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Star, Calendar, Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
-import { Button } from '../common/SMButton/SMButton';
+import { Users, Star, Calendar, Phone, Mail, MapPin } from 'lucide-react';
 import { Card } from '../common/SMCard/SMCard';
 import { useRouter as useSMRouter } from '@/components/SMRouter/SMRouter';
 import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '../SMImage/ImageWithFallback';
-import { getCategoryIdBySlug } from '@/utils/categoryMapper';
 import { SpecialistCardSkeleton } from './SMDoctorSkeleton';
 import { useContacts } from '@/hooks/useContacts';
 
@@ -24,17 +22,23 @@ interface Specialist {
   specializations: string[];
   education: string[];
   work_examples: Array<{ title: string; images: string[] }> | null;
-  category: {
+  category?: {
     id: number;
     name: string;
     slug: string;
-  };
+  } | null;
+  serviceCategory?: {
+    id: number;
+    name: string;
+    slug: string;
+  } | null;
 }
 
-interface Category {
+interface ServiceCategory {
   id: number;
   name: string;
   slug: string;
+  icon: string | null;
 }
 
 export function DoctorsContent() {
@@ -43,15 +47,15 @@ export function DoctorsContent() {
   const { contacts } = useContacts();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/api/categories');
-        if (!response.ok) throw new Error('Failed to fetch categories');
+        const response = await fetch('/api/service-categories');
+        if (!response.ok) throw new Error('Failed to fetch service categories');
         const data = await response.json();
         setCategories(data);
       } catch (err) {
@@ -73,7 +77,7 @@ export function DoctorsContent() {
 
   useEffect(() => {
     const fetchSpecialists = async () => {
-      if (!selectedCategory || categories.length === 0) {
+      if (!selectedCategory) {
         setSpecialists([]);
         return;
       }
@@ -82,15 +86,8 @@ export function DoctorsContent() {
       setError(null);
 
       try {
-        // selectedCategory теперь это slug из URL
-        const categoryId = getCategoryIdBySlug(selectedCategory, categories);
-        if (!categoryId) {
-          setSpecialists([]);
-          setLoading(false);
-          return;
-        }
-
-        const response = await fetch(`/api/specialists?categoryId=${categoryId}`);
+        // Используем slug категории услуг для фильтрации
+        const response = await fetch(`/api/specialists?serviceCategorySlug=${selectedCategory}`);
         if (!response.ok) throw new Error('Failed to fetch specialists');
         const data = await response.json();
         setSpecialists(data);
@@ -103,7 +100,7 @@ export function DoctorsContent() {
     };
 
     fetchSpecialists();
-  }, [selectedCategory, categories]);
+  }, [selectedCategory]);
 
   const selectedCategoryData = selectedCategory
     ? categories.find(cat => cat.slug === selectedCategory) || null
@@ -122,25 +119,6 @@ export function DoctorsContent() {
 
   const handleDoctorClick = (doctorId: number) => {
     navigate(`/doctors/${selectedCategory}/${doctorId}`);
-  };
-
-  const handleBookAppointment = (doctorId: number, doctorName: string) => {
-    // TODO: Implement booking functionality
-  };
-
-  // Преобразование имени специалиста (полное имя) в имя и фамилию
-  const parseName = (fullName: string) => {
-    const parts = fullName.trim().split(' ');
-    if (parts.length >= 2) {
-      return {
-        name: parts[1] || '',
-        surname: parts[0] || '',
-      };
-    }
-    return {
-      name: fullName,
-      surname: '',
-    };
   };
 
   if (!selectedCategory) {
@@ -290,7 +268,10 @@ export function DoctorsContent() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="p-6 hover:shadow-lg transition-all duration-300 group border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg">
+                  <Card
+                    onClick={() => handleDoctorClick(specialist.id)}
+                    className="p-6 hover:shadow-lg transition-all duration-300 group border border-[#E8E6E3] hover:border-[#18A36C] rounded-lg cursor-pointer"
+                  >
                     <div className="flex flex-col sm:flex-row gap-4">
                       <div className="flex-shrink-0 mx-auto sm:mx-0">
                         <div className="w-24 h-24 rounded-lg overflow-hidden transition-all duration-300">
@@ -314,7 +295,7 @@ export function DoctorsContent() {
                             <span>Стаж: {specialist.experience} {specialist.experience === 1 ? 'год' : specialist.experience < 5 ? 'года' : 'лет'}</span>
                           </div>
 
-                          <div className="flex items-center gap-1 justify-center sm:justify-start mb-4">
+                          <div className="flex items-center gap-1 justify-center sm:justify-start">
                             {[...Array(specialist.grade)].map((_, i) => (
                               <Star
                                 key={i}
@@ -332,14 +313,6 @@ export function DoctorsContent() {
                             </span>
                           </div>
                         </div>
-
-                        <Button
-                          onClick={() => handleDoctorClick(specialist.id)}
-                          className="w-full sm:w-auto bg-[#18A36C] hover:bg-[#18A36C]/90 text-white px-8 py-4 h-auto text-lg rounded-lg transition-all duration-300 cursor-pointer"
-                        >
-                          Подробнее
-                          <ArrowRight className="w-5 h-5 ml-[2.5px]" />
-                        </Button>
                       </div>
                     </div>
                   </Card>

@@ -20,6 +20,7 @@ export async function GET(
       where: { id },
       include: {
         category: true,
+        serviceCategory: true,
         services: true,
       },
     });

@@ -292,6 +292,13 @@ async function GET(request) {
                         name: true,
                         slug: true
                     }
+                },
+                serviceCategory: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true
+                    }
                 }
             },
             orderBy: {
@@ -318,6 +325,11 @@ async function POST(request) {
             });
         }
         const data = await request.json();
+        console.log('Creating specialist with data:', {
+            ...data,
+            category_id: data.category_id ? parseInt(data.category_id) : null,
+            service_category_id: data.service_category_id ? parseInt(data.service_category_id) : null
+        });
         const specialist = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["prisma"].specialist.create({
             data: {
                 name: data.name,
@@ -332,18 +344,22 @@ async function POST(request) {
                 specializations: data.specializations || [],
                 education: data.education || [],
                 work_examples: data.work_examples || null,
-                category_id: parseInt(data.category_id)
+                category_id: data.category_id ? parseInt(data.category_id) : null,
+                service_category_id: data.service_category_id ? parseInt(data.service_category_id) : null
             },
             include: {
-                category: true
+                category: true,
+                serviceCategory: true
             }
         });
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(specialist, {
             status: 201
         });
     } catch (error) {
+        console.error('Error creating specialist:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Ошибка при создании специалиста"
+            error: "Ошибка при создании специалиста",
+            details: error instanceof Error ? error.message : 'Unknown error'
         }, {
             status: 500
         });

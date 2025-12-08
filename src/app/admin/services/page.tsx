@@ -153,7 +153,7 @@ export default function AdminServicesPage() {
 
       const [servicesRes, serviceCategoriesRes, specialistsRes] = await Promise.all([
         fetch(apiUrl),
-        fetch('/api/service-categories'),
+        fetch('/api/admin/service-categories'),
         fetch('/api/specialists'),
       ]);
 
@@ -185,42 +185,15 @@ export default function AdminServicesPage() {
     setPage(1);
   }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Flatten service categories tree for dropdown with disabled logic
+  // Flatten service categories (теперь без подкатегорий, все корневые)
   const flattenedServiceCategories = useMemo(() => {
-    // Получаем ID категорий, которые уже заняты другими услугами
-    const usedCategoryIds = new Set(
-      services
-        .filter(s => s.service_category_id && (!editingService || s.id !== editingService.id))
-        .map(s => s.service_category_id)
-    );
-
-    const flatten = (cats: ServiceCategory[], level = 0): Array<ServiceCategory & { level: number; disabled: boolean; disabledReason?: string }> => {
-      const result: Array<ServiceCategory & { level: number; disabled: boolean; disabledReason?: string }> = [];
-      for (const cat of cats) {
-        const hasChildren = cat.children && cat.children.length > 0;
-        const isUsed = usedCategoryIds.has(cat.id);
-
-        let disabled = false;
-        let disabledReason = '';
-
-        if (hasChildren) {
-          disabled = true;
-          disabledReason = 'имеет подкатегории';
-        } else if (isUsed) {
-          disabled = true;
-          disabledReason = 'уже занята';
-        }
-
-        result.push({ ...cat, level, disabled, disabledReason });
-
-        if (cat.children && cat.children.length > 0) {
-          result.push(...flatten(cat.children, level + 1));
-        }
-      }
-      return result;
-    };
-    return flatten(serviceCategories);
-  }, [serviceCategories, services, editingService]);
+    // Можно выбирать любую категорию, так как подкатегорий больше нет
+    return serviceCategories.map(cat => ({
+      ...cat,
+      level: 0,
+      disabled: false,
+    }));
+  }, [serviceCategories]);
 
   // Form handlers
   const resetForm = () => {

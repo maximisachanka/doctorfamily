@@ -267,22 +267,20 @@ export default function AdminServiceCategoriesPage() {
   };
 
   // Проверка занятости порядка сортировки
-  const checkOrderAvailability = (order: string, parentId: string) => {
+  const checkOrderAvailability = (order: string) => {
     const orderNum = parseInt(order);
     if (isNaN(orderNum)) {
       setOrderWarning('');
       return;
     }
 
-    const parentIdNum = parentId ? parseInt(parentId) : null;
-
-    // Ищем категории с таким же порядком и родителем
+    // Ищем категории с таким же порядком (все корневые)
     const conflictingCategory = flattenedCategories.find(cat => {
       // Пропускаем текущую редактируемую категорию
       if (editingCategory && cat.id === editingCategory.id) {
         return false;
       }
-      return cat.order === orderNum && cat.parent_id === parentIdNum;
+      return cat.order === orderNum;
     });
 
     if (conflictingCategory) {
@@ -564,52 +562,33 @@ export default function AdminServiceCategoriesPage() {
                 </FormField>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField label="Иконка">
-                  <FormSelect
-                    value={formData.icon}
-                    onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                  >
-                    <option value="">Без иконки</option>
-                    {availableIcons.map((iconName) => (
-                      <option key={iconName} value={iconName}>
-                        {iconName}
-                      </option>
-                    ))}
-                  </FormSelect>
-                  {formData.icon && iconMap[formData.icon as IconName] && (
-                    <div className="mt-2 flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#18A36C]/10 rounded flex items-center justify-center">
-                        {(() => {
-                          const PreviewIcon = iconMap[formData.icon as IconName];
-                          return <PreviewIcon className="w-4 h-4 text-[#18A36C]" />;
-                        })()}
-                      </div>
-                      <span className="text-xs text-gray-500">Предпросмотр</span>
+              <FormField label="Иконка">
+                <FormSelect
+                  value={formData.icon}
+                  onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+                >
+                  <option value="">Без иконки</option>
+                  {availableIcons.map((iconName) => (
+                    <option key={iconName} value={iconName}>
+                      {iconName}
+                    </option>
+                  ))}
+                </FormSelect>
+                {formData.icon && iconMap[formData.icon as IconName] && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-[#18A36C]/10 rounded flex items-center justify-center">
+                      {(() => {
+                        const PreviewIcon = iconMap[formData.icon as IconName];
+                        return <PreviewIcon className="w-4 h-4 text-[#18A36C]" />;
+                      })()}
                     </div>
-                  )}
-                </FormField>
-
-                <FormField label="Родительская категория">
-                  <FormSelect
-                    value={formData.parent_id}
-                    onChange={(e) => {
-                      const newParentId = e.target.value;
-                      setFormData({ ...formData, parent_id: newParentId });
-                      checkOrderAvailability(formData.order, newParentId);
-                    }}
-                  >
-                    <option value="">Корневая категория</option>
-                    {flattenedCategories
-                      .filter((cat) => !editingCategory || cat.id !== editingCategory.id)
-                      .map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                          {'—'.repeat(cat.level)} {cat.name}
-                        </option>
-                      ))}
-                  </FormSelect>
-                </FormField>
-              </div>
+                    <span className="text-xs text-gray-500">Предпросмотр</span>
+                  </div>
+                )}
+                <p className="text-xs text-gray-500 mt-1">
+                  Иконка будет отображаться в меню рядом с названием категории
+                </p>
+              </FormField>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField label="Порядок сортировки">
@@ -619,7 +598,7 @@ export default function AdminServiceCategoriesPage() {
                     onChange={(e) => {
                       const newOrder = e.target.value;
                       setFormData({ ...formData, order: newOrder });
-                      checkOrderAvailability(newOrder, formData.parent_id);
+                      checkOrderAvailability(newOrder);
                     }}
                     placeholder="0"
                   />
@@ -628,6 +607,9 @@ export default function AdminServiceCategoriesPage() {
                       {orderWarning}
                     </p>
                   )}
+                  <p className="text-xs text-gray-500 mt-1">
+                    Определяет порядок отображения категорий в меню
+                  </p>
                 </FormField>
 
                 <FormField label="Статус">

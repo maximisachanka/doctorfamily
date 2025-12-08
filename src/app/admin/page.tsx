@@ -43,18 +43,25 @@ interface Specialist {
   specializations: string[];
   education: string[];
   work_examples: Array<{ title: string; images: string[] }> | null;
-  category_id: number;
-  category: {
+  category_id: number | null; // Теперь необязательное
+  service_category_id: number | null;
+  category?: {
     id: number;
     name: string;
     slug: string;
-  };
+  } | null;
+  serviceCategory?: {
+    id: number;
+    name: string;
+    slug: string;
+  } | null;
 }
 
-interface Category {
+interface ServiceCategory {
   id: number;
   name: string;
   slug: string;
+  icon: string | null;
 }
 
 export default function AdminPage() {
@@ -68,7 +75,7 @@ export default function AdminPage() {
 
   // Data states
   const [specialists, setSpecialists] = useState<Specialist[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   // Pagination hook
@@ -91,6 +98,7 @@ export default function AdminPage() {
     specializations: '',
     education: '',
     category_id: '',
+    service_category_id: '', // Новое поле для категории услуг
   });
 
   // Check user role when session is verified
@@ -106,6 +114,9 @@ export default function AdminPage() {
         } finally {
           setRoleLoading(false);
         }
+      } else if (sessionVerified === false) {
+        // Если сессия не верифицирована, сбрасываем состояние загрузки
+        setRoleLoading(false);
       }
     };
     checkRole();
@@ -127,7 +138,7 @@ export default function AdminPage() {
     try {
       const [specialistsRes, categoriesRes] = await Promise.all([
         fetch('/api/admin/specialists'),
-        fetch('/api/categories'),
+        fetch('/api/service-categories'), // Используем категории услуг
       ]);
 
       if (specialistsRes.ok) {
@@ -154,7 +165,8 @@ export default function AdminPage() {
       (s) =>
         s.name.toLowerCase().includes(query) ||
         s.specialization.toLowerCase().includes(query) ||
-        s.category.name.toLowerCase().includes(query)
+        s.category?.name.toLowerCase().includes(query) ||
+        s.serviceCategory?.name.toLowerCase().includes(query)
     );
   }, [specialists, searchQuery]);
 
@@ -184,6 +196,7 @@ export default function AdminPage() {
       specializations: '',
       education: '',
       category_id: '',
+      service_category_id: '', // Сбрасываем новое поле
     });
     setEditingSpecialist(null);
     setIsModalOpen(false);
@@ -208,7 +221,8 @@ export default function AdminPage() {
       conferences: specialist.conferences.join('\n'),
       specializations: specialist.specializations.join('\n'),
       education: specialist.education.join('\n'),
-      category_id: specialist.category_id.toString(),
+      category_id: specialist.category_id ? specialist.category_id.toString() : '',
+      service_category_id: specialist.service_category_id ? specialist.service_category_id.toString() : '',
     });
     setIsModalOpen(true);
   };
@@ -346,7 +360,7 @@ export default function AdminPage() {
                             <h3 className="font-semibold text-gray-800 truncate">{specialist.name}</h3>
                             <p className="text-sm text-gray-500 truncate">{specialist.specialization}</p>
                             <div className="flex items-center gap-2 mt-2">
-                              <Badge variant="primary">{specialist.category.name}</Badge>
+                              <Badge variant="primary">{specialist.serviceCategory?.name || specialist.category?.name || 'Без категории'}</Badge>
                               <Badge variant="secondary">{specialist.experience} лет</Badge>
                             </div>
                           </div>
@@ -385,7 +399,7 @@ export default function AdminPage() {
             title={editingSpecialist ? 'Редактирование специалиста' : 'Новый специалист'}
             onSubmit={handleSave}
             loading={formLoading}
-            disabled={!formData.name || !formData.specialization || !formData.category_id}
+            disabled={!formData.name || !formData.specialization || !formData.service_category_id}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField label="ФИО" required>
@@ -415,12 +429,12 @@ export default function AdminPage() {
                 />
               </FormField>
 
-              <FormField label="Категория" required>
+              <FormField label="Категория услуг" required>
                 <FormSelect
-                  value={formData.category_id}
-                  onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+                  value={formData.service_category_id}
+                  onChange={(e) => setFormData({ ...formData, service_category_id: e.target.value })}
                 >
-                  <option value="">Выберите категорию</option>
+                  <option value="">Выберите категорию услуг</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
