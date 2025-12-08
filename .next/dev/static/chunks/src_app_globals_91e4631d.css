@@ -3925,12 +3925,6 @@
   }
 
   @media (hover: hover) {
-    .group-hover\:bg-\[\#18A36C\]:is(:where(.group):hover *) {
-      background-color: #18a36c;
-    }
-  }
-
-  @media (hover: hover) {
     .group-hover\:bg-\[\#18A36C\]\/20:is(:where(.group):hover *) {
       background-color: #18a36c33;
       background-color: lab(59.3138% -46.2049 18.4034 / .2);
@@ -3984,12 +3978,6 @@
   @media (hover: hover) {
     .group-hover\:text-red-600:is(:where(.group):hover *) {
       color: var(--color-red-600);
-    }
-  }
-
-  @media (hover: hover) {
-    .group-hover\:text-white:is(:where(.group):hover *) {
-      color: var(--color-white);
     }
   }
 
