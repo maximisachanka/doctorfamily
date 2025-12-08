@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "npm run prisma:generate",
     "prisma:migrate": "npx dotenv-cli -e .env -- npx prisma migrate dev",
     "prisma:generate": "npx dotenv-cli -e .env -- npx prisma generate",
     "prisma:studio": "npx dotenv-cli -e .env -- npx prisma studio",
