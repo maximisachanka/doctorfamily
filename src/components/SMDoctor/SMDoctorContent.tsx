@@ -18,7 +18,9 @@ interface Specialist {
   image_url: string;
   activity_area: string | null;
   education_details: string | null;
-  conferences: string[];
+  doctor_category: string | null;
+  academic_degree: string | null;
+  additional_education: string[];
   specializations: string[];
   education: string[];
   work_examples: Array<{ title: string; images: string[] }> | null;

@@ -9,7 +9,8 @@
       "Bash(npx prisma generate:*)",
       "Bash(npm run prisma:migrate:*)",
       "Bash(npm run prisma:push:*)",
-      "Bash(npm outdated:*)"
+      "Bash(npm outdated:*)",
+      "Bash(npx dotenv-cli:*)"
     ],
     "deny": [],
     "ask": []
