@@ -623,6 +623,25 @@ export default function AdminServiceCategoriesPage() {
                 </FormField>
               </div>
 
+              <FormField label="Родительская категория">
+                <FormSelect
+                  value={formData.parent_id}
+                  onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
+                >
+                  <option value="">Нет (корневая категория)</option>
+                  {flattenedCategories
+                    .filter(cat => !editingCategory || cat.id !== editingCategory.id)
+                    .map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {'—'.repeat(cat.level)} {cat.name}
+                      </option>
+                    ))}
+                </FormSelect>
+                <p className="text-xs text-gray-500 mt-1">
+                  Выберите родительскую категорию для создания подкатегории
+                </p>
+              </FormField>
+
               <FormField label="Описание">
                 <FormTextarea
                   value={formData.description}
