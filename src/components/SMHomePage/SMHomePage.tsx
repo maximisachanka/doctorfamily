@@ -188,7 +188,7 @@ export function SMHomePage() {
             <div>
               <div className="border border-[#E8E6E3] rounded-lg overflow-hidden">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1758101512269-660feabf64fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBtZWRpY2FsJTIwY2xpbmljJTIwaW50ZXJpb3J8ZW58MXx8fHwxNzU5NzU1OTc3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                  src="/about_clinic_homepage.jpg"
                   alt="Интерьер клиники Doctor Family"
                   className="w-full h-64 lg:h-80 object-cover"
                 />

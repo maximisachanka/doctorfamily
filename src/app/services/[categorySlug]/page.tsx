@@ -323,7 +323,7 @@ export default function CategoryPage() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           <div className="absolute top-3 right-3 bg-[#18A36C] text-white px-3 py-1 rounded-full text-sm font-medium">
-                            {service.price.toLocaleString('ru-RU')} ₽
+                            {service.price.toLocaleString('ru-RU')} BYN
                           </div>
                         </div>
                       )}
