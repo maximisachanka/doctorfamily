@@ -113,7 +113,7 @@ export function CookieConsent() {
                   whileTap={{ scale: 0.9 }}
                   transition={{ delay: 0.3 }}
                   onClick={handleClose}
-                  className="flex-shrink-0 rounded-lg p-1.5 hover:bg-white/20 transition-colors text-white"
+                  className="flex-shrink-0 rounded-lg cursor-pointer h-[50%] p-1.5 hover:bg-white/20 transition-colors text-white"
                   aria-label="Закрыть"
                 >
                   <X className="w-5 h-5" />
@@ -129,7 +129,7 @@ export function CookieConsent() {
               >
                 <button
                   onClick={handleAccept}
-                  className="px-5 py-2 bg-white text-[#18A36C] font-medium rounded-xl hover:bg-emerald-50 transition-colors shadow-lg"
+                  className="px-5 py-2 cursor-pointer bg-white text-[#18A36C] font-medium rounded-xl hover:bg-emerald-50 transition-colors shadow-lg"
                 >
                   Принять
                 </button>

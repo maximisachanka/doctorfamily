@@ -27,7 +27,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-[#F8F8F8] text-[#2E2E2E]">
+    <footer className="bg-[#F8F8F8] text-[#2E2E2E] border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 pt-8 pb-8 lg:pt-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-8 lg:mb-12">
           {/* Company Info */}

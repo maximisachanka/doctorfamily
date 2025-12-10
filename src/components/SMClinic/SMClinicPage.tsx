@@ -330,7 +330,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             )}
           </div>
 
-          <div className="mt-8 p-6 bg-[#F4F4F4] rounded-2xl border border-gray-100">
+          <div className="mt-8 p-6 border border-gray-200 rounded-2xl">
             <div className="text-center">
               <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
               <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
@@ -429,7 +429,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
               </div>
             </div>
 
-            <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
+            <div className="mt-8 p-6 border border-gray-200 rounded-2xl">
               <div className="text-center">
                 <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
                 <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
@@ -583,22 +583,24 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
               )}
             </Card>
 
-            <div className="mt-8 p-6 bg-[#18A36C]/5 rounded-2xl border border-[#18A36C]/20">
-              <div className="text-center">
-                <Star className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
-                <h3 className="text-lg font-medium text-gray-800 mb-2">Поделитесь своим мнением</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Ваш отзыв поможет нам стать лучше и поможет другим пациентам сделать правильный выбор.
-                </p>
-                <Button
-                  onClick={() => setIsReviewModalOpen(true)}
-                  className="bg-[#18A36C] hover:bg-[#15905f] text-white shadow-lg shadow-[#18A36C]/20"
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Оставить отзыв
-                </Button>
+            {currentReviews.length > 0 && (
+              <div className="mt-8 p-6 bg-[#18A36C]/5 rounded-2xl border border-[#18A36C]/20">
+                <div className="text-center">
+                  <Star className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
+                  <h3 className="text-lg font-medium text-gray-800 mb-2">Поделитесь своим мнением</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Ваш отзыв поможет нам стать лучше и поможет другим пациентам сделать правильный выбор.
+                  </p>
+                  <Button
+                    onClick={() => setIsReviewModalOpen(true)}
+                    className="bg-[#18A36C] hover:bg-[#15905f] text-white shadow-lg shadow-[#18A36C]/20"
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Оставить отзыв
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Leave Review Modal */}
             <LeaveReviewModal
@@ -708,7 +710,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             )}
 
             {/* Ask Question Footer */}
-            <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
+            <div className="mt-8 p-6 border border-gray-200 rounded-2xl">
               <div className="text-center">
                 <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
                 <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
@@ -732,6 +734,14 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
           vacancy={selectedVacancy}
           open={isVacancyModalOpen}
           onOpenChange={setIsVacancyModalOpen}
+        />
+
+        {/* Ask Question Modal */}
+        <AskQuestionModal
+          isOpen={askQuestionModal.isOpen}
+          onClose={askQuestionModal.close}
+          onComplete={() => {
+          }}
         />
       </>
     );
@@ -808,7 +818,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             </Card>
 
             {/* Ask Question Footer */}
-            <div className="mt-8 p-6 bg-gradient-to-r from-[#F4F4F4] to-white rounded-2xl border border-gray-100">
+            <div className="mt-8 p-6 border border-gray-200 rounded-2xl">
               <div className="text-center">
                 <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
                 <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
@@ -907,7 +917,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
                         title="Лицензия клиники Doctor Family"
                       />
                     </div>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <Button
                         onClick={() => window.open(clinicItem.gallery![0], '_blank', 'noopener,noreferrer')}
                         className="flex-1 bg-[#18A36C] hover:bg-[#15905f] text-white"
@@ -1186,7 +1196,7 @@ export function ClinicPage({ itemId, categoryId }: ClinicPageProps) {
             </Card>
           ))}
 
-          <div className="mt-8 p-6 bg-[#F4F4F4] rounded-2xl border border-gray-100">
+          <div className="mt-8 p-6 border border-gray-200 rounded-2xl">
             <div className="text-center">
               <HelpCircle className="w-12 h-12 text-[#18A36C] mx-auto mb-3" />
               <h3 className="text-lg text-gray-600 mb-2">Не нашли ответа на свой вопрос?</h3>
